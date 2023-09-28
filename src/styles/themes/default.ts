@@ -10,13 +10,13 @@ export const defaultTheme = {
   "gray-800": "#202024",
   "gray-900": "#121214",
 
-  "green-300": "#00B37E",
-  "green-500": "#00875F",
-  "green-700": "#015F43",
+  "green-light": "#C3E9B1",
+  "green-dark": "#58B22D",
+  "green-bright": "#74CC4A",
 
   "red-300": "#F75A68",
   "red-500": "#AB222E",
-  "red-700": "#7A1921",
+  "red-dark": "#EB6B57",
 
   "blue-light": "#87C0D4",
   "blue-back": "#7EB1CF",
@@ -24,5 +24,6 @@ export const defaultTheme = {
   "blue-bright": "#0083B0",
   "blue-bright-700": "#026F96",
 
-  "text-base": "8788A0",
+  "text-base": "#8788A0",
+  "text-title": "#818188",
 } as const;
