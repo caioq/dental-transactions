@@ -27,4 +27,5 @@ export const defaultTheme = {
 
   "text-base": "#8788A0",
   "text-title": "#818188",
+  "text-placeholder": "#B4B4B0",
 } as const;

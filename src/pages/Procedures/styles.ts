@@ -7,11 +7,17 @@ export const TransactionsContainer = styled.main`
   padding: 0 1.5rem;
 `;
 
+export const TransactionTableTitle = styled.span`
+  font-size: 1.5rem;
+  color: ${(props) => props.theme["text-title"]};
+  font-weight: 700;
+`;
+
 export const TransactionsTable = styled.table`
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 0.5rem;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 
   td {
     padding: 1.25rem 2rem;

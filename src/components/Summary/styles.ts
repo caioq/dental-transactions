@@ -11,6 +11,12 @@ export const SummaryContainer = styled.section`
   gap: 2rem;
 
   margin-top: -5rem;
+
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 interface SummaryCardProps {
@@ -21,8 +27,10 @@ export const SummaryCard = styled.div<SummaryCardProps>`
   background: ${(props) => props.theme["white"]};
   border-radius: 6px;
   padding: 1.5rem 2rem;
+  min-width: 14rem;
 
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  margin-bottom: 0.3rem;
 
   header {
     display: flex;
@@ -34,8 +42,12 @@ export const SummaryCard = styled.div<SummaryCardProps>`
   strong {
     display: block;
     margin-top: 1.5rem;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: ${(props) => props.theme["text-title"]};
+
+    @media only screen and (min-width: 768px) {
+      font-size: 2rem;
+    }
   }
 
   ${(props) =>
