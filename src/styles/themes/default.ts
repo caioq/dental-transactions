@@ -14,6 +14,7 @@ export const defaultTheme = {
   "green-light": "#C3E9B1",
   "green-dark": "#58B22D",
   "green-bright": "#74CC4A",
+  "green-alt": "#00B37E",
 
   "red-300": "#F75A68",
   "red-500": "#AB222E",
