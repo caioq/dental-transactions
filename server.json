@@ -1,0 +1,34 @@
+{
+  "procedures": [
+    {
+      "id": 1,
+      "patientName": "Gabriela Silva",
+      "value": 15000,
+      "toReceiveValue": 10000,
+      "percentToReceive": 0.6,
+      "paidValue": 10000,
+      "category": "Profilaxia/Raspagem",
+      "createdAt": "2022-07-29T19:36:44.505Z"
+    },
+    {
+      "id": 2,
+      "patientName": "Ana Clara Rodrigues",
+      "value": 15000,
+      "toReceiveValue": 10000,
+      "percentToReceive": 0.6,
+      "paidValue": 10000,
+      "category": "Profilaxia/Raspagem",
+      "createdAt": "2022-07-29T19:36:44.505Z"
+    },
+    {
+      "id": 3,
+      "patientName": "Maria Helena",
+      "value": 15000,
+      "toReceiveValue": 10000,
+      "percentToReceive": 0.6,
+      "paidValue": 10000,
+      "category": "Profilaxia/Raspagem",
+      "createdAt": "2022-07-29T19:36:44.505Z"
+    }
+  ]
+}

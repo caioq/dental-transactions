@@ -1,3 +1,4 @@
+import { ArrowCircleUp } from "phosphor-react";
 import { Header } from "../../components/Header";
 import { SearchForm } from "../../components/SearchForm";
 import { Summary } from "../../components/Summary";
@@ -10,8 +11,13 @@ import {
   TransactionsTableContainer,
   TransactionsCardsContainer,
 } from "./styles";
+import { useContext } from "react";
+import { ProceduresContext } from "../../contexts/ProceduresContext";
+import { currencyFormatter, dateFormatter, percentFormatter } from "../../utils/formatter";
 
 export function Procedures() {
+  const { procedures } = useContext(ProceduresContext);
+
   return (
     <div>
       <Header />
@@ -19,68 +25,43 @@ export function Procedures() {
 
       <TransactionsContainer>
         <SearchForm />
-        <TransactionsTitle>Últimos procedimentos:</TransactionsTitle>
+        <TransactionsTitle>
+          <ArrowCircleUp size={28} />
+          <span>Últimos procedimentos:</span>
+        </TransactionsTitle>
         <TransactionsTableContainer>
           <TransactionsTable>
             <tbody>
-              <tr>
-                <td>Gabriela</td>
-                <td>R$ 15.000,00</td>
-                <td>R$ 9.000,00 (60%)</td>
-                <td>
-                  <PriceHighlight variant="income">R$ 2.000,00</PriceHighlight>
-                </td>
-                <td>Profilaxia/Raspagem</td>
-                <td>13/04/2022</td>
-              </tr>
-              <tr>
-                <td>Gabriela</td>
-                <td>R$ 15.000,00</td>
-                <td>R$ 9.000,00 (60%)</td>
-                <td>
-                  <PriceHighlight variant="income">R$ 2.000,00</PriceHighlight>
-                </td>
-                <td>Profilaxia/Raspagem</td>
-                <td>13/04/2022</td>
-              </tr>
-              <tr>
-                <td>Gabriela</td>
-                <td>R$ 15.000,00</td>
-                <td>R$ 9.000,00 (60%)</td>
-                <td>
-                  <PriceHighlight variant="income">R$ 2.000,00</PriceHighlight>
-                </td>
-                <td>Profilaxia/Raspagem</td>
-                <td>13/04/2022</td>
-              </tr>
+              {procedures.map((procedure) => (
+                <tr>
+                  <td>{procedure.patientName}</td>
+                  <td>{currencyFormatter.format(procedure.value)}</td>
+                  <td>
+                    {currencyFormatter.format(procedure.toReceiveValue)} (
+                    {percentFormatter.format(procedure.percentToReceive)})
+                  </td>
+                  <td>
+                    <PriceHighlight variant="income">{currencyFormatter.format(procedure.paidValue)}</PriceHighlight>
+                  </td>
+                  <td>{procedure.category}</td>
+                  <td>{dateFormatter.format(new Date(procedure.createdAt))}</td>
+                </tr>
+              ))}
             </tbody>
           </TransactionsTable>
         </TransactionsTableContainer>
         <TransactionsCardsContainer>
-          <ProcedureCard
-            date="13/04/2022"
-            name="Gabriela"
-            paidValue={12000}
-            procedureType="Profilaxia/Raspagem"
-            toReceiveValue={90000}
-            totalValue={15000}
-          />
-          <ProcedureCard
-            date="13/04/2022"
-            name="Gabriela"
-            paidValue={12000}
-            procedureType="Profilaxia/Raspagem"
-            toReceiveValue={90000}
-            totalValue={15000}
-          />
-          <ProcedureCard
-            date="13/04/2022"
-            name="Gabriela"
-            paidValue={12000}
-            procedureType="Profilaxia/Raspagem"
-            toReceiveValue={90000}
-            totalValue={15000}
-          />
+          {procedures.map((procedure) => (
+            <ProcedureCard
+              date="13/04/2022"
+              name={procedure.patientName}
+              paidValue={currencyFormatter.format(procedure.paidValue)}
+              procedureType={procedure.category}
+              toReceiveValue={currencyFormatter.format(procedure.toReceiveValue)}
+              percentToReceive={percentFormatter.format(procedure.percentToReceive)}
+              totalValue={currencyFormatter.format(procedure.value)}
+            />
+          ))}
         </TransactionsCardsContainer>
       </TransactionsContainer>
     </div>
