@@ -4,4 +4,5 @@ start-frontend:
 start-backend:
 	cd backend && npm run start:dev
 
-all: start-frontend start-backend
+all: 
+	pnpm run start
