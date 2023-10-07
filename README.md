@@ -1,4 +1,7 @@
 # Dental Transactions Monorepo
+
+Manage dental operations by registering procedures performed (income) and costs (outcome).
+
 - `/app:` Frontend of Dental Transactions application using React
 - `/backend:` Backend of Dental Transactions application using Node with Nest Framework
 
