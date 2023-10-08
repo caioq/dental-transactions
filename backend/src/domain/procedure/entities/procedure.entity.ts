@@ -6,11 +6,11 @@ export class Procedure {
   patientName?: string | null
   date!: Date
   category!: string
-  value!: number
-  toReceiveValue!: number
+  billing!: number
+  invoice!: number
   cpf?: string | null
   doctorId!: string
-  paidValue?: number | null
+  payment?: number | null
   createdAt!: Date
 
   protected constructor(props: Procedure) {

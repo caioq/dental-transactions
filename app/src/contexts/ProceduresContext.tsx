@@ -3,12 +3,12 @@ import { api } from "../utils/api";
 
 interface Procedure {
   patientName: string;
-  value: number;
-  toReceiveValue: number;
+  billing: number;
+  invoice: number;
   percentToReceive: number;
-  paidValue: number;
+  payment: number;
   category: string;
-  createdAt: string;
+  date: string;
 }
 
 interface CreateProcedureInput {
@@ -18,6 +18,7 @@ interface CreateProcedureInput {
   category: string;
   billing: number;
   invoice: number;
+  payment: number;
 }
 
 interface ProcedureContextType {
@@ -48,12 +49,7 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
   }, []);
 
   const createProcedure = useCallback(async (data: CreateProcedureInput) => {
-    const response = await api.post("procedures", {
-      ...data,
-      paidValue: 0,
-      toReceiveValue: data.invoice,
-      value: data.billing,
-    });
+    const response = await api.post("procedures", data);
 
     setProcedures((state) => [response.data, ...state]);
   }, []);

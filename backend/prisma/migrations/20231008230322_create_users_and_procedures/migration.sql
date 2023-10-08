@@ -15,7 +15,7 @@ CREATE TABLE "procedures" (
     "patient_name" TEXT,
     "cpf" TEXT,
     "category" TEXT NOT NULL,
-    "value" INTEGER NOT NULL,
+    "billing" INTEGER NOT NULL,
     "to_receive_value" INTEGER NOT NULL,
     "paid_value" INTEGER,
     "date" TIMESTAMP(3) NOT NULL,

@@ -5,15 +5,15 @@ const procedure = z.object({
   patientName: z.string().min(3).max(255).nullable(),
   cpf: z.string().nullable(),
   category: z.string(),
-  value: z.number(),
-  toReceiveValue: z.number(),
-  paidValue: z.number().nullable(),
+  billing: z.number(),
+  invoice: z.number(),
+  payment: z.number().nullable(),
 })
 
 export const createProcedureBodySchema = procedure.required({
   date: true,
   category: true,
-  value: true,
+  billing: true,
 })
 
 export type CreateProcedureBodySchema = z.infer<typeof createProcedureBodySchema>

@@ -18,6 +18,10 @@ import { currencyFormatter, dateFormatter, percentFormatter } from "../../utils/
 export function Procedures() {
   const { procedures } = useContext(ProceduresContext);
 
+  function calculatePercentToReceive(invoice: number, billing: number): number {
+    return invoice / billing;
+  }
+
   return (
     <div>
       <Header />
@@ -34,17 +38,17 @@ export function Procedures() {
             <tbody>
               {procedures.map((procedure) => (
                 <tr>
-                  <td>{procedure.patientName}</td>
-                  <td>{currencyFormatter.format(procedure.value)}</td>
+                  <td>{procedure.patientName || "Desconhecido"}</td>
+                  <td>{currencyFormatter.format(procedure.billing)}</td>
                   <td>
-                    {currencyFormatter.format(procedure.toReceiveValue)} (
-                    {percentFormatter.format(procedure.percentToReceive)})
+                    {currencyFormatter.format(procedure.invoice)} (
+                    {percentFormatter.format(calculatePercentToReceive(procedure.invoice, procedure.billing))})
                   </td>
                   <td>
-                    <PriceHighlight variant="income">{currencyFormatter.format(procedure.paidValue)}</PriceHighlight>
+                    <PriceHighlight variant="income">{currencyFormatter.format(procedure.payment)}</PriceHighlight>
                   </td>
                   <td>{procedure.category}</td>
-                  <td>{dateFormatter.format(new Date(procedure.createdAt))}</td>
+                  <td>{dateFormatter.format(new Date(procedure.date))}</td>
                 </tr>
               ))}
             </tbody>

@@ -26,9 +26,9 @@ model Procedure {
   patientName       String?                 @map("patient_name")
   cpf               String?
   category          String
-  value             Int
-  toReceiveValue    Int                     @map("to_receive_value")
-  paidValue         Int?                    @map("paid_value")
+  billing           Int
+  invoice           Int                     @map("to_receive_value")
+  payment           Int?                    @map("paid_value")
   date              DateTime
   createdAt         DateTime                @default(now()) @map("created_at")
   updatedAt         DateTime?               @updatedAt @map("updated_at")

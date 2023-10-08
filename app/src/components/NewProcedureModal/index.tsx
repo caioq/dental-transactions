@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { X } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { CheckIcon } from "@radix-ui/react-icons";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
   CloseButton,
@@ -21,6 +21,7 @@ const newProcedureFormSchema = z.object({
   category: z.string().min(1),
   billing: z.number().positive(),
   invoice: z.number().positive(),
+  isPaymentToBeReceived: z.boolean(),
 });
 
 type NewProcedureFormInputs = z.infer<typeof newProcedureFormSchema>;
@@ -32,9 +33,14 @@ interface NewProcedureModalProps {
 export function NewProcedureModal(props: NewProcedureModalProps) {
   const { setOpenDialog } = props;
   const { createProcedure } = useContext(ProceduresContext);
-  const { register, handleSubmit, reset } = useForm<NewProcedureFormInputs>();
+  const { register, handleSubmit, reset, control } = useForm<NewProcedureFormInputs>({
+    defaultValues: {
+      isPaymentToBeReceived: true,
+    },
+  });
 
   async function handleCreateNewProcedure(data: NewProcedureFormInputs) {
+    console.log(data);
     await createProcedure({
       invoice: Number(data.invoice),
       billing: Number(data.billing),
@@ -42,6 +48,7 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
       date: new Date(data.date),
       cpf: data.cpf || null,
       patientName: data.patientName || null,
+      payment: data.isPaymentToBeReceived ? 0 : Number(data.invoice),
     });
 
     reset();
@@ -67,14 +74,20 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
           <input type="number" placeholder="Orçamento" required {...register("billing", { valueAsNumber: true })} />
           <input type="number" placeholder="Faturamento" required {...register("invoice", { valueAsNumber: true })} />
 
-          <PaymentToReceiveCheckbox>
-            <PaymentToReceiveCheckboxButton>
-              <PaymentToReceiveCheckboxIndicator>
-                <CheckIcon />
-              </PaymentToReceiveCheckboxIndicator>
-            </PaymentToReceiveCheckboxButton>
-            <label>Pagamento à receber</label>
-          </PaymentToReceiveCheckbox>
+          <Controller
+            control={control}
+            name="isPaymentToBeReceived"
+            render={({ field }) => (
+              <PaymentToReceiveCheckbox>
+                <PaymentToReceiveCheckboxButton onCheckedChange={field.onChange} checked={field.value}>
+                  <PaymentToReceiveCheckboxIndicator>
+                    <CheckIcon />
+                  </PaymentToReceiveCheckboxIndicator>
+                </PaymentToReceiveCheckboxButton>
+                <label>Pagamento à receber</label>
+              </PaymentToReceiveCheckbox>
+            )}
+          />
 
           <button type="submit">Adicionar</button>
         </form>
