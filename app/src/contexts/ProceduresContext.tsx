@@ -11,18 +11,19 @@ interface Procedure {
   createdAt: string;
 }
 
-// interface CreateProcedureInput {
-//   patientName: string;
-//   value: number;
-//   toReceiveValue: number;
-//   paidValue: number;
-//   category: string;
-//   createdAt: Date;
-// }
+interface CreateProcedureInput {
+  date: Date;
+  patientName: string | null;
+  cpf: string | null;
+  category: string;
+  billing: number;
+  invoice: number;
+}
 
 interface ProcedureContextType {
   procedures: Procedure[];
   fetchProcedures: (query?: string) => Promise<void>;
+  createProcedure: (data: CreateProcedureInput) => Promise<void>;
 }
 
 interface ProceduresProviderProps {
@@ -46,10 +47,16 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     setProcedures(response.data);
   }, []);
 
-  // const createProcedure = useCallback(async (data: CreateProcedureInput) => {
+  const createProcedure = useCallback(async (data: CreateProcedureInput) => {
+    const response = await api.post("procedures", {
+      ...data,
+      paidValue: 0,
+      toReceiveValue: data.invoice,
+      value: data.billing,
+    });
 
-  //   setProcedures((state) => [response.data, ...state]);
-  // }, []);
+    setProcedures((state) => [response.data, ...state]);
+  }, []);
 
   useEffect(() => {
     fetchProcedures();
@@ -60,6 +67,7 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
       value={{
         procedures,
         fetchProcedures,
+        createProcedure,
       }}
     >
       {children}

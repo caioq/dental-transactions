@@ -1,5 +1,9 @@
+import { useContext } from "react";
 import { X } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
+import { CheckIcon } from "@radix-ui/react-icons";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import {
   CloseButton,
   Content,
@@ -8,9 +12,42 @@ import {
   PaymentToReceiveCheckboxButton,
   PaymentToReceiveCheckboxIndicator,
 } from "./styles";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { ProceduresContext } from "../../contexts/ProceduresContext";
 
-export function NewProcedureModal() {
+const newProcedureFormSchema = z.object({
+  date: z.date(),
+  patientName: z.string().nullable(),
+  cpf: z.string().nullable(),
+  category: z.string().min(1),
+  billing: z.number().positive(),
+  invoice: z.number().positive(),
+});
+
+type NewProcedureFormInputs = z.infer<typeof newProcedureFormSchema>;
+
+interface NewProcedureModalProps {
+  setOpenDialog: (open: boolean) => void;
+}
+
+export function NewProcedureModal(props: NewProcedureModalProps) {
+  const { setOpenDialog } = props;
+  const { createProcedure } = useContext(ProceduresContext);
+  const { register, handleSubmit, reset } = useForm<NewProcedureFormInputs>();
+
+  async function handleCreateNewProcedure(data: NewProcedureFormInputs) {
+    await createProcedure({
+      invoice: Number(data.invoice),
+      billing: Number(data.billing),
+      category: data.category,
+      date: new Date(data.date),
+      cpf: data.cpf || null,
+      patientName: data.patientName || null,
+    });
+
+    reset();
+    setOpenDialog(false);
+  }
+
   return (
     <Dialog.Portal>
       <Overlay />
@@ -22,13 +59,13 @@ export function NewProcedureModal() {
           <X size={24} />
         </CloseButton>
 
-        <form>
-          <input type="date" placeholder="Data" required />
-          <input type="text" placeholder="Nome do paciente" />
-          <input type="text" placeholder="CPF" />
-          <input type="text" placeholder="Procedimento" required />
-          <input type="number" placeholder="Orçamento" required />
-          <input type="number" placeholder="Faturamento" required />
+        <form onSubmit={handleSubmit(handleCreateNewProcedure)}>
+          <input type="date" placeholder="Data" required {...register("date")} />
+          <input type="text" placeholder="Nome do paciente" {...register("patientName")} />
+          <input type="text" placeholder="CPF" {...register("cpf")} />
+          <input type="text" placeholder="Procedimento" required {...register("category")} />
+          <input type="number" placeholder="Orçamento" required {...register("billing", { valueAsNumber: true })} />
+          <input type="number" placeholder="Faturamento" required {...register("invoice", { valueAsNumber: true })} />
 
           <PaymentToReceiveCheckbox>
             <PaymentToReceiveCheckboxButton>
