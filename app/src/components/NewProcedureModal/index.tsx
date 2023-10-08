@@ -10,7 +10,7 @@ import {
 } from "./styles";
 import { CheckIcon } from "@radix-ui/react-icons";
 
-export function ProcedureModal() {
+export function NewProcedureModal() {
   return (
     <Dialog.Portal>
       <Overlay />

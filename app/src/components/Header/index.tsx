@@ -1,7 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { HeaderContainer, HeaderContent, HeaderLogo, NewProceduresButton } from "./styles";
 import logoImg from "../../assets/logo.svg";
-import { ProcedureModal } from "../ProcedureModal";
+import { NewProcedureModal } from "../NewProcedureModal";
 
 export function Header() {
   return (
@@ -17,7 +17,7 @@ export function Header() {
             <NewProceduresButton>Adicionar Procedimento</NewProceduresButton>
           </Dialog.Trigger>
 
-          <ProcedureModal />
+          <NewProcedureModal />
         </Dialog.Root>
       </HeaderContent>
     </HeaderContainer>
