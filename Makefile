@@ -5,4 +5,5 @@ start-backend:
 	cd backend && npm run start:dev
 
 all: 
+	docker-compose up -d
 	pnpm run start
