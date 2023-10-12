@@ -1,7 +1,20 @@
+import { useContext, useMemo } from "react";
 import { ArrowCircleDown, ArrowCircleUp, CurrencyDollar } from "phosphor-react";
 import { SummaryContainer, SummaryCard } from "./styles";
+import { ProceduresContext, Procedure } from "../../contexts/ProceduresContext";
+import { currencyFormatter } from "../../utils/formatter";
+
+function calculateIncome(procedures: Procedure[]): number {
+  return procedures.reduce((acc, procedure) => (acc += procedure.payment), 0);
+}
 
 export function Summary() {
+  const { procedures } = useContext(ProceduresContext);
+
+  const income = useMemo(() => calculateIncome(procedures), [procedures]);
+  const outcome = 0;
+  const balance = useMemo(() => income - outcome, [income, outcome]);
+
   return (
     <SummaryContainer>
       <SummaryCard variant="green">
@@ -10,7 +23,7 @@ export function Summary() {
           <ArrowCircleUp size={32} color="#58B22D" />
         </header>
 
-        <strong>R$ 17.400,00</strong>
+        <strong>{currencyFormatter.format(income)}</strong>
       </SummaryCard>
 
       <SummaryCard variant="red">
@@ -19,7 +32,7 @@ export function Summary() {
           <ArrowCircleDown size={32} color="#EB6B57" />
         </header>
 
-        <strong>R$ 1.400,00</strong>
+        <strong>{currencyFormatter.format(outcome)}</strong>
       </SummaryCard>
 
       <SummaryCard variant="blue">
@@ -28,7 +41,7 @@ export function Summary() {
           <CurrencyDollar size={32} color="#60A0B7" />
         </header>
 
-        <strong>R$ 16.000,00</strong>
+        <strong>{currencyFormatter.format(balance)}</strong>
       </SummaryCard>
     </SummaryContainer>
   );

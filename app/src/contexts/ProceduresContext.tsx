@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useCallback, useEffect, useState } from "react";
 import { api } from "../utils/api";
 
-interface Procedure {
+export interface Procedure {
   patientName: string;
   billing: number;
   invoice: number;

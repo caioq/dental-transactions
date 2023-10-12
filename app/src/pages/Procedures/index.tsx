@@ -59,11 +59,11 @@ export function Procedures() {
             <ProcedureCard
               date="13/04/2022"
               name={procedure.patientName}
-              paidValue={currencyFormatter.format(procedure.paidValue)}
+              paidValue={currencyFormatter.format(procedure.payment)}
               procedureType={procedure.category}
-              toReceiveValue={currencyFormatter.format(procedure.toReceiveValue)}
+              toReceiveValue={currencyFormatter.format(procedure.invoice)}
               percentToReceive={percentFormatter.format(procedure.percentToReceive)}
-              totalValue={currencyFormatter.format(procedure.value)}
+              totalValue={currencyFormatter.format(procedure.billing)}
             />
           ))}
         </TransactionsCardsContainer>
