@@ -1,30 +1,11 @@
 import { useContext } from "react";
 import { X } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { CheckIcon } from "@radix-ui/react-icons";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  CloseButton,
-  Content,
-  Overlay,
-  PaymentToReceiveCheckbox,
-  PaymentToReceiveCheckboxButton,
-  PaymentToReceiveCheckboxIndicator,
-} from "./styles";
+import { useFieldArray, useForm } from "react-hook-form";
+import { CloseButton, Content, Overlay } from "./styles";
 import { ProceduresContext } from "../../contexts/ProceduresContext";
-
-const newProcedureFormSchema = z.object({
-  date: z.date(),
-  patientName: z.string().nullable(),
-  cpf: z.string().nullable(),
-  category: z.string().min(1),
-  billing: z.number().positive(),
-  invoice: z.number().positive(),
-  isPaymentToBeReceived: z.boolean(),
-});
-
-type NewProcedureFormInputs = z.infer<typeof newProcedureFormSchema>;
+import { NewPaymentCard } from "./components/NewPaymentCard";
+import { NewProcedureFormInputs } from "./types";
 
 interface NewProcedureModalProps {
   setOpenDialog: (open: boolean) => void;
@@ -35,8 +16,16 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
   const { createProcedure } = useContext(ProceduresContext);
   const { register, handleSubmit, reset, control } = useForm<NewProcedureFormInputs>({
     defaultValues: {
-      isPaymentToBeReceived: true,
+      payments: [],
     },
+  });
+  const {
+    fields: paymentFields,
+    prepend,
+    remove,
+  } = useFieldArray({
+    control,
+    name: "payments",
   });
 
   async function handleCreateNewProcedure(data: NewProcedureFormInputs) {
@@ -48,18 +37,29 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
       date: new Date(data.date),
       cpf: data.cpf || null,
       patientName: data.patientName || null,
-      payment: data.isPaymentToBeReceived ? 0 : Number(data.invoice),
+      payment: 0,
     });
 
     reset();
     setOpenDialog(false);
   }
 
+  function handleClickAddPayment() {
+    prepend({
+      date: new Date(),
+      value: 0,
+    });
+  }
+
+  function clearForm() {
+    reset();
+  }
+
   return (
     <Dialog.Portal>
       <Overlay />
 
-      <Content>
+      <Content onOpenAutoFocus={clearForm}>
         <Dialog.Title>Novo Procedimento</Dialog.Title>
 
         <CloseButton>
@@ -67,29 +67,28 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
         </CloseButton>
 
         <form onSubmit={handleSubmit(handleCreateNewProcedure)}>
-          <input type="date" placeholder="Data" required {...register("date")} />
+          <input type="date" placeholder="Data" required {...register("date", { valueAsDate: true })} />
           <input type="text" placeholder="Nome do paciente" {...register("patientName")} />
           <input type="text" placeholder="CPF" {...register("cpf")} />
           <input type="text" placeholder="Procedimento" required {...register("category")} />
           <input type="number" placeholder="Orçamento" required {...register("billing", { valueAsNumber: true })} />
           <input type="number" placeholder="Faturamento" required {...register("invoice", { valueAsNumber: true })} />
 
-          <Controller
-            control={control}
-            name="isPaymentToBeReceived"
-            render={({ field }) => (
-              <PaymentToReceiveCheckbox>
-                <PaymentToReceiveCheckboxButton onCheckedChange={field.onChange} checked={field.value}>
-                  <PaymentToReceiveCheckboxIndicator>
-                    <CheckIcon />
-                  </PaymentToReceiveCheckboxIndicator>
-                </PaymentToReceiveCheckboxButton>
-                <label>Pagamento à receber</label>
-              </PaymentToReceiveCheckbox>
-            )}
-          />
+          <button type="button" onClick={handleClickAddPayment}>
+            + Adicionar Pagamento
+          </button>
 
-          <button type="submit">Adicionar</button>
+          {paymentFields.map((item, index) => (
+            <NewPaymentCard
+              key={item.id}
+              index={index}
+              position={paymentFields.length - index}
+              removePayment={remove}
+              register={register}
+            />
+          ))}
+
+          <button type="submit">Cadastrar</button>
         </form>
       </Content>
     </Dialog.Portal>

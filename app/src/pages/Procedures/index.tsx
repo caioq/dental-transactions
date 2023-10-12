@@ -36,8 +36,8 @@ export function Procedures() {
         <TransactionsTableContainer>
           <TransactionsTable>
             <tbody>
-              {procedures.map((procedure) => (
-                <tr>
+              {procedures.map((procedure, index) => (
+                <tr key={index}>
                   <td>{procedure.patientName || "Desconhecido"}</td>
                   <td>{currencyFormatter.format(procedure.billing)}</td>
                   <td>
@@ -55,8 +55,9 @@ export function Procedures() {
           </TransactionsTable>
         </TransactionsTableContainer>
         <TransactionsCardsContainer>
-          {procedures.map((procedure) => (
+          {procedures.map((procedure, index) => (
             <ProcedureCard
+              key={index}
               date="13/04/2022"
               name={procedure.patientName}
               paidValue={currencyFormatter.format(procedure.payment)}

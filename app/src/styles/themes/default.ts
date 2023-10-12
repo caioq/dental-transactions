@@ -26,6 +26,8 @@ export const defaultTheme = {
   "blue-bright": "#0083B0",
   "blue-bright-700": "#026F96",
 
+  "alt-primary": "#D6E7ED",
+
   "text-base": "#8788A0",
   "text-title": "#818188",
   "text-placeholder": "#B4B4B0",

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as Checkbox from "@radix-ui/react-checkbox";
 
 export const Overlay = styled(Dialog.Overlay)`
   position: fixed;
@@ -20,6 +19,9 @@ export const Content = styled(Dialog.Content)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  max-height: 800px;
+  overflow-y: auto;
 
   form {
     margin-top: 2rem;
@@ -46,11 +48,29 @@ export const Content = styled(Dialog.Content)`
       font-weight: bold;
       padding: 0 1.25rem;
       border-radius: 6px;
-      margin-top: 1.25rem;
+      margin-top: 4rem;
       cursor: pointer;
 
       &:hover {
         background: ${(props) => props.theme["blue-bright-700"]};
+        transition: background-color 0.2s;
+      }
+    }
+
+    button[type="button"] {
+      height: 50px;
+      border: 0;
+      background: ${(props) => props.theme["alt-primary"]};
+      color: ${(props) => props.theme["blue-dark"]};
+      font-weight: bold;
+      padding: 0 1.25rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background: ${(props) => props.theme["blue-bright-700"]};
+        color: ${(props) => props.theme["white"]};
         transition: background-color 0.2s;
       }
     }
@@ -68,36 +88,34 @@ export const CloseButton = styled(Dialog.Close)`
   color: ${(props) => props.theme["gray-500"]};
 `;
 
-export const PaymentToReceiveCheckbox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
+// export const PaymentToReceiveCheckbox = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 0.5rem;
+// `;
 
-export const PaymentToReceiveCheckboxButton = styled(Checkbox.Root)`
-  
-  all: 'unset',
-  background-color: white;
-  width: 25px;
-  height: 25px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid ${(props) => props.theme["blue-dark"]}; 
-  /* box-shadow: 0 0 0 2px ${(props) => props.theme["blue-dark"]}; */
-  
-  &:hover {
-    background-color: var(--violet-3);
-  }
+// export const PaymentToReceiveCheckboxButton = styled(Checkbox.Root)`
+//   all: "unset";
+//   background-color: white;
+//   width: 25px;
+//   height: 25px;
+//   border-radius: 4px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   border: 1px solid ${(props) => props.theme["blue-dark"]};
+//   /* box-shadow: 0 0 0 2px ${(props) => props.theme["blue-dark"]}; */
 
-  :focus {
-    box-shadow: 0 0 0 2px black;
-    border: 1px solid ${(props) => props.theme["blue-bright"]}; 
-  }
+//   &:hover {
+//     background-color: var(--violet-3);
+//   }
 
-`;
+//   :focus {
+//     box-shadow: 0 0 0 2px black;
+//     border: 1px solid ${(props) => props.theme["blue-bright"]};
+//   }
+// `;
 
-export const PaymentToReceiveCheckboxIndicator = styled(Checkbox.Indicator)`
-  color: ${(props) => props.theme["blue-bright"]};
-`;
+// export const PaymentToReceiveCheckboxIndicator = styled(Checkbox.Indicator)`
+//   color: ${(props) => props.theme["blue-bright"]};
+// `;
