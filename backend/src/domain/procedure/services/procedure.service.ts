@@ -1,15 +1,22 @@
 import { Injectable } from '@nestjs/common'
 import { Procedure } from '../entities/procedure.entity'
 import { ProcedureRepository } from '../repositories/procedure.repository'
+import { Payment } from '../entities/payment.entity'
 
-interface CreateProcedureParams extends Omit<Procedure, 'id' | 'createdAt'> {}
+interface PaymentParams extends Omit<Payment, 'id' | 'createdAt' | 'procedureId'> {}
+
+interface CreateProcedureParams extends Omit<Procedure, 'id' | 'createdAt' | 'payments'> {
+  payments: PaymentParams[]
+}
 
 @Injectable()
 export class ProcedureService {
   constructor(private procedureRepository: ProcedureRepository) {}
 
   async createProcedure(params: CreateProcedureParams): Promise<Procedure> {
-    const procedure = Procedure.create(params)
+    const payments = params.payments.map((payment) => Payment.create(payment))
+    const procedure = Procedure.create({ ...params, payments })
+
     return this.procedureRepository.create(procedure)
   }
 

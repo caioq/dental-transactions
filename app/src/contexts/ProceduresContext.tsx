@@ -11,6 +11,11 @@ export interface Procedure {
   date: string;
 }
 
+interface Payment {
+  date: Date;
+  value: number;
+}
+
 interface CreateProcedureInput {
   date: Date;
   patientName: string | null;
@@ -18,7 +23,7 @@ interface CreateProcedureInput {
   category: string;
   billing: number;
   invoice: number;
-  payment: number;
+  payments: Payment[];
 }
 
 interface ProcedureContextType {

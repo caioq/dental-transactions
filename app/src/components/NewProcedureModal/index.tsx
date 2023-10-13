@@ -37,7 +37,7 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
       date: new Date(data.date),
       cpf: data.cpf || null,
       patientName: data.patientName || null,
-      payment: 0,
+      payments: data.payments,
     });
 
     reset();

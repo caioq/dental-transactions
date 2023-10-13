@@ -5,6 +5,7 @@ import {
   createProcedureBodySchema,
 } from '../schemas/create-procedure.schema'
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
+import { Payment } from 'src/domain/procedure/entities/payment.entity'
 
 const createProcedureBodyValidationPipe = new ZodValidationPipe(createProcedureBodySchema)
 
@@ -16,6 +17,7 @@ export class ProcedureController {
   createProcedure(@Body(createProcedureBodyValidationPipe) body: CreateProcedureBodySchema) {
     return this.procedureService.createProcedure({
       ...body,
+      // payments: body.payments,
       doctorId: '1',
     })
   }

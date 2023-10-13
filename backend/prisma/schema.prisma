@@ -33,8 +33,23 @@ model Procedure {
   createdAt         DateTime                @default(now()) @map("created_at")
   updatedAt         DateTime?               @updatedAt @map("updated_at")
   deletedAt         DateTime?               @map("deleted_at")
+  payments          Payment[]
 
   doctor            User                    @relation(fields: [doctorId], references: [id])
   
   @@map("procedures")
+}
+
+model Payment {
+  id                String                  @id @default(uuid())
+  procedureId       String                  @map("procedure_id")
+  date              DateTime
+  value             Int
+  createdAt         DateTime                @default(now()) @map("created_at")
+  updatedAt         DateTime?               @updatedAt @map("updated_at")
+  deletedAt         DateTime?               @map("deleted_at")
+
+  procedure         Procedure               @relation(fields: [procedureId], references: [id])
+
+  @@map("payments")
 }

@@ -27,7 +27,12 @@ export function NewPaymentCard(props: NewPaymentCardProps) {
       </header>
       <NewPaymentCardContent>
         <input type="date" placeholder="Data" required {...register(`payments.${index}.date`, { valueAsDate: true })} />
-        <input type="number" placeholder="Valor" required {...register(`payments.${index}.value`)} />
+        <input
+          type="number"
+          placeholder="Valor"
+          required
+          {...register(`payments.${index}.value`, { valueAsNumber: true })}
+        />
       </NewPaymentCardContent>
     </NewPaymentCardContainer>
   );
