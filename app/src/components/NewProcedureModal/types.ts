@@ -4,7 +4,7 @@ const newProcedureFormSchema = z.object({
   date: z.date(),
   patientName: z.string().nullable(),
   cpf: z.string().nullable(),
-  category: z.string().min(1),
+  categoryId: z.string().min(1),
   billing: z.number().positive(),
   invoice: z.number().positive(),
   payments: z

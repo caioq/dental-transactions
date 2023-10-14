@@ -17,7 +17,6 @@ export class ProcedureController {
   createProcedure(@Body(createProcedureBodyValidationPipe) body: CreateProcedureBodySchema) {
     return this.procedureService.createProcedure({
       ...body,
-      // payments: body.payments,
       doctorId: '1',
     })
   }

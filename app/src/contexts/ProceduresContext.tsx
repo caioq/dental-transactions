@@ -16,11 +16,16 @@ interface Payment {
   value: number;
 }
 
+interface Category {
+  id: string;
+  name: string;
+}
+
 interface CreateProcedureInput {
   date: Date;
   patientName: string | null;
   cpf: string | null;
-  category: string;
+  categoryId: string;
   billing: number;
   invoice: number;
   payments: Payment[];
@@ -28,6 +33,7 @@ interface CreateProcedureInput {
 
 interface ProcedureContextType {
   procedures: Procedure[];
+  categories: Category[];
   fetchProcedures: (query?: string) => Promise<void>;
   createProcedure: (data: CreateProcedureInput) => Promise<void>;
 }
@@ -40,6 +46,7 @@ export const ProceduresContext = createContext({} as ProcedureContextType);
 
 export function ProceduresProvider({ children }: ProceduresProviderProps) {
   const [procedures, setProcedures] = useState<Procedure[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const fetchProcedures = useCallback(async (query?: string) => {
     const response = await api.get("procedures", {
@@ -59,14 +66,22 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     setProcedures((state) => [response.data, ...state]);
   }, []);
 
+  const fetchCategories = useCallback(async () => {
+    const response = await api.get("categories", {});
+
+    setCategories(response.data);
+  }, []);
+
   useEffect(() => {
     fetchProcedures();
-  }, [fetchProcedures]);
+    fetchCategories();
+  }, [fetchProcedures, fetchCategories]);
 
   return (
     <ProceduresContext.Provider
       value={{
         procedures,
+        categories,
         fetchProcedures,
         createProcedure,
       }}

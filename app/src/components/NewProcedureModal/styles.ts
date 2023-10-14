@@ -39,41 +39,41 @@ export const Content = styled(Dialog.Content)`
         color: ${(props) => props.theme["text-placeholder"]};
       }
     }
+  }
+`;
 
-    button[type="submit"] {
-      height: 50px;
-      border: 0;
-      background: ${(props) => props.theme["blue-dark"]};
-      color: ${(props) => props.theme.white};
-      font-weight: bold;
-      padding: 0 1.25rem;
-      border-radius: 6px;
-      margin-top: 4rem;
-      cursor: pointer;
+export const SecondaryButton = styled.button`
+  height: 50px;
+  border: 0;
+  background: ${(props) => props.theme["alt-primary"]};
+  color: ${(props) => props.theme["blue-dark"]};
+  font-weight: bold;
+  padding: 0 1.25rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  cursor: pointer;
 
-      &:hover {
-        background: ${(props) => props.theme["blue-bright-700"]};
-        transition: background-color 0.2s;
-      }
-    }
+  &:hover {
+    background: ${(props) => props.theme["blue-bright-700"]};
+    color: ${(props) => props.theme["white"]};
+    transition: background-color 0.2s;
+  }
+`;
 
-    button[type="button"] {
-      height: 50px;
-      border: 0;
-      background: ${(props) => props.theme["alt-primary"]};
-      color: ${(props) => props.theme["blue-dark"]};
-      font-weight: bold;
-      padding: 0 1.25rem;
-      border-radius: 6px;
-      margin-top: 1rem;
-      cursor: pointer;
+export const PrimaryButton = styled.button`
+  height: 50px;
+  border: 0;
+  background: ${(props) => props.theme["blue-dark"]};
+  color: ${(props) => props.theme.white};
+  font-weight: bold;
+  padding: 0 1.25rem;
+  border-radius: 6px;
+  margin-top: 4rem;
+  cursor: pointer;
 
-      &:hover {
-        background: ${(props) => props.theme["blue-bright-700"]};
-        color: ${(props) => props.theme["white"]};
-        transition: background-color 0.2s;
-      }
-    }
+  &:hover {
+    background: ${(props) => props.theme["blue-bright-700"]};
+    transition: background-color 0.2s;
   }
 `;
 

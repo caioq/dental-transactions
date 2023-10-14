@@ -23,11 +23,11 @@ model User {
 model Procedure {
   id                String                  @id @default(uuid())
   doctorId          String                  @map("doctor_id")
+  categoryId        String                  @map("category_id")
   patientName       String?                 @map("patient_name")
   cpf               String?
-  category          String
   billing           Int
-  invoice           Int                     @map("to_receive_value")
+  invoice           Int                     
   payment           Int?                    @map("paid_value")
   date              DateTime
   createdAt         DateTime                @default(now()) @map("created_at")
@@ -36,6 +36,7 @@ model Procedure {
   payments          Payment[]
 
   doctor            User                    @relation(fields: [doctorId], references: [id])
+  category          Category                @relation(fields: [categoryId], references: [id])
   
   @@map("procedures")
 }
@@ -52,4 +53,12 @@ model Payment {
   procedure         Procedure               @relation(fields: [procedureId], references: [id])
 
   @@map("payments")
+}
+
+model Category {
+  id              String                    @id @default(uuid())
+  name            String
+  procedures      Procedure[]
+
+  @@map("categories")
 }
