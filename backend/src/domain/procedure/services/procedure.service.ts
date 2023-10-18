@@ -3,10 +3,16 @@ import { Procedure } from '../entities/procedure.entity'
 import { ProcedureRepository } from '../repositories/procedure.repository'
 import { Payment } from '../entities/payment.entity'
 
-interface PaymentParams extends Omit<Payment, 'id' | 'createdAt' | 'procedureId'> {}
+interface CreatePaymentParams extends Omit<Payment, 'id' | 'createdAt' | 'procedureId'> {}
 
 interface CreateProcedureParams extends Omit<Procedure, 'id' | 'createdAt' | 'payments'> {
-  payments: PaymentParams[]
+  payments: CreatePaymentParams[]
+}
+
+interface UpdatePaymentParams extends Omit<Payment, 'id' | 'createdAt'> {}
+
+interface UpdateProcedureParams extends Omit<Procedure, 'createdAt' | 'payments'> {
+  payments: UpdatePaymentParams[]
 }
 
 @Injectable()
@@ -18,6 +24,13 @@ export class ProcedureService {
     const procedure = Procedure.create({ ...params, payments })
 
     return this.procedureRepository.create(procedure)
+  }
+
+  async updateProcedure(params: UpdateProcedureParams): Promise<Procedure> {
+    const payments = params.payments?.map((payment) => Payment.create(payment))
+    const procedure = Procedure.create({ ...params, payments })
+
+    return this.procedureRepository.update(procedure)
   }
 
   async getProceduresByDoctorId(doctorId: string): Promise<Procedure[]> {

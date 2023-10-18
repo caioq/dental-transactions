@@ -1,13 +1,15 @@
-import { Body, Controller, Get, Post } from '@nestjs/common'
+import { Body, Controller, Get, Post, Put } from '@nestjs/common'
 import { ProcedureService } from '../../domain/procedure/services/procedure.service'
+import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
 import {
   CreateProcedureBodySchema,
   createProcedureBodySchema,
-} from '../schemas/create-procedure.schema'
-import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
-import { Payment } from 'src/domain/procedure/entities/payment.entity'
+  UpdateProcedureBodySchema,
+  updateProcedureBodySchema,
+} from '../schemas'
 
 const createProcedureBodyValidationPipe = new ZodValidationPipe(createProcedureBodySchema)
+const updateProcedureBodyValidationPipe = new ZodValidationPipe(updateProcedureBodySchema)
 
 @Controller('procedures')
 export class ProcedureController {
@@ -16,6 +18,14 @@ export class ProcedureController {
   @Post()
   createProcedure(@Body(createProcedureBodyValidationPipe) body: CreateProcedureBodySchema) {
     return this.procedureService.createProcedure({
+      ...body,
+      doctorId: '1',
+    })
+  }
+
+  @Put()
+  updateProcedure(@Body(updateProcedureBodyValidationPipe) body: UpdateProcedureBodySchema) {
+    return this.procedureService.updateProcedure({
       ...body,
       doctorId: '1',
     })
