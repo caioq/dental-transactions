@@ -9,6 +9,7 @@ const newProcedureFormSchema = z.object({
   invoice: z.number().positive(),
   payments: z
     .object({
+      id: z.string().optional(),
       value: z.number().positive(),
       date: z.date(),
     })

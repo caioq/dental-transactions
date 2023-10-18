@@ -10,7 +10,7 @@ export class ProcedurePrismaRepository implements ProcedureRepository {
 
   async create(procedure: Procedure): Promise<Procedure> {
     const data = ProcedurePrismaMapper.toPrisma(procedure)
-    return this.prisma.procedure.create({ data })
+    return this.prisma.procedure.create({ data, include: { payments: true, category: true } })
   }
 
   async findByDoctorId(doctorId: string): Promise<Procedure[]> {

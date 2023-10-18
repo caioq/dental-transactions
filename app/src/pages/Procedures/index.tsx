@@ -14,7 +14,7 @@ import {
   TransactionsCardsContainer,
 } from "./styles";
 import { Procedure, ProceduresContext } from "../../contexts/ProceduresContext";
-import { currencyFormatter, dateFormatter, percentFormatter } from "../../utils/formatter";
+import { currencyFormatter, dateFormatter, percentFormatter } from "../../utils";
 import { NewProcedureModal } from "../../components/NewProcedureModal";
 
 export function Procedures() {

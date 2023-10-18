@@ -13,6 +13,7 @@ export interface Procedure {
 }
 
 interface Payment {
+  id: string;
   date: Date;
   value: number;
 }
@@ -29,7 +30,19 @@ interface CreateProcedureInput {
   categoryId: string;
   billing: number;
   invoice: number;
-  payments: Payment[];
+  payments: {
+    date: Date;
+    value: number;
+  }[];
+}
+
+interface UpdateProcedureInput extends CreateProcedureInput {
+  id: string;
+  payments: {
+    id?: string;
+    date: Date;
+    value: number;
+  }[];
 }
 
 interface ProcedureContextType {
@@ -37,6 +50,7 @@ interface ProcedureContextType {
   categories: Category[];
   fetchProcedures: (query?: string) => Promise<void>;
   createProcedure: (data: CreateProcedureInput) => Promise<void>;
+  updateProcedure: (data: UpdateProcedureInput) => Promise<void>;
 }
 
 interface ProceduresProviderProps {
@@ -63,8 +77,22 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
 
   const createProcedure = useCallback(async (data: CreateProcedureInput) => {
     const response = await api.post("procedures", data);
+    const createdProcedure: Procedure = {
+      ...response.data,
+    };
 
-    setProcedures((state) => [response.data, ...state]);
+    setProcedures((state) => [createdProcedure, ...state]);
+  }, []);
+
+  const updateProcedure = useCallback(async (data: UpdateProcedureInput) => {
+    const response = await api.put("procedures", data);
+    const updatedProcedure: Procedure = {
+      ...response.data,
+    };
+
+    setProcedures((state) =>
+      state.map((procedure) => (procedure.id === updatedProcedure.id ? updatedProcedure : procedure))
+    );
   }, []);
 
   const fetchCategories = useCallback(async () => {
@@ -85,6 +113,7 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
         categories,
         fetchProcedures,
         createProcedure,
+        updateProcedure,
       }}
     >
       {children}
