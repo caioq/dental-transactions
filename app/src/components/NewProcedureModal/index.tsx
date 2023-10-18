@@ -1,8 +1,8 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { X } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { ProceduresContext } from "../../contexts/ProceduresContext";
+import { Procedure, ProceduresContext } from "../../contexts/ProceduresContext";
 import { CloseButton, Content, Overlay, PrimaryButton, SecondaryButton } from "./styles";
 import { NewPaymentCard } from "./components/NewPaymentCard";
 import { NewProcedureFormInputs } from "./types";
@@ -10,13 +10,25 @@ import { CategorySelectInput } from "./components/SelectCategoryInput";
 
 interface NewProcedureModalProps {
   setOpenDialog: (open: boolean) => void;
+  initialValues?: Procedure | null;
+}
+
+function dateToInputDate(date?: Date) {
+  if (!date || !!isNaN(date.getTime())) {
+    return undefined;
+  }
+  return date.toJSON().slice(0, 10) as unknown as Date;
 }
 
 export function NewProcedureModal(props: NewProcedureModalProps) {
-  const { setOpenDialog } = props;
+  const { setOpenDialog, initialValues } = props;
   const { createProcedure, categories } = useContext(ProceduresContext);
+
+  const isCreateMode = !initialValues?.id;
+
   const { register, handleSubmit, reset, control } = useForm<NewProcedureFormInputs>({
     defaultValues: {
+      date: dateToInputDate(new Date()),
       payments: [],
     },
   });
@@ -28,6 +40,21 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
     control,
     name: "payments",
   });
+
+  useEffect(() => {
+    if (!isCreateMode) {
+      console.log(initialValues);
+      reset({
+        ...initialValues,
+        categoryId: initialValues.category.id,
+        date: dateToInputDate(new Date(initialValues.date)),
+        payments: initialValues.payments.map((payment) => ({
+          ...payment,
+          date: dateToInputDate(new Date(payment.date)),
+        })),
+      });
+    }
+  }, [initialValues, isCreateMode, reset]);
 
   async function handleCreateNewProcedure(data: NewProcedureFormInputs) {
     console.log(data);
@@ -61,7 +88,7 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
       <Overlay />
 
       <Content onOpenAutoFocus={clearForm}>
-        <Dialog.Title>Novo Procedimento</Dialog.Title>
+        <Dialog.Title>{isCreateMode ? "Novo Procedimento" : "Editar Procedimento"}</Dialog.Title>
 
         <CloseButton>
           <X size={24} />
@@ -93,7 +120,7 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
             />
           ))}
 
-          <PrimaryButton type="submit">Cadastrar</PrimaryButton>
+          <PrimaryButton type="submit">{isCreateMode ? "Cadastrar" : "Salvar"}</PrimaryButton>
         </form>
       </Content>
     </Dialog.Portal>

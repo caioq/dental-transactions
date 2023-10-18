@@ -42,6 +42,10 @@ export const TransactionsTable = styled.table`
   border-collapse: separate;
   border-spacing: 0 0.5rem;
 
+  tr {
+    cursor: pointer;
+  }
+
   td {
     padding: 1.25rem 2rem;
     background: ${(props) => props.theme["gray-background"]};

@@ -2,13 +2,14 @@ import { ReactNode, createContext, useCallback, useEffect, useState } from "reac
 import { api } from "../utils/api";
 
 export interface Procedure {
+  id: string;
+  date: Date;
   patientName: string;
   billing: number;
   invoice: number;
   percentToReceive: number;
-  payment: number;
-  category: string;
-  date: string;
+  payments: Payment[];
+  category: Category;
 }
 
 interface Payment {
