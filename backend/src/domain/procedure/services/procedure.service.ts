@@ -22,7 +22,6 @@ export class ProcedureService {
 
   async getProceduresByDoctorId(doctorId: string): Promise<Procedure[]> {
     const procedures = await this.procedureRepository.findByDoctorId(doctorId)
-    console.log('procedures', procedures)
     return procedures
   }
 }
