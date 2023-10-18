@@ -7,22 +7,16 @@ import { CloseButton, Content, Overlay, PrimaryButton, SecondaryButton } from ".
 import { NewPaymentCard } from "./components/NewPaymentCard";
 import { NewProcedureFormInputs } from "./types";
 import { CategorySelectInput } from "./components/SelectCategoryInput";
+import { dateToInputDate } from "../../utils";
 
 interface NewProcedureModalProps {
   setOpenDialog: (open: boolean) => void;
   initialValues?: Procedure | null;
 }
 
-function dateToInputDate(date?: Date) {
-  if (!date || !!isNaN(date.getTime())) {
-    return undefined;
-  }
-  return date.toJSON().slice(0, 10) as unknown as Date;
-}
-
 export function NewProcedureModal(props: NewProcedureModalProps) {
   const { setOpenDialog, initialValues } = props;
-  const { createProcedure, categories } = useContext(ProceduresContext);
+  const { categories, createProcedure, updateProcedure } = useContext(ProceduresContext);
 
   const isCreateMode = !initialValues?.id;
 
@@ -56,17 +50,30 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
     }
   }, [initialValues, isCreateMode, reset]);
 
-  async function handleCreateNewProcedure(data: NewProcedureFormInputs) {
-    console.log(data);
-    await createProcedure({
-      invoice: Number(data.invoice),
-      billing: Number(data.billing),
-      categoryId: data.categoryId,
-      date: new Date(data.date),
-      cpf: data.cpf || null,
-      patientName: data.patientName || null,
-      payments: data.payments,
-    });
+  async function handleSubmitProcedure(data: NewProcedureFormInputs) {
+    console.log(isCreateMode, isCreateMode, data);
+    if (isCreateMode) {
+      await createProcedure({
+        invoice: Number(data.invoice),
+        billing: Number(data.billing),
+        categoryId: data.categoryId,
+        date: new Date(data.date),
+        cpf: data.cpf || null,
+        patientName: data.patientName || null,
+        payments: data.payments,
+      });
+    } else {
+      await updateProcedure({
+        id: initialValues?.id,
+        invoice: Number(data.invoice),
+        billing: Number(data.billing),
+        categoryId: data.categoryId,
+        date: new Date(data.date),
+        cpf: data.cpf || null,
+        patientName: data.patientName || null,
+        payments: data.payments,
+      });
+    }
 
     reset();
     setOpenDialog(false);
@@ -74,7 +81,7 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
 
   function handleClickAddPayment() {
     prepend({
-      date: new Date(),
+      date: dateToInputDate(new Date()),
       value: 0,
     });
   }
@@ -94,14 +101,21 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
           <X size={24} />
         </CloseButton>
 
-        <form onSubmit={handleSubmit(handleCreateNewProcedure)}>
+        <form onSubmit={handleSubmit(handleSubmitProcedure)}>
           <input type="date" placeholder="Data" required {...register("date", { valueAsDate: true })} />
           <input type="text" placeholder="Nome do paciente" {...register("patientName")} />
           <input type="text" placeholder="CPF" {...register("cpf")} />
           <Controller
             control={control}
             name="categoryId"
-            render={({ field }) => <CategorySelectInput categories={categories} required onChange={field.onChange} />}
+            render={({ field }) => (
+              <CategorySelectInput
+                categories={categories}
+                required
+                onChange={field.onChange}
+                defaultValue={initialValues?.category.id ?? ""}
+              />
+            )}
           />
           <input type="number" placeholder="Orçamento" required {...register("billing", { valueAsNumber: true })} />
           <input type="number" placeholder="Faturamento" required {...register("invoice", { valueAsNumber: true })} />
