@@ -9,7 +9,9 @@ interface CreateProcedureParams extends Omit<Procedure, 'id' | 'createdAt' | 'pa
   payments: CreatePaymentParams[]
 }
 
-interface UpdatePaymentParams extends Omit<Payment, 'id' | 'createdAt'> {}
+interface UpdatePaymentParams extends Omit<Payment, 'id' | 'createdAt'> {
+  id?: string
+}
 
 interface UpdateProcedureParams extends Omit<Procedure, 'createdAt' | 'payments'> {
   payments: UpdatePaymentParams[]

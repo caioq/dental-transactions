@@ -26,6 +26,7 @@ export class ProcedurePrismaRepository implements ProcedureRepository {
     const procedures = await this.prisma.procedure.findMany({
       where: { doctorId },
       include: { payments: true, category: true },
+      orderBy: { createdAt: 'desc' },
     })
     return procedures.map(ProcedurePrismaMapper.toDomain)
   }

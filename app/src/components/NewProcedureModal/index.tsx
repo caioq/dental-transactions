@@ -37,7 +37,6 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
 
   useEffect(() => {
     if (!isCreateMode) {
-      console.log(initialValues);
       reset({
         ...initialValues,
         categoryId: initialValues.category.id,
@@ -51,7 +50,6 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
   }, [initialValues, isCreateMode, reset]);
 
   async function handleSubmitProcedure(data: NewProcedureFormInputs) {
-    console.log(isCreateMode, isCreateMode, data);
     if (isCreateMode) {
       await createProcedure({
         invoice: Number(data.invoice),
