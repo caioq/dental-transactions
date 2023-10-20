@@ -4,6 +4,8 @@ import { ProcedureRepository } from 'src/domain/procedure/repositories/procedure
 import { ProcedurePrismaRepository } from './prisma/repositories/procedure.prisma.repository'
 import { CategoryRepository } from 'src/domain/procedure/repositories/category.repository'
 import { CategoryPrismaRepository } from './prisma/repositories/category.prisma.repository'
+import { DoctorRepository } from 'src/domain/procedure/repositories/doctor.repository'
+import { DoctorPrismaRepository } from './prisma/repositories/doctor.prisma.repository'
 
 @Module({
   imports: [],
@@ -17,7 +19,11 @@ import { CategoryPrismaRepository } from './prisma/repositories/category.prisma.
       provide: CategoryRepository,
       useClass: CategoryPrismaRepository,
     },
+    {
+      provide: DoctorRepository,
+      useClass: DoctorPrismaRepository,
+    },
   ],
-  exports: [PrismaService, ProcedureRepository, CategoryRepository],
+  exports: [PrismaService, ProcedureRepository, CategoryRepository, DoctorRepository],
 })
 export class DatabaseModule {}

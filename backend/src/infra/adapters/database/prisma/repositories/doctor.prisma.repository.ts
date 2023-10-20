@@ -1,0 +1,17 @@
+import { Injectable } from '@nestjs/common'
+import { DoctorRepository } from 'src/domain/procedure/repositories/doctor.repository'
+import { PrismaService } from '../prisma.service'
+import { Doctor } from 'src/domain/procedure/entities/doctor.entity'
+import { DoctorPrismaMapper } from '../mappers/doctor.prisma.mapper'
+
+@Injectable()
+export class DoctorPrismaRepository implements DoctorRepository {
+  constructor(private prisma: PrismaService) {}
+
+  async findByEmail(email: string): Promise<Doctor | null> {
+    const doctor = await this.prisma.user.findUnique({ where: { email } })
+    if (!doctor) return null
+
+    return DoctorPrismaMapper.toDomain(doctor)
+  }
+}
