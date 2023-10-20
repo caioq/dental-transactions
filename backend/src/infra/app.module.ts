@@ -1,12 +1,22 @@
 import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
 import { ProcedureService } from 'src/domain/procedure/services/procedure.service'
 import { CategoryService } from 'src/domain/procedure/services/category.service'
 import { ProcedureController } from './controllers/procedure.controller'
 import { DatabaseModule } from './adapters/database/database.module'
 import { CategoryController } from './controllers/category.controller'
+import { envSchema } from './env/env'
+import { EnvModule } from './env/env.module'
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [
+    ConfigModule.forRoot({
+      validate: (env) => envSchema.parse(env),
+      isGlobal: true,
+    }),
+    DatabaseModule,
+    EnvModule,
+  ],
   controllers: [ProcedureController, CategoryController],
   providers: [ProcedureService, CategoryService],
 })
