@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { DoctorRepository } from '../repositories/doctor.repository'
+import { HashService, TokenService } from '../ports'
 
 interface AuthenticateParams {
   email: string
@@ -12,7 +13,11 @@ interface AuthenticateResponse {
 
 @Injectable()
 export class AuthenticateService {
-  constructor(private doctorRepository: DoctorRepository) {}
+  constructor(
+    private doctorRepository: DoctorRepository,
+    private hashService: HashService,
+    private tokenService: TokenService,
+  ) {}
 
   async authenticate({ email, password }: AuthenticateParams): Promise<AuthenticateResponse> {
     const doctor = await this.doctorRepository.findByEmail(email)
@@ -21,6 +26,16 @@ export class AuthenticateService {
       throw new Error('Invalid credentials')
     }
 
-    return { accessToken: 'token' }
+    const isPasswordValid = await this.hashService.compare(password, doctor.password)
+
+    if (!isPasswordValid) {
+      throw new Error('Invalid credentials')
+    }
+
+    const accessToken = await this.tokenService.encrypt({
+      sub: doctor.id,
+    })
+
+    return { accessToken }
   }
 }
