@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put } from '@nestjs/common'
+import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common'
 import { ProcedureService } from '../../domain/procedure/services/procedure.service'
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
 import {
@@ -7,6 +7,7 @@ import {
   UpdateProcedureBodySchema,
   updateProcedureBodySchema,
 } from '../schemas'
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 
 const createProcedureBodyValidationPipe = new ZodValidationPipe(createProcedureBodySchema)
 const updateProcedureBodyValidationPipe = new ZodValidationPipe(updateProcedureBodySchema)
@@ -16,6 +17,7 @@ export class ProcedureController {
   constructor(private procedureService: ProcedureService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   createProcedure(@Body(createProcedureBodyValidationPipe) body: CreateProcedureBodySchema) {
     return this.procedureService.createProcedure({
       ...body,
