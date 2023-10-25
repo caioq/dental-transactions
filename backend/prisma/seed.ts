@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
+  // CATEGORIES
   const categoryUuid1 = '8cc5dc1d-53ff-40da-af6d-40c9762dff14'
   await prisma.category.upsert({
     where: { id: categoryUuid1 },
@@ -149,15 +150,35 @@ async function main() {
 
   const categoryUuid13 = '1db8a55a-3c53-4309-81b0-08bb71ebad3e'
   await prisma.category.upsert({
-    where: { id: categoryUuid12 },
+    where: { id: categoryUuid13 },
     update: {
       name: 'Levantamento de seio maxilar',
     },
     create: {
-      id: categoryUuid12,
+      id: categoryUuid13,
       name: 'Levantamento de seio maxilar',
     },
   })
+
+  // ADMIN
+  const adminEmail = process.env.ADMIN_EMAIL
+  const adminPassword = process.env.ADMIN_PASSWORD
+  if (adminEmail && adminPassword) {
+    const adminUuid = 'cbc05dc4-dfbe-44cf-8fb1-92e5384a78b9'
+    await prisma.user.upsert({
+      where: { id: adminUuid },
+      update: {
+        name: 'Admin',
+        email: adminEmail,
+        password: adminPassword,
+      },
+      create: {
+        name: 'Admin',
+        email: adminEmail,
+        password: adminPassword,
+      },
+    })
+  }
 }
 
 main()
