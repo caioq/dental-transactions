@@ -8,6 +8,8 @@ import {
   updateProcedureBodySchema,
 } from '../schemas'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
+import { CurrentUser } from '../auth/current-user.decorator'
+import { UserPayload } from '../auth/jwt.strategy'
 
 const createProcedureBodyValidationPipe = new ZodValidationPipe(createProcedureBodySchema)
 const updateProcedureBodyValidationPipe = new ZodValidationPipe(updateProcedureBodySchema)
@@ -18,23 +20,37 @@ export class ProcedureController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  createProcedure(@Body(createProcedureBodyValidationPipe) body: CreateProcedureBodySchema) {
+  createProcedure(
+    @Body(createProcedureBodyValidationPipe) body: CreateProcedureBodySchema,
+    @CurrentUser() user: UserPayload,
+  ) {
+    const { id } = user
+
     return this.procedureService.createProcedure({
       ...body,
-      doctorId: '1',
+      doctorId: id,
     })
   }
 
   @Put()
-  updateProcedure(@Body(updateProcedureBodyValidationPipe) body: UpdateProcedureBodySchema) {
+  @UseGuards(JwtAuthGuard)
+  updateProcedure(
+    @Body(updateProcedureBodyValidationPipe) body: UpdateProcedureBodySchema,
+    @CurrentUser() user: UserPayload,
+  ) {
+    const { id } = user
+
     return this.procedureService.updateProcedure({
       ...body,
-      doctorId: '1',
+      doctorId: id,
     })
   }
 
   @Get()
-  getProceduresByDoctorId() {
-    return this.procedureService.getProceduresByDoctorId('1')
+  @UseGuards(JwtAuthGuard)
+  getProceduresByDoctorId(@CurrentUser() user: UserPayload) {
+    const { id } = user
+
+    return this.procedureService.getProceduresByDoctorId(id)
   }
 }

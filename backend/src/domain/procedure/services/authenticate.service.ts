@@ -33,7 +33,7 @@ export class AuthenticateService {
     }
 
     const accessToken = await this.tokenService.encrypt({
-      sub: doctor.id,
+      id: doctor.id,
     })
 
     return { accessToken }
