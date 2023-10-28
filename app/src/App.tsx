@@ -1,8 +1,9 @@
+import { RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { defaultTheme } from "./styles/themes/default";
 import { GlobalStyle } from "./styles/global";
-import { Procedures } from "./pages/Procedures";
 import { ProceduresProvider } from "./contexts/ProceduresContext";
+import { router } from "./router";
 
 export function App() {
   return (
@@ -10,7 +11,7 @@ export function App() {
       <GlobalStyle />
 
       <ProceduresProvider>
-        <Procedures />
+        <RouterProvider router={router} />
       </ProceduresProvider>
     </ThemeProvider>
   );
