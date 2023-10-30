@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ArrowCircleUp } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Header } from "../../components/Header";
@@ -18,7 +18,7 @@ import { currencyFormatter, dateFormatter, percentFormatter } from "../../utils"
 import { NewProcedureModal } from "../../components/NewProcedureModal";
 
 export function Procedures() {
-  const { procedures } = useContext(ProceduresContext);
+  const { procedures, fetchCategories, fetchProcedures } = useContext(ProceduresContext);
 
   const [open, setOpen] = useState(false);
   const [selectedProcedure, setSelectedProcedure] = useState<Procedure | null>(null);
@@ -30,6 +30,11 @@ export function Procedures() {
   function handleSelectProcedure(procedure: Procedure) {
     setSelectedProcedure(procedure);
   }
+
+  useEffect(() => {
+    fetchProcedures();
+    fetchCategories();
+  }, [fetchProcedures, fetchCategories]);
 
   return (
     <div>

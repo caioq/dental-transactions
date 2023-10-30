@@ -13,8 +13,8 @@ export class AuthenticateController {
   async authenticate(@Body(authenticateBodyValidationPipe) body: AuthenticateBodySchema) {
     const { email, password } = body
 
-    const { accessToken } = await this.authenticateService.authenticate({ email, password })
+    const { accessToken, user } = await this.authenticateService.authenticate({ email, password })
 
-    return { accessToken }
+    return { accessToken, user }
   }
 }

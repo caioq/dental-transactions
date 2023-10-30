@@ -9,6 +9,11 @@ interface AuthenticateParams {
 
 interface AuthenticateResponse {
   accessToken: string
+  user: {
+    id: string
+    name: string
+    email: string
+  }
 }
 
 @Injectable()
@@ -36,6 +41,12 @@ export class AuthenticateService {
       id: doctor.id,
     })
 
-    return { accessToken }
+    const user = {
+      id: doctor.id,
+      name: doctor.name,
+      email: doctor.email,
+    }
+
+    return { accessToken, user }
   }
 }

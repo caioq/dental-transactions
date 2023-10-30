@@ -1,5 +1,5 @@
-import { ReactNode, createContext, useCallback, useEffect, useState } from "react";
-import { api } from "../utils/api";
+import { ReactNode, createContext, useCallback, useState } from "react";
+import { api } from "../utils";
 
 export interface Procedure {
   id: string;
@@ -49,6 +49,7 @@ interface ProcedureContextType {
   procedures: Procedure[];
   categories: Category[];
   fetchProcedures: (query?: string) => Promise<void>;
+  fetchCategories: (query?: string) => Promise<void>;
   createProcedure: (data: CreateProcedureInput) => Promise<void>;
   updateProcedure: (data: UpdateProcedureInput) => Promise<void>;
 }
@@ -101,10 +102,10 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     setCategories(response.data);
   }, []);
 
-  useEffect(() => {
-    fetchProcedures();
-    fetchCategories();
-  }, [fetchProcedures, fetchCategories]);
+  // useEffect(() => {
+  //   fetchProcedures();
+  //   fetchCategories();
+  // }, [fetchProcedures, fetchCategories]);
 
   return (
     <ProceduresContext.Provider
@@ -112,6 +113,7 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
         procedures,
         categories,
         fetchProcedures,
+        fetchCategories,
         createProcedure,
         updateProcedure,
       }}

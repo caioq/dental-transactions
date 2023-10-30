@@ -15,8 +15,10 @@ export const SignInContent = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 
-  padding: 4.5rem 4.5rem;
-  min-width: 32rem;
+  padding: 4.5rem 3.5rem;
+  min-width: 21rem;
+  max-width: 32rem;
+  width: 50%;
   border-radius: 6px;
 
   display: flex;
