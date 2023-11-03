@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Post, Put, Query, UseGuards } from '@nestjs/common'
 import { ProcedureService } from '../../domain/procedure/services/procedure.service'
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
 import {
@@ -48,9 +48,18 @@ export class ProcedureController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  getProceduresByDoctorId(@CurrentUser() user: UserPayload) {
+  getProceduresByDoctorId(
+    @CurrentUser() user: UserPayload,
+    @Query('month_year') monthYear: string,
+  ) {
     const { id } = user
+    let startDate, endDate
+    if (monthYear) {
+      const [month, year] = monthYear.split('-')
+      startDate = new Date(Number(year), Number(month) - 1, 1)
+      endDate = new Date(Number(year), Number(month), 0)
+    }
 
-    return this.procedureService.getProceduresByDoctorId(id)
+    return this.procedureService.getProceduresByDoctorId(id, startDate, endDate)
   }
 }

@@ -1,7 +1,14 @@
 import { Procedure } from '../entities/procedure.entity'
 
+export interface ProceduresFilter {
+  period: {
+    start: Date
+    end: Date
+  }
+}
+
 export abstract class ProcedureRepository {
   abstract create(procedure: Procedure): Promise<Procedure>
   abstract update(procedure: Procedure): Promise<Procedure>
-  abstract findByDoctorId(doctorId: string): Promise<Procedure[]>
+  abstract findByDoctorId(doctorId: string, filter?: ProceduresFilter): Promise<Procedure[]>
 }

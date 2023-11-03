@@ -18,7 +18,7 @@ import { currencyFormatter, dateFormatter, percentFormatter } from "../../utils"
 import { NewProcedureModal } from "../../components/NewProcedureModal";
 
 export function Procedures() {
-  const { procedures, fetchCategories, fetchProcedures } = useContext(ProceduresContext);
+  const { procedures, fetchCategories } = useContext(ProceduresContext);
 
   const [open, setOpen] = useState(false);
   const [selectedProcedure, setSelectedProcedure] = useState<Procedure | null>(null);
@@ -32,9 +32,8 @@ export function Procedures() {
   }
 
   useEffect(() => {
-    fetchProcedures();
     fetchCategories();
-  }, [fetchProcedures, fetchCategories]);
+  }, [fetchCategories]);
 
   return (
     <div>

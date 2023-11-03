@@ -48,7 +48,7 @@ interface UpdateProcedureInput extends CreateProcedureInput {
 interface ProcedureContextType {
   procedures: Procedure[];
   categories: Category[];
-  fetchProcedures: (query?: string) => Promise<void>;
+  fetchProcedures: (date?: Date) => Promise<void>;
   fetchCategories: (query?: string) => Promise<void>;
   createProcedure: (data: CreateProcedureInput) => Promise<void>;
   updateProcedure: (data: UpdateProcedureInput) => Promise<void>;
@@ -64,12 +64,16 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
-  const fetchProcedures = useCallback(async (query?: string) => {
+  const fetchProcedures = useCallback(async (date?: Date) => {
+    let monthYear;
+    if (date) {
+      const today = new Date(date);
+      monthYear = `${today.getMonth() + 1}-${today.getFullYear()}`;
+    }
+
     const response = await api.get("procedures", {
       params: {
-        _sort: "createdAt",
-        _order: "desc",
-        q: query,
+        month_year: monthYear,
       },
     });
 

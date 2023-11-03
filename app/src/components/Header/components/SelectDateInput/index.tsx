@@ -13,14 +13,13 @@ import {
 
 interface SelectDateInputProps {
   date?: Date;
+  value: string;
+  onChange: (date: string) => void;
 }
 
 export function SelectDateInput(props: SelectDateInputProps) {
-  const { date } = props;
+  const { date, value, onChange } = props;
   const [monthsAvailable, setMonthsAvailable] = useState<string[]>([]);
-
-  const currentDateString = getMonthYearStringFromDate(new Date());
-  const [month, setMonth] = useState<string>(`${currentDateString.month} ${currentDateString.year}`);
 
   function getMonthsAvailable(from: Date) {
     const months: string[] = [];
@@ -44,18 +43,18 @@ export function SelectDateInput(props: SelectDateInputProps) {
 
   return (
     <CustomSelect>
-      <Listbox value={month} onChange={setMonth}>
+      <Listbox value={value} onChange={(e) => onChange(e)}>
         <div>
           <ListboxButton>
             <SelectorIconContainer>
               <CalendarBlank size={24} />
             </SelectorIconContainer>
-            <SelectionContainer>{month ? month : "Loading..."}</SelectionContainer>
+            <SelectionContainer>{value ? value : "Loading..."}</SelectionContainer>
           </ListboxButton>
           <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
             <ListboxOptions>
-              {monthsAvailable.map((option, idx) => (
-                <ListboxOption key={idx} value={option}>
+              {monthsAvailable.map((option, index) => (
+                <ListboxOption key={index} value={option}>
                   {option}
                 </ListboxOption>
               ))}

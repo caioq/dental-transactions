@@ -35,8 +35,14 @@ export class ProcedureService {
     return this.procedureRepository.update(procedure)
   }
 
-  async getProceduresByDoctorId(doctorId: string): Promise<Procedure[]> {
-    const procedures = await this.procedureRepository.findByDoctorId(doctorId)
+  async getProceduresByDoctorId(
+    doctorId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Procedure[]> {
+    const procedures = await this.procedureRepository.findByDoctorId(doctorId, {
+      period: { start: startDate, end: endDate },
+    })
     return procedures
   }
 }

@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common'
-import { ProcedureRepository } from 'src/domain/procedure/repositories/procedure.repository'
+import {
+  ProcedureRepository,
+  ProceduresFilter,
+} from 'src/domain/procedure/repositories/procedure.repository'
 import { PrismaService } from '../prisma.service'
 import { Procedure } from 'src/domain/procedure/entities/procedure.entity'
 import { ProcedurePrismaMapper } from '../mappers/procedure.prisma.mapper'
@@ -22,9 +25,11 @@ export class ProcedurePrismaRepository implements ProcedureRepository {
     })
   }
 
-  async findByDoctorId(doctorId: string): Promise<Procedure[]> {
+  async findByDoctorId(doctorId: string, filter: ProceduresFilter): Promise<Procedure[]> {
+    const { period } = filter
+
     const procedures = await this.prisma.procedure.findMany({
-      where: { doctorId },
+      where: { doctorId, ...(period && { date: { gte: period.start, lte: period.end } }) },
       include: { payments: true, category: true },
       orderBy: { createdAt: 'desc' },
     })

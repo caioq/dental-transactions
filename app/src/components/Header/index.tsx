@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   HeaderContainer,
@@ -12,10 +12,29 @@ import logoImg from "../../assets/logo.svg";
 import { NewProcedureModal } from "../NewProcedureModal";
 import { SelectDateInput } from "./components/SelectDateInput";
 import { AuthContext } from "../../contexts/AuthContext";
+import { getDateFromMonthYear, getMonthYearStringFromDate } from "../../utils";
+import { ProceduresContext } from "../../contexts/ProceduresContext";
 
 export function Header() {
   const { user } = useContext(AuthContext);
+  const { fetchProcedures } = useContext(ProceduresContext);
+
   const [open, setOpen] = useState(false);
+  const [monthYear, setMonthYear] = useState<string>(() => {
+    const currentDateString = getMonthYearStringFromDate(new Date());
+    return `${currentDateString.month} ${currentDateString.year}`;
+  });
+
+  function handleMonthYear(dateString: string) {
+    setMonthYear(dateString);
+  }
+
+  useEffect(() => {
+    if (monthYear) {
+      const date = getDateFromMonthYear(monthYear);
+      fetchProcedures(date);
+    }
+  }, [fetchProcedures, monthYear]);
 
   return (
     <HeaderContainer>
@@ -35,7 +54,7 @@ export function Header() {
           </Dialog.Root>
         </HeaderContentUpper>
         <HeaderContentBottom>
-          <SelectDateInput date={user?.createdAt} />
+          <SelectDateInput date={user?.createdAt} value={monthYear} onChange={handleMonthYear} />
         </HeaderContentBottom>
       </HeaderContent>
     </HeaderContainer>
