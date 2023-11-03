@@ -13,6 +13,7 @@ interface AuthenticateResponse {
     id: string
     name: string
     email: string
+    createdAt: Date
   }
 }
 
@@ -45,6 +46,7 @@ export class AuthenticateService {
       id: doctor.id,
       name: doctor.name,
       email: doctor.email,
+      createdAt: doctor.createdAt,
     }
 
     return { accessToken, user }

@@ -6,17 +6,18 @@ export class Doctor {
   name!: string
   email!: string
   password!: string
+  createdAt!: Date
 
   protected constructor(props: Doctor) {
     Object.assign(this, props)
   }
 
   static create(props: Optional<Doctor, 'id'>) {
-    const procedure = new Doctor({
+    const doctor = new Doctor({
       ...props,
       id: props.id ?? new UniqueEntityID().toString(),
     })
 
-    return procedure
+    return doctor
   }
 }

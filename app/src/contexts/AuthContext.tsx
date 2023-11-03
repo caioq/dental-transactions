@@ -5,6 +5,7 @@ interface User {
   id: string;
   name: string;
   email: string;
+  createdAt: Date;
 }
 
 interface AuthContextType {
@@ -42,6 +43,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       id: user.id,
       name: user.name,
       email: user.email,
+      createdAt: new Date(user.cratedAt),
     });
     setSigned(true);
     localStorage.setItem("@DT:token", accessToken);
@@ -52,8 +54,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const token = localStorage.getItem("@DT:token");
-    api.defaults.headers.authorization = `Bearer ${token}`;
-    if (token) setSigned(true);
+    const user = localStorage.getItem("@DT:user");
+    if (token && user) {
+      api.defaults.headers.authorization = `Bearer ${token}`;
+      setSigned(true);
+      setUser(JSON.parse(user));
+    }
   }, []);
 
   return <AuthContext.Provider value={{ user, signed, signIn }}>{children}</AuthContext.Provider>;
