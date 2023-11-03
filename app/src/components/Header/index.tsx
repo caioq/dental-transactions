@@ -17,7 +17,7 @@ import { ProceduresContext } from "../../contexts/ProceduresContext";
 
 export function Header() {
   const { user } = useContext(AuthContext);
-  const { fetchProcedures } = useContext(ProceduresContext);
+  const { fetchProcedures, fetchPayments } = useContext(ProceduresContext);
 
   const [open, setOpen] = useState(false);
   const [monthYear, setMonthYear] = useState<string>(() => {
@@ -33,8 +33,9 @@ export function Header() {
     if (monthYear) {
       const date = getDateFromMonthYear(monthYear);
       fetchProcedures(date);
+      fetchPayments(date);
     }
-  }, [fetchProcedures, monthYear]);
+  }, [fetchProcedures, fetchPayments, monthYear]);
 
   return (
     <HeaderContainer>

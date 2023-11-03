@@ -1,17 +1,17 @@
 import { useContext, useMemo } from "react";
 import { ArrowCircleDown, ArrowCircleUp, CurrencyDollar } from "phosphor-react";
 import { SummaryContainer, SummaryCard } from "./styles";
-import { ProceduresContext, Procedure } from "../../contexts/ProceduresContext";
+import { ProceduresContext, Payment } from "../../contexts/ProceduresContext";
 import { currencyFormatter } from "../../utils/formatter";
 
-function calculateIncome(procedures: Procedure[]): number {
-  return procedures.reduce((acc, procedure) => (acc += procedure.payment), 0);
-}
-
 export function Summary() {
-  const { procedures } = useContext(ProceduresContext);
+  const { payments } = useContext(ProceduresContext);
 
-  const income = useMemo(() => calculateIncome(procedures), [procedures]);
+  function calculateIncome(payments: Payment[]): number {
+    return payments.reduce((acc, payment) => (acc += payment.value), 0);
+  }
+
+  const income = useMemo(() => calculateIncome(payments), [payments]);
   const outcome = 0;
   const balance = useMemo(() => income - outcome, [income, outcome]);
 

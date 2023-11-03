@@ -13,6 +13,8 @@ import { envSchema } from './env/env'
 import { EnvModule } from './env/env.module'
 import { CryptographyModule } from './adapters/cryptography/cryptography.module'
 import { AuthModule } from './auth/auth.module'
+import { PaymentController } from './controllers/payment.controller'
+import { PaymentService } from 'src/domain/procedure/services/payment.service'
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import { AuthModule } from './auth/auth.module'
     AuthModule,
     CryptographyModule,
   ],
-  controllers: [ProcedureController, CategoryController, AuthenticateController],
-  providers: [ProcedureService, CategoryService, AuthenticateService],
+  controllers: [ProcedureController, CategoryController, AuthenticateController, PaymentController],
+  providers: [ProcedureService, CategoryService, AuthenticateService, PaymentService],
 })
 export class AppModule {}

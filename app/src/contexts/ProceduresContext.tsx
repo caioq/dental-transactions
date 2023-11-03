@@ -12,7 +12,7 @@ export interface Procedure {
   category: Category;
 }
 
-interface Payment {
+export interface Payment {
   id: string;
   date: Date;
   value: number;
@@ -48,7 +48,9 @@ interface UpdateProcedureInput extends CreateProcedureInput {
 interface ProcedureContextType {
   procedures: Procedure[];
   categories: Category[];
+  payments: Payment[];
   fetchProcedures: (date?: Date) => Promise<void>;
+  fetchPayments: (date?: Date) => Promise<void>;
   fetchCategories: (query?: string) => Promise<void>;
   createProcedure: (data: CreateProcedureInput) => Promise<void>;
   updateProcedure: (data: UpdateProcedureInput) => Promise<void>;
@@ -62,6 +64,7 @@ export const ProceduresContext = createContext({} as ProcedureContextType);
 
 export function ProceduresProvider({ children }: ProceduresProviderProps) {
   const [procedures, setProcedures] = useState<Procedure[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
   const fetchProcedures = useCallback(async (date?: Date) => {
@@ -106,6 +109,22 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     setCategories(response.data);
   }, []);
 
+  const fetchPayments = useCallback(async (date?: Date) => {
+    let monthYear;
+    if (date) {
+      const today = new Date(date);
+      monthYear = `${today.getMonth() + 1}-${today.getFullYear()}`;
+    }
+
+    const response = await api.get("payments", {
+      params: {
+        month_year: monthYear,
+      },
+    });
+
+    setPayments(response.data);
+  }, []);
+
   // useEffect(() => {
   //   fetchProcedures();
   //   fetchCategories();
@@ -115,8 +134,10 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     <ProceduresContext.Provider
       value={{
         procedures,
+        payments,
         categories,
         fetchProcedures,
+        fetchPayments,
         fetchCategories,
         createProcedure,
         updateProcedure,
