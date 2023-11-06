@@ -25,11 +25,11 @@ export function SelectDateInput(props: SelectDateInputProps) {
     const months: string[] = [];
     const today = new Date();
     const startDate = new Date(from);
-    while (startDate <= today) {
-      const dateObj = getMonthYearStringFromDate(startDate);
+    while (today >= startDate) {
+      const dateObj = getMonthYearStringFromDate(today);
       months.push(`${dateObj.month} ${dateObj.year}`);
 
-      startDate.setMonth(startDate.getMonth() + 1);
+      today.setMonth(today.getMonth() - 1);
     }
 
     return months;
