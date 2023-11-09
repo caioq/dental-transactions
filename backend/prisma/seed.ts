@@ -164,9 +164,8 @@ async function main() {
   const adminEmail = process.env.ADMIN_EMAIL
   const adminPassword = process.env.ADMIN_PASSWORD
   if (adminEmail && adminPassword) {
-    const adminUuid = 'cbc05dc4-dfbe-44cf-8fb1-92e5384a78b9'
     await prisma.user.upsert({
-      where: { id: adminUuid },
+      where: { email: adminEmail },
       update: {
         name: 'Admin',
         email: adminEmail,
