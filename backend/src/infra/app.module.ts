@@ -15,6 +15,8 @@ import { CryptographyModule } from './adapters/cryptography/cryptography.module'
 import { AuthModule } from './auth/auth.module'
 import { PaymentController } from './controllers/payment.controller'
 import { PaymentService } from 'src/domain/procedure/services/payment.service'
+import { AppController } from 'src/app.controller'
+import { AppService } from 'src/app.service'
 
 @Module({
   imports: [
@@ -27,7 +29,13 @@ import { PaymentService } from 'src/domain/procedure/services/payment.service'
     AuthModule,
     CryptographyModule,
   ],
-  controllers: [ProcedureController, CategoryController, AuthenticateController, PaymentController],
-  providers: [ProcedureService, CategoryService, AuthenticateService, PaymentService],
+  controllers: [
+    ProcedureController,
+    CategoryController,
+    AuthenticateController,
+    PaymentController,
+    AppController,
+  ],
+  providers: [ProcedureService, CategoryService, AuthenticateService, PaymentService, AppService],
 })
 export class AppModule {}
