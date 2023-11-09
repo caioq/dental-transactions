@@ -7,8 +7,13 @@ async function bootstrap() {
 
   const configService = app.get(EnvService)
   const port = configService.get('PORT')
+  const appBaseUrl = configService.get('APP_BASE_URL')
 
-  app.enableCors()
+  app.enableCors({
+    origin: appBaseUrl,
+    methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
+    credentials: true,
+  })
 
   await app.listen(port)
 }
