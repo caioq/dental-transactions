@@ -1,6 +1,6 @@
 {
   "version": 2,
   "name": "dental-transactions-api",
-  "builds": [{ "src": "dist/main.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "dist/main.js" }]
+  "builds": [{ "src": "dist/src/main.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "dist/src/main.js" }]
 }
