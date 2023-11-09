@@ -4,7 +4,7 @@ import {
   ProcedureService,
   CategoryService,
   AuthenticateService,
-} from 'src/domain/procedure/services'
+} from '../domain/procedure/services'
 import { ProcedureController } from './controllers/procedure.controller'
 import { DatabaseModule } from './adapters/database/database.module'
 import { CategoryController } from './controllers/category.controller'
@@ -14,9 +14,9 @@ import { EnvModule } from './env/env.module'
 import { CryptographyModule } from './adapters/cryptography/cryptography.module'
 import { AuthModule } from './auth/auth.module'
 import { PaymentController } from './controllers/payment.controller'
-import { PaymentService } from 'src/domain/procedure/services/payment.service'
-import { AppController } from 'src/app.controller'
-import { AppService } from 'src/app.service'
+import { PaymentService } from '../domain/procedure/services/payment.service'
+import { AppController } from '../app.controller'
+import { AppService } from '../app.service'
 
 @Module({
   imports: [
