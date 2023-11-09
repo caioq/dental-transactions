@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
 import { AuthenticateBodySchema, authenticateBodySchema } from '../schemas/authenticate.schema'
-import { AuthenticateService } from 'src/domain/procedure/services/authenticate.service'
+import { AuthenticateService } from '../../domain/procedure/services/authenticate.service'
 
 const authenticateBodyValidationPipe = new ZodValidationPipe(authenticateBodySchema)
 

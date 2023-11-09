@@ -1,5 +1,5 @@
-import { UniqueEntityID } from 'src/core/entities/unique-entity-id'
-import { Optional } from 'src/core/types/optional'
+import { UniqueEntityID } from '../../../core/entities/unique-entity-id'
+import { Optional } from '../../../core/types/optional'
 
 export class Doctor {
   id!: string

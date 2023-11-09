@@ -2,7 +2,7 @@ import { Controller, Get, Query, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { CurrentUser } from '../auth/current-user.decorator'
 import { UserPayload } from '../auth/jwt.strategy'
-import { PaymentService } from 'src/domain/procedure/services/payment.service'
+import { PaymentService } from '../../domain/procedure/services/payment.service'
 
 @Controller('payments')
 export class PaymentController {

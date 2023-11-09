@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common'
 import { PrismaService } from './prisma/prisma.service'
-import { ProcedureRepository } from 'src/domain/procedure/repositories/procedure.repository'
+import { ProcedureRepository } from '../../../domain/procedure/repositories/procedure.repository'
 import { ProcedurePrismaRepository } from './prisma/repositories/procedure.prisma.repository'
-import { CategoryRepository } from 'src/domain/procedure/repositories/category.repository'
+import { CategoryRepository } from '../../../domain/procedure/repositories/category.repository'
 import { CategoryPrismaRepository } from './prisma/repositories/category.prisma.repository'
-import { DoctorRepository } from 'src/domain/procedure/repositories/doctor.repository'
+import { DoctorRepository } from '../../../domain/procedure/repositories/doctor.repository'
 import { DoctorPrismaRepository } from './prisma/repositories/doctor.prisma.repository'
-import { PaymentRepository } from 'src/domain/procedure/repositories/payment.repository'
+import { PaymentRepository } from '../../../domain/procedure/repositories/payment.repository'
 import { PaymentPrismaRepository } from './prisma/repositories/payment.prisma.repository'
 
 @Module({

@@ -1,6 +1,6 @@
 import { Prisma, Procedure as PrismaProcedure } from '@prisma/client'
-import { Payment } from 'src/domain/procedure/entities/payment.entity'
-import { Procedure } from 'src/domain/procedure/entities/procedure.entity'
+import { Payment } from '../../../../../domain/procedure/entities/payment.entity'
+import { Procedure } from '../../../../../domain/procedure/entities/procedure.entity'
 import { PaymentPrismaMapper } from './payment.prisma.mapper'
 
 export class ProcedurePrismaMapper {

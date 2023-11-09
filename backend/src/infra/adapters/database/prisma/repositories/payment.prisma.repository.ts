@@ -2,12 +2,10 @@ import { Injectable } from '@nestjs/common'
 import {
   PaymentFilter,
   PaymentRepository,
-} from 'src/domain/procedure/repositories/payment.repository'
+} from '../../../../../domain/procedure/repositories/payment.repository'
 import { PrismaService } from '../prisma.service'
-import { Procedure } from 'src/domain/procedure/entities/procedure.entity'
-import { ProcedurePrismaMapper } from '../mappers/procedure.prisma.mapper'
 import { PaymentPrismaMapper } from '../mappers/payment.prisma.mapper'
-import { Payment } from 'src/domain/procedure/entities/payment.entity'
+import { Payment } from '../../../../../domain/procedure/entities/payment.entity'
 
 @Injectable()
 export class PaymentPrismaRepository implements PaymentRepository {

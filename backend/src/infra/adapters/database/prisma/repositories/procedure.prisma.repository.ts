@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common'
 import {
   ProcedureRepository,
   ProceduresFilter,
-} from 'src/domain/procedure/repositories/procedure.repository'
+} from '../../../../../domain/procedure/repositories/procedure.repository'
 import { PrismaService } from '../prisma.service'
-import { Procedure } from 'src/domain/procedure/entities/procedure.entity'
+import { Procedure } from '../../../../../domain/procedure/entities/procedure.entity'
 import { ProcedurePrismaMapper } from '../mappers/procedure.prisma.mapper'
 
 @Injectable()

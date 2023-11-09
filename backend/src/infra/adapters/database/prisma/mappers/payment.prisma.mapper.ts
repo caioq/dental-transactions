@@ -1,5 +1,5 @@
 import { Prisma, Payment as PrismaPayment } from '@prisma/client'
-import { Payment } from 'src/domain/procedure/entities/payment.entity'
+import { Payment } from '../../../../../domain/procedure/entities/payment.entity'
 
 export class PaymentPrismaMapper {
   static toPrisma(payment: Payment): Prisma.PaymentCreateInput {

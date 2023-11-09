@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { DoctorRepository } from 'src/domain/procedure/repositories/doctor.repository'
+import { DoctorRepository } from '../../../../..//domain/procedure/repositories/doctor.repository'
 import { PrismaService } from '../prisma.service'
-import { Doctor } from 'src/domain/procedure/entities/doctor.entity'
+import { Doctor } from '../../../../../domain/procedure/entities/doctor.entity'
 import { DoctorPrismaMapper } from '../mappers/doctor.prisma.mapper'
 
 @Injectable()
