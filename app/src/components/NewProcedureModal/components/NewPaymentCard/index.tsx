@@ -1,6 +1,6 @@
 import { Trash } from "phosphor-react";
-import { DeletePaymentButton, NewPaymentCardContainer, NewPaymentCardContent } from "./styles";
 import { UseFormRegister } from "react-hook-form";
+import { DeletePaymentButton, NewPaymentCardContainer, NewPaymentCardContent } from "./styles";
 import { NewProcedureFormInputs } from "../../types";
 
 interface NewPaymentCardProps {

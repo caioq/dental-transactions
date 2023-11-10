@@ -26,8 +26,14 @@ export const DeletePaymentButton = styled.div`
 `;
 
 export const NewPaymentCardContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-
   margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  @media only screen and (min-width: 768px) {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
 `;

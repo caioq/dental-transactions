@@ -10,9 +10,8 @@ export const Overlay = styled(Dialog.Overlay)`
 `;
 
 export const Content = styled(Dialog.Content)`
-  min-width: 32rem;
   border-radius: 6px;
-  padding: 2.5rem 3rem;
+  padding: 2.5rem 2.5rem;
   background: ${(props) => props.theme["white"]};
 
   position: fixed;
@@ -39,6 +38,11 @@ export const Content = styled(Dialog.Content)`
         color: ${(props) => props.theme["text-placeholder"]};
       }
     }
+  }
+
+  @media only screen and (min-width: 768px) {
+    min-width: 32rem;
+    padding: 2.5rem 3rem;
   }
 `;
 
