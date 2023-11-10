@@ -3,8 +3,8 @@ import { ProcedureCardContainer, ProcedureCardFooter, ProcedureValuesContent, Pr
 
 interface ProcedureCardProps {
   name: string;
-  totalValue: string;
-  toReceiveValue: string;
+  billing: string;
+  invoice: string;
   percentToReceive: string;
   paidValue: string;
   procedureType: string;
@@ -13,9 +13,9 @@ interface ProcedureCardProps {
 
 export function ProcedureCard({
   name,
-  toReceiveValue,
+  invoice,
   percentToReceive,
-  totalValue,
+  billing,
   date,
   paidValue,
   procedureType,
@@ -28,10 +28,10 @@ export function ProcedureCard({
       <ProcedureValuesContent>
         <ProcedureValuesLeft>
           <label>Total</label>
-          <span>{totalValue}</span>
+          <span>{billing}</span>
           <label>À Receber</label>
           <span>
-            {toReceiveValue} ({percentToReceive})
+            {invoice} ({percentToReceive})
           </span>
         </ProcedureValuesLeft>
         <strong>{paidValue}</strong>

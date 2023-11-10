@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import * as Dialog from "@radix-ui/react-dialog";
 
 export const TransactionsContainer = styled.main`
   width: 100%;
@@ -41,9 +42,11 @@ export const TransactionsTable = styled.table`
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 0.5rem;
+  display: table;
 
   tr {
-    cursor: pointer;
+    width: 100%;
+    display: table;
   }
 
   td {
@@ -66,4 +69,10 @@ interface PriceHighlightProps {
 
 export const PriceHighlight = styled.span<PriceHighlightProps>`
   color: ${(props) => (props.variant === "income" ? props.theme["green-dark"] : props.theme["text-base"])};
+`;
+
+export const DialogTrigger = styled(Dialog.Trigger)`
+  all: unset;
+  cursor: pointer;
+  width: 100%;
 `;

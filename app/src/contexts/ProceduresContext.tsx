@@ -9,6 +9,7 @@ export interface Procedure {
   invoice: number;
   percentToReceive: number;
   payments: Payment[];
+  totalPaid: number;
   category: Category;
 }
 
@@ -21,6 +22,20 @@ export interface Payment {
 interface Category {
   id: string;
   name: string;
+}
+
+interface GetProceduresResponse {
+  id: string;
+  patientName?: string | null;
+  date: Date;
+  categoryId: string;
+  billing: number;
+  invoice: number;
+  cpf?: string | null;
+  doctorId: string;
+  payment?: number | null;
+  payments?: Payment[];
+  createdAt: Date;
 }
 
 interface CreateProcedureInput {
@@ -80,7 +95,13 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
       },
     });
 
-    setProcedures(response.data);
+    const procedures: Procedure[] = response.data.map((item: GetProceduresResponse) => ({
+      ...item,
+      percentToReceive: item.invoice / item.billing,
+      totalPaid: item.payments?.reduce((acc: number, payment: Payment) => acc + payment.value, 0) || 0,
+    }));
+
+    setProcedures(procedures);
   }, []);
 
   const createProcedure = useCallback(async (data: CreateProcedureInput) => {
