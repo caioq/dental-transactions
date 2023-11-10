@@ -23,7 +23,11 @@ export const HeaderContentUpper = styled.div`
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 2rem;
+
+  @media only screen and (min-width: 768px) {
+    justify-content: space-between;
+  }
 `;
 
 export const HeaderContentBottom = styled.div`
