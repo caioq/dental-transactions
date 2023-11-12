@@ -7,12 +7,13 @@ export class Payment {
   value!: number
   date!: Date
   createdAt!: Date
+  deletedAt?: Date | null
 
   protected constructor(props: Payment) {
     Object.assign(this, props)
   }
 
-  static create(props: Optional<Payment, 'id' | 'createdAt'>) {
+  static create(props: Optional<Payment, 'id' | 'createdAt' | 'deletedAt'>) {
     const procedure = new Payment({
       ...props,
       id: props.id ?? new UniqueEntityID().toString(),

@@ -17,7 +17,7 @@ export class ProcedurePrismaRepository implements ProcedureRepository {
   }
 
   async update(procedure: Procedure): Promise<Procedure> {
-    const data = ProcedurePrismaMapper.toPrisma(procedure)
+    const data = ProcedurePrismaMapper.toPrismaUpdate(procedure)
     return this.prisma.procedure.update({
       data,
       where: { id: procedure.id },
@@ -25,12 +25,20 @@ export class ProcedurePrismaRepository implements ProcedureRepository {
     })
   }
 
+  async findById(id: string) {
+    const procedure = await this.prisma.procedure.findUnique({
+      where: { id },
+      include: { payments: { where: { deletedAt: null } }, category: true },
+    })
+    return procedure ? ProcedurePrismaMapper.toDomain(procedure) : null
+  }
+
   async findByDoctorId(doctorId: string, filter: ProceduresFilter): Promise<Procedure[]> {
     const { period } = filter
 
     const procedures = await this.prisma.procedure.findMany({
       where: { doctorId, ...(period && { date: { gte: period.start, lte: period.end } }) },
-      include: { payments: true, category: true },
+      include: { payments: { where: { deletedAt: null } }, category: true },
       orderBy: { createdAt: 'desc' },
     })
     return procedures.map(ProcedurePrismaMapper.toDomain)

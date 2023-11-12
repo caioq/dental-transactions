@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { Procedure } from '../entities/procedure.entity'
 import { ProcedureRepository } from '../repositories/procedure.repository'
 import { Payment } from '../entities/payment.entity'
@@ -29,8 +29,22 @@ export class ProcedureService {
   }
 
   async updateProcedure(params: UpdateProcedureParams): Promise<Procedure> {
-    const payments = params.payments?.map((payment) => Payment.create(payment))
-    const procedure = Procedure.create({ ...params, payments })
+    const currentProcedure = await this.procedureRepository.findById(params.id)
+    if (!currentProcedure) throw new NotFoundException('Procedure not found')
+
+    const newPayments = params.payments.flatMap((payment) => {
+      if (!payment.id) return Payment.create(payment)
+
+      return []
+    })
+    const currentPayments = currentProcedure.payments || []
+    const payments = currentPayments.map((currentPayment) => {
+      const payment = params.payments.find((p) => p.id === currentPayment.id)
+      if (payment) return Payment.create(payment)
+
+      return Payment.create({ ...currentPayment, deletedAt: new Date() })
+    })
+    const procedure = Procedure.create({ ...params, payments: [...payments, ...newPayments] })
 
     return this.procedureRepository.update(procedure)
   }

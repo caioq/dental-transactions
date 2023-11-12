@@ -18,6 +18,21 @@ export class ProcedurePrismaMapper {
     }
   }
 
+  static toPrismaUpdate(procedure: Procedure): Prisma.ProcedureUncheckedUpdateInput {
+    return {
+      ...procedure,
+      patientName: procedure.patientName,
+      cpf: procedure.cpf,
+      payments: {
+        upsert: procedure.payments?.map((payment) => ({
+          where: { id: payment.id },
+          update: payment,
+          create: payment,
+        })),
+      },
+    }
+  }
+
   static toDomain(raw: PrismaProcedure): Procedure {
     return Procedure.create({
       ...raw,
