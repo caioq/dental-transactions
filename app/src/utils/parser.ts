@@ -13,7 +13,9 @@ export const parseCurrencyToFloat = (value: string): number | null => {
   return floatValue;
 };
 
-export const parseFloatToString = (value: number): string => {
+export const parseFloatToString = (value: number): string | null => {
+  if (!value) return null;
+
   let stringValue: string;
   const regex = /^\d+(\.\d{2})?$/;
   if (!regex.test(value.toString())) {
