@@ -11,9 +11,9 @@ export class PaymentService {
     startDate: Date,
     endDate: Date,
   ): Promise<Payment[]> {
-    const procedures = await this.paymentRepository.findByDoctorId(doctorId, {
+    const payments = await this.paymentRepository.findByDoctorId(doctorId, {
       period: { start: startDate, end: endDate },
     })
-    return procedures
+    return payments
   }
 }

@@ -1,7 +1,11 @@
-import { Prisma, Procedure as PrismaProcedure } from '@prisma/client'
+import { Prisma, Procedure as PrismaProcedure, Payment as PrismaPayment } from '@prisma/client'
 import { Payment } from '../../../../../domain/procedure/entities/payment.entity'
 import { Procedure } from '../../../../../domain/procedure/entities/procedure.entity'
 import { PaymentPrismaMapper } from './payment.prisma.mapper'
+
+interface ProcedurePrisma extends PrismaProcedure {
+  payments?: PrismaPayment[]
+}
 
 export class ProcedurePrismaMapper {
   static toPrisma(procedure: Procedure): Prisma.ProcedureUncheckedCreateInput {
@@ -33,11 +37,12 @@ export class ProcedurePrismaMapper {
     }
   }
 
-  static toDomain(raw: PrismaProcedure): Procedure {
+  static toDomain(raw: ProcedurePrisma): Procedure {
     return Procedure.create({
       ...raw,
       billing: Number(raw.billing),
       invoice: Number(raw.invoice),
+      payments: raw.payments?.map(PaymentPrismaMapper.toDomain) || [],
     })
   }
 }

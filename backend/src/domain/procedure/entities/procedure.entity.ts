@@ -11,7 +11,6 @@ export class Procedure {
   invoice!: number
   cpf?: string | null
   doctorId!: string
-  payment?: number | null
   payments?: Payment[]
   createdAt!: Date
 
