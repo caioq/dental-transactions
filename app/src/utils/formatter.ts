@@ -1,4 +1,4 @@
-export const dateFormatter = new Intl.DateTimeFormat("pt-BR");
+export const dateFormatter = new Intl.DateTimeFormat("pt-BR", { timeZone: "UTC" });
 
 export const currencyFormatter = new Intl.NumberFormat("pt-BR", {
   style: "currency",
