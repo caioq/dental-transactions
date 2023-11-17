@@ -12,13 +12,13 @@ import {
 } from "./styles";
 
 interface SelectDateInputProps {
-  date?: Date;
+  startDate?: Date;
   value: string;
   onChange: (date: string) => void;
 }
 
 export function SelectDateInput(props: SelectDateInputProps) {
-  const { date, value, onChange } = props;
+  const { startDate, value, onChange } = props;
   const [monthsAvailable, setMonthsAvailable] = useState<string[]>([]);
 
   function getMonthsAvailable(from: Date) {
@@ -36,10 +36,10 @@ export function SelectDateInput(props: SelectDateInputProps) {
   }
 
   useEffect(() => {
-    if (date) {
-      setMonthsAvailable(getMonthsAvailable(date));
+    if (startDate) {
+      setMonthsAvailable(getMonthsAvailable(startDate));
     }
-  }, [date]);
+  }, [startDate]);
 
   return (
     <CustomSelect>

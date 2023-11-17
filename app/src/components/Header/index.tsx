@@ -55,7 +55,7 @@ export function Header() {
           </Dialog.Root>
         </HeaderContentUpper>
         <HeaderContentBottom>
-          <SelectDateInput date={user?.createdAt} value={monthYear} onChange={handleMonthYear} />
+          <SelectDateInput startDate={user?.createdAt} value={monthYear} onChange={handleMonthYear} />
         </HeaderContentBottom>
       </HeaderContent>
     </HeaderContainer>
