@@ -8,6 +8,8 @@ import { NewPaymentCard } from "./components/NewPaymentCard";
 import { NewProcedureFormInputs } from "./types";
 import { CategorySelectInput } from "./components/SelectCategoryInput";
 import { dateToInputDate } from "../../utils";
+import { CurrencyInput } from "../core/CurrencyInput";
+import { parseCurrencyToFloat, parseFloatToString } from "../../utils/parser";
 
 interface NewProcedureModalProps {
   setOpenDialog: (open: boolean) => void;
@@ -50,9 +52,10 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
   }, [initialValues, isCreateMode, reset]);
 
   async function handleSubmitProcedure(data: NewProcedureFormInputs) {
+    console.log(data);
     if (isCreateMode) {
       await createProcedure({
-        invoice: Number(data.invoice),
+        invoice: data.invoice,
         billing: Number(data.billing),
         categoryId: data.categoryId,
         date: new Date(data.date),
@@ -63,7 +66,7 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
     } else {
       await updateProcedure({
         id: initialValues?.id,
-        invoice: Number(data.invoice),
+        invoice: data.invoice,
         billing: Number(data.billing),
         categoryId: data.categoryId,
         date: new Date(data.date),
@@ -115,7 +118,22 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
               />
             )}
           />
-          <input type="number" placeholder="Orçamento" required {...register("billing", { valueAsNumber: true })} />
+          {/* <input type="number" placeholder="Orçamento" required {...register("billing", { valueAsNumber: true })} /> */}
+          <Controller
+            control={control}
+            name="billing"
+            render={({ field }) => (
+              <CurrencyInput
+                placeholder="Orçamento"
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  field.onChange(parseCurrencyToFloat(event.target.value))
+                }
+                value={parseFloatToString(field.value)}
+                required
+              />
+            )}
+          />
+
           <input type="number" placeholder="Faturamento" required {...register("invoice", { valueAsNumber: true })} />
 
           <SecondaryButton type="button" onClick={handleClickAddPayment}>

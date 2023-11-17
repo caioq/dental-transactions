@@ -36,6 +36,8 @@ export class ProcedurePrismaMapper {
   static toDomain(raw: PrismaProcedure): Procedure {
     return Procedure.create({
       ...raw,
+      billing: Number(raw.billing),
+      invoice: Number(raw.invoice),
     })
   }
 }

@@ -13,16 +13,21 @@ export class ProcedurePrismaRepository implements ProcedureRepository {
 
   async create(procedure: Procedure): Promise<Procedure> {
     const data = ProcedurePrismaMapper.toPrisma(procedure)
-    return this.prisma.procedure.create({ data, include: { payments: true, category: true } })
+    const createdProcedure = await this.prisma.procedure.create({
+      data,
+      include: { payments: true, category: true },
+    })
+    return ProcedurePrismaMapper.toDomain(createdProcedure)
   }
 
   async update(procedure: Procedure): Promise<Procedure> {
     const data = ProcedurePrismaMapper.toPrismaUpdate(procedure)
-    return this.prisma.procedure.update({
+    const updatedProcedure = await this.prisma.procedure.update({
       data,
       where: { id: procedure.id },
       include: { payments: true, category: true },
     })
+    return ProcedurePrismaMapper.toDomain(updatedProcedure)
   }
 
   async findById(id: string) {

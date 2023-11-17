@@ -17,6 +17,7 @@ export class PaymentPrismaMapper {
   static toDomain(raw: PrismaPayment): Payment {
     return Payment.create({
       ...raw,
+      value: Number(raw.value),
     })
   }
 }
