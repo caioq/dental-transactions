@@ -118,7 +118,7 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
               />
             )}
           />
-          {/* <input type="number" placeholder="Orçamento" required {...register("billing", { valueAsNumber: true })} /> */}
+
           <Controller
             control={control}
             name="billing"
@@ -133,8 +133,20 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
               />
             )}
           />
-
-          <input type="number" placeholder="Faturamento" required {...register("invoice", { valueAsNumber: true })} />
+          <Controller
+            control={control}
+            name="invoice"
+            render={({ field }) => (
+              <CurrencyInput
+                placeholder="Faturamento"
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  field.onChange(parseCurrencyToFloat(event.target.value))
+                }
+                value={parseFloatToString(field.value)}
+                required
+              />
+            )}
+          />
 
           <SecondaryButton type="button" onClick={handleClickAddPayment}>
             + Adicionar Pagamento
@@ -147,6 +159,7 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
               position={paymentFields.length - index}
               removePayment={remove}
               register={register}
+              control={control}
             />
           ))}
 
