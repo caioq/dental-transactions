@@ -31,7 +31,9 @@ export function Header() {
 
   useEffect(() => {
     if (monthYear) {
+      console.log(monthYear);
       const date = getDateFromMonthYear(monthYear);
+      console.log(date);
       fetchProcedures(date);
       fetchPayments(date);
     }

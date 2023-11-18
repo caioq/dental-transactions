@@ -95,20 +95,24 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
       const today = new Date(date);
       monthYear = `${today.getMonth() + 1}-${today.getFullYear()}`;
     }
+    try {
+      const response = await api.get("procedures", {
+        params: {
+          month_year: monthYear,
+        },
+      });
 
-    const response = await api.get("procedures", {
-      params: {
-        month_year: monthYear,
-      },
-    });
+      const procedures: Procedure[] = response.data.map((item: GetProceduresResponse) => ({
+        ...item,
+        percentToReceive: item.invoice / item.billing,
+        totalPaid: calculateTotalPayment(item.payments || []),
+      }));
 
-    const procedures: Procedure[] = response.data.map((item: GetProceduresResponse) => ({
-      ...item,
-      percentToReceive: item.invoice / item.billing,
-      totalPaid: calculateTotalPayment(item.payments || []),
-    }));
-
-    setProcedures(procedures);
+      setProcedures(procedures);
+    } catch (error) {
+      alert("Erro ao buscar procedimentos");
+      setLoading(false);
+    }
     setLoading(false);
   }, []);
 
@@ -150,13 +154,19 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
       monthYear = `${today.getMonth() + 1}-${today.getFullYear()}`;
     }
 
-    const response = await api.get("payments", {
-      params: {
-        month_year: monthYear,
-      },
-    });
+    try {
+      const response = await api.get("payments", {
+        params: {
+          month_year: monthYear,
+        },
+      });
 
-    setPayments(response.data);
+      setPayments(response.data);
+    } catch (error) {
+      alert("Erro ao buscar pagamentos");
+      setLoadingPayments(false);
+    }
+
     setLoadingPayments(false);
   }, []);
 
