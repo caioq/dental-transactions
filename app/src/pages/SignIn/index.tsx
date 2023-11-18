@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react";
 import { ThemeContext } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { HeaderLogo, PrimaryButton, SignInContainer, SignInContent } from "./styles";
 import { LogoIcon } from "../../assets/icons/Logo";
 import { AuthContext } from "../../contexts/AuthContext";
-import { useForm } from "react-hook-form";
 import { SignInFormInputs } from "./types";
 
 export function SignIn() {

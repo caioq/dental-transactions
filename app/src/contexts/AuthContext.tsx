@@ -43,7 +43,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       id: user.id,
       name: user.name,
       email: user.email,
-      createdAt: new Date(user.cratedAt),
+      createdAt: new Date(user.createdAt),
     });
     setSigned(true);
     localStorage.setItem("@DT:token", accessToken);
