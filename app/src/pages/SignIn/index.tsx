@@ -10,17 +10,25 @@ import { SignInFormInputs } from "./types";
 export function SignIn() {
   const theme = useContext(ThemeContext);
   const { signIn, signed } = useContext(AuthContext);
-  const { register, handleSubmit } = useForm<SignInFormInputs>({});
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<SignInFormInputs>({});
   const navigate = useNavigate();
 
   async function handleSubmitSignIn(data: SignInFormInputs) {
     const { email, password } = data;
 
-    await signIn({
-      email,
-      password,
-    });
-    navigate("/procedures");
+    try {
+      await signIn({
+        email,
+        password,
+      });
+      navigate("/procedures");
+    } catch (error) {
+      alert("Erro ao realizar login");
+    }
   }
 
   useEffect(() => {
@@ -40,7 +48,9 @@ export function SignIn() {
         <form onSubmit={handleSubmit(handleSubmitSignIn)}>
           <input type="text" placeholder="email" required {...register("email")} />
           <input type="password" placeholder="password" required {...register("password")} />
-          <PrimaryButton type="submit">Entrar</PrimaryButton>
+          <PrimaryButton type="submit" disabled={isSubmitting}>
+            Entrar
+          </PrimaryButton>
         </form>
       </SignInContent>
     </SignInContainer>

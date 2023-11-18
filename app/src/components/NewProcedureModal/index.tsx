@@ -22,7 +22,13 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
 
   const isCreateMode = !initialValues?.id;
 
-  const { register, handleSubmit, reset, control } = useForm<NewProcedureFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { isSubmitting },
+  } = useForm<NewProcedureFormInputs>({
     defaultValues: {
       date: dateToInputDate(new Date()),
       payments: [],
@@ -54,26 +60,34 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
   async function handleSubmitProcedure(data: NewProcedureFormInputs) {
     console.log(data);
     if (isCreateMode) {
-      await createProcedure({
-        invoice: data.invoice,
-        billing: Number(data.billing),
-        categoryId: data.categoryId,
-        date: new Date(data.date),
-        cpf: data.cpf || null,
-        patientName: data.patientName || null,
-        payments: data.payments,
-      });
+      try {
+        await createProcedure({
+          invoice: data.invoice,
+          billing: Number(data.billing),
+          categoryId: data.categoryId,
+          date: new Date(data.date),
+          cpf: data.cpf || null,
+          patientName: data.patientName || null,
+          payments: data.payments,
+        });
+      } catch (error) {
+        alert("Erro ao criar procedimento");
+      }
     } else {
-      await updateProcedure({
-        id: initialValues?.id,
-        invoice: data.invoice,
-        billing: Number(data.billing),
-        categoryId: data.categoryId,
-        date: new Date(data.date),
-        cpf: data.cpf || null,
-        patientName: data.patientName || null,
-        payments: data.payments,
-      });
+      try {
+        await updateProcedure({
+          id: initialValues?.id,
+          invoice: data.invoice,
+          billing: Number(data.billing),
+          categoryId: data.categoryId,
+          date: new Date(data.date),
+          cpf: data.cpf || null,
+          patientName: data.patientName || null,
+          payments: data.payments,
+        });
+      } catch (error) {
+        alert("Erro ao atualizar procedimento");
+      }
     }
 
     reset();
@@ -163,7 +177,9 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
             />
           ))}
 
-          <PrimaryButton type="submit">{isCreateMode ? "Cadastrar" : "Salvar"}</PrimaryButton>
+          <PrimaryButton type="submit" disabled={isSubmitting}>
+            {isCreateMode ? "Cadastrar" : "Salvar"}
+          </PrimaryButton>
         </form>
       </Content>
     </Dialog.Portal>
