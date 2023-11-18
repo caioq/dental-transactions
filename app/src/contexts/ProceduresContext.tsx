@@ -1,5 +1,6 @@
-import { ReactNode, createContext, useCallback, useState } from "react";
+import { ReactNode, createContext, useCallback, useEffect, useState } from "react";
 import { api } from "../utils";
+import { useAuth } from "../hooks";
 
 export interface Procedure {
   id: string;
@@ -61,6 +62,8 @@ interface UpdateProcedureInput extends CreateProcedureInput {
 }
 
 interface ProcedureContextType {
+  loading: boolean;
+  loadingPayments: boolean;
   procedures: Procedure[];
   categories: Category[];
   payments: Payment[];
@@ -78,11 +81,15 @@ interface ProceduresProviderProps {
 export const ProceduresContext = createContext({} as ProcedureContextType);
 
 export function ProceduresProvider({ children }: ProceduresProviderProps) {
+  const { signed } = useAuth();
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [loadingPayments, setLoadingPayments] = useState<boolean>(true);
 
   const fetchProcedures = useCallback(async (date?: Date) => {
+    setLoading(true);
     let monthYear;
     if (date) {
       const today = new Date(date);
@@ -102,6 +109,7 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     }));
 
     setProcedures(procedures);
+    setLoading(false);
   }, []);
 
   const createProcedure = useCallback(async (data: CreateProcedureInput) => {
@@ -131,6 +139,7 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
   }, []);
 
   const fetchPayments = useCallback(async (date?: Date) => {
+    setLoadingPayments(true);
     let monthYear;
     if (date) {
       const today = new Date(date);
@@ -144,16 +153,21 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     });
 
     setPayments(response.data);
+    setLoadingPayments(false);
   }, []);
 
-  // useEffect(() => {
-  //   fetchProcedures();
-  //   fetchCategories();
-  // }, [fetchProcedures, fetchCategories]);
+  useEffect(() => {
+    if (signed) {
+      // fetchProcedures();
+      fetchCategories();
+    }
+  }, [signed, fetchCategories]);
 
   return (
     <ProceduresContext.Provider
       value={{
+        loading,
+        loadingPayments,
         procedures,
         payments,
         categories,

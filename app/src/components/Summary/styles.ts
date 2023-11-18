@@ -39,7 +39,7 @@ export const SummaryCard = styled.div<SummaryCardProps>`
     color: ${(props) => props.theme["text-base"]};
   }
 
-  strong {
+  div {
     display: block;
     margin-top: 1.5rem;
     font-size: 1.5rem;
