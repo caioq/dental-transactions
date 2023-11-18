@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useCallback, useEffect, useState } from "react";
-import { api } from "../utils";
+import { api, calculateTotalPayment } from "../utils";
 import { useAuth } from "../hooks";
 
 export interface Procedure {
@@ -105,7 +105,7 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     const procedures: Procedure[] = response.data.map((item: GetProceduresResponse) => ({
       ...item,
       percentToReceive: item.invoice / item.billing,
-      totalPaid: item.payments?.reduce((acc: number, payment: Payment) => acc + payment.value, 0) || 0,
+      totalPaid: calculateTotalPayment(item.payments || []),
     }));
 
     setProcedures(procedures);
@@ -116,6 +116,8 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     const response = await api.post("procedures", data);
     const createdProcedure: Procedure = {
       ...response.data,
+      percentToReceive: response.data.invoice / response.data.billing,
+      totalPaid: calculateTotalPayment(response.data.payments || []),
     };
 
     setProcedures((state) => [createdProcedure, ...state]);
@@ -125,6 +127,8 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     const response = await api.put("procedures", data);
     const updatedProcedure: Procedure = {
       ...response.data,
+      percentToReceive: response.data.invoice / response.data.billing,
+      totalPaid: calculateTotalPayment(response.data.payments || []),
     };
 
     setProcedures((state) =>
