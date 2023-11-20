@@ -12,7 +12,6 @@ import logoImg from "../../assets/logo.svg";
 import { NewProcedureModal } from "../NewProcedureModal";
 import { SelectDateInput } from "./components/SelectDateInput";
 import { AuthContext } from "../../contexts/AuthContext";
-import { getDateFromMonthYear, getMonthYearStringFromDate } from "../../utils";
 import { ProceduresContext } from "../../contexts/ProceduresContext";
 
 export function Header() {
@@ -20,24 +19,27 @@ export function Header() {
   const { fetchProcedures, fetchPayments } = useContext(ProceduresContext);
 
   const [open, setOpen] = useState(false);
-  const [monthYear, setMonthYear] = useState<string>(() => {
-    const currentDateString = getMonthYearStringFromDate(new Date());
-    return `${currentDateString.month} ${currentDateString.year}`;
+  const [period, setPeriod] = useState<{ startDate: Date; endDate: Date }>(() => {
+    const today = new Date();
+    return {
+      startDate: new Date(today.getFullYear(), today.getMonth(), 1),
+      endDate: new Date(today.getFullYear(), today.getMonth() + 1, 0),
+    };
   });
 
-  function handleMonthYear(dateString: string) {
-    setMonthYear(dateString);
+  function handleChangeDate(date: Date) {
+    setPeriod({
+      startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+      endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0),
+    });
   }
 
   useEffect(() => {
-    if (monthYear) {
-      console.log(monthYear);
-      const date = getDateFromMonthYear(monthYear);
-      console.log(date);
-      fetchProcedures(date);
-      fetchPayments(date);
+    if (period) {
+      fetchProcedures(period.startDate, period.endDate);
+      fetchPayments(period.startDate, period.endDate);
     }
-  }, [fetchProcedures, fetchPayments, monthYear]);
+  }, [fetchProcedures, fetchPayments, period]);
 
   return (
     <HeaderContainer>
@@ -57,7 +59,7 @@ export function Header() {
           </Dialog.Root>
         </HeaderContentUpper>
         <HeaderContentBottom>
-          <SelectDateInput startDate={user?.createdAt} value={monthYear} onChange={handleMonthYear} />
+          <SelectDateInput startDate={user?.createdAt} value={period.startDate} onChange={handleChangeDate} />
         </HeaderContentBottom>
       </HeaderContent>
     </HeaderContainer>

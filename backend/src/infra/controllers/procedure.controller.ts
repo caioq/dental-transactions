@@ -50,16 +50,12 @@ export class ProcedureController {
   @UseGuards(JwtAuthGuard)
   getProceduresByDoctorId(
     @CurrentUser() user: UserPayload,
-    @Query('month_year') monthYear: string,
+    @Query('start_date') startDate: Date,
+    @Query('end_date') endDate: Date,
   ) {
     const { id } = user
-    let startDate, endDate
-    if (monthYear) {
-      const [month, year] = monthYear.split('-')
-      startDate = new Date(Number(year), Number(month) - 1, 1)
-      endDate = new Date(Number(year), Number(month), 0)
-    }
-    console.log(`monthYear: ${monthYear}, startDate: ${startDate}, endDate: ${endDate}`)
+
+    console.log(`startDate: ${startDate}, endDate: ${endDate}`)
 
     return this.procedureService.getProceduresByDoctorId(id, startDate, endDate)
   }

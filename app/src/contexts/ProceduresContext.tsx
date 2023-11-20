@@ -67,8 +67,8 @@ interface ProcedureContextType {
   procedures: Procedure[];
   categories: Category[];
   payments: Payment[];
-  fetchProcedures: (date?: Date) => Promise<void>;
-  fetchPayments: (date?: Date) => Promise<void>;
+  fetchProcedures: (startDate?: Date, endDate?: Date) => Promise<void>;
+  fetchPayments: (startDate?: Date, endDate?: Date) => Promise<void>;
   fetchCategories: (query?: string) => Promise<void>;
   createProcedure: (data: CreateProcedureInput) => Promise<void>;
   updateProcedure: (data: UpdateProcedureInput) => Promise<void>;
@@ -88,18 +88,13 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingPayments, setLoadingPayments] = useState<boolean>(true);
 
-  const fetchProcedures = useCallback(async (date?: Date) => {
+  const fetchProcedures = useCallback(async (startDate?: Date, endDate?: Date) => {
     setLoading(true);
-    console.log("date", date);
-    let monthYear;
-    if (date) {
-      const today = new Date(date);
-      monthYear = `${today.getMonth() + 1}-${today.getFullYear()}`;
-    }
     try {
       const response = await api.get("procedures", {
         params: {
-          month_year: monthYear,
+          start_date: startDate,
+          end_date: endDate,
         },
       });
 
@@ -147,18 +142,14 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     setCategories(response.data);
   }, []);
 
-  const fetchPayments = useCallback(async (date?: Date) => {
+  const fetchPayments = useCallback(async (startDate?: Date, endDate?: Date) => {
     setLoadingPayments(true);
-    let monthYear;
-    if (date) {
-      const today = new Date(date);
-      monthYear = `${today.getMonth() + 1}-${today.getFullYear()}`;
-    }
 
     try {
       const response = await api.get("payments", {
         params: {
-          month_year: monthYear,
+          start_date: startDate,
+          end_date: endDate,
         },
       });
 
