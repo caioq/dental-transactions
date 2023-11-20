@@ -19,8 +19,12 @@ export const Content = styled(Dialog.Content)`
   left: 50%;
   transform: translate(-50%, -50%);
 
-  max-height: 800px;
+  max-height: 40rem;
   overflow-y: auto;
+
+  > button {
+    margin-top: 1rem;
+  }
 
   form {
     margin-top: 2rem;
@@ -43,6 +47,10 @@ export const Content = styled(Dialog.Content)`
   @media only screen and (min-width: 768px) {
     min-width: 32rem;
     padding: 2.5rem 3rem;
+  }
+
+  @media (min-height: 844px) {
+    max-height: 800px;
   }
 `;
 
@@ -72,7 +80,7 @@ export const PrimaryButton = styled.button`
   font-weight: bold;
   padding: 0 1.25rem;
   border-radius: 6px;
-  margin-top: 4rem;
+  margin-top: 1rem;
   cursor: pointer;
 
   &:hover {
