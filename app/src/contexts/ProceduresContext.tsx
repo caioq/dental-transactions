@@ -90,6 +90,7 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
 
   const fetchProcedures = useCallback(async (date?: Date) => {
     setLoading(true);
+    console.log("date", date);
     let monthYear;
     if (date) {
       const today = new Date(date);
