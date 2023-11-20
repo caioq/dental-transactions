@@ -10,10 +10,7 @@ export class PaymentController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  getProceduresByDoctorId(
-    @CurrentUser() user: UserPayload,
-    @Query('month_year') monthYear: string,
-  ) {
+  getPaymentsByDoctorId(@CurrentUser() user: UserPayload, @Query('month_year') monthYear: string) {
     const { id } = user
     let startDate, endDate
     if (monthYear) {
