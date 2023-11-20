@@ -53,7 +53,7 @@ export function Procedures() {
               ) : (
                 <tbody>
                   {procedures.map((procedure, index) => (
-                    <DialogTrigger key={index} onClick={() => handleSelectProcedure(procedure)}>
+                    <DialogTrigger asChild key={index} onClick={() => handleSelectProcedure(procedure)}>
                       <tr key={index}>
                         <td>{procedure.patientName || "Desconhecido"}</td>
                         <td>{currencyFormatter.format(procedure.billing)}</td>
