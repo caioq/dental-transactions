@@ -59,6 +59,7 @@ export class ProcedureController {
       startDate = new Date(Number(year), Number(month) - 1, 1)
       endDate = new Date(Number(year), Number(month), 0)
     }
+    console.log(`monthYear: ${monthYear}, startDate: ${startDate}, endDate: ${endDate}`)
 
     return this.procedureService.getProceduresByDoctorId(id, startDate, endDate)
   }
