@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Query, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Post, Put, Query, UseGuards, Logger } from '@nestjs/common'
 import { ProcedureService } from '../../domain/procedure/services/procedure.service'
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
 import {
@@ -16,6 +16,8 @@ const updateProcedureBodyValidationPipe = new ZodValidationPipe(updateProcedureB
 
 @Controller('procedures')
 export class ProcedureController {
+  private readonly logger = new Logger(ProcedureController.name)
+
   constructor(private procedureService: ProcedureService) {}
 
   @Post()
@@ -55,8 +57,10 @@ export class ProcedureController {
   ) {
     const { id } = user
 
-    console.log(`startDate: ${startDate}, endDate: ${endDate}`)
+    this.logger.log(
+      `Getting procedures for doctor ${id} with params startDate: ${startDate}, endDate: ${endDate}`,
+    )
 
-    return this.procedureService.getProceduresByDoctorId(id, startDate, endDate)
+    return this.procedureService.getProceduresByDoctorId(id, new Date(startDate), new Date(endDate))
   }
 }
