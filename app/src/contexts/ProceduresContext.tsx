@@ -93,8 +93,8 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     try {
       const response = await api.get("procedures", {
         params: {
-          start_date: startDate,
-          end_date: endDate,
+          ...(startDate && { start_date: startDate.toISOString().substring(0, 10) }),
+          ...(endDate && { end_date: endDate.toISOString().substring(0, 10) }),
         },
       });
 
