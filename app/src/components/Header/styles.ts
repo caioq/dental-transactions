@@ -53,7 +53,7 @@ export const NewProceduresButton = styled.button`
   background: ${(props) => props.theme["blue-bright"]};
   color: ${(props) => props.theme["white"]};
   font-weight: bold;
-  padding: 0 1.25rem;
+  padding: 0 1rem;
   border-radius: 6px;
   cursor: pointer;
 
