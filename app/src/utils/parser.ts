@@ -28,3 +28,5 @@ export const parseFloatToString = (value: number): string | null => {
 
   return `R$ ${currencyString}`;
 };
+
+export const parseDatetoISODate = (date: Date): string => date.toISOString().substring(0, 10);
