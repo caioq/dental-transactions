@@ -7,8 +7,8 @@ import {
   NewProceduresButton,
   HeaderContentBottom,
   HeaderContentUpper,
-  MenuButton,
   MenuButtonContainer,
+  MenuItem,
 } from "./styles";
 import logoImg from "../../assets/logo.svg";
 import { NewProcedureModal } from "../NewProcedureModal";
@@ -16,11 +16,13 @@ import { SelectDateInput } from "./components/SelectDateInput";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ProceduresContext } from "../../contexts/ProceduresContext";
 import { useViewport } from "../../hooks";
+import { Link, useMatch } from "react-router-dom";
 
 export function Header() {
   const { user } = useContext(AuthContext);
   const { fetchProcedures, fetchPayments } = useContext(ProceduresContext);
   const { isMobile } = useViewport();
+  const matchRoute = useMatch("/:route");
 
   const [open, setOpen] = useState(false);
   const [period, setPeriod] = useState<{ startDate: Date; endDate: Date }>(() => {
@@ -45,6 +47,10 @@ export function Header() {
     }
   }, [fetchProcedures, fetchPayments, period]);
 
+  function isMatchRoute(route: string) {
+    return matchRoute?.params.route === route;
+  }
+
   return (
     <HeaderContainer>
       <HeaderContent>
@@ -56,8 +62,14 @@ export function Header() {
 
           {!isMobile && (
             <MenuButtonContainer>
-              <MenuButton>Procedimentos</MenuButton>
-              <MenuButton>Custos</MenuButton>
+              <ul>
+                <MenuItem active={isMatchRoute("procedures")}>
+                  <Link to="/procedures">Procedimentos</Link>
+                </MenuItem>
+                <MenuItem active={isMatchRoute("costs")}>
+                  <Link to="/costs">Custos</Link>
+                </MenuItem>
+              </ul>
             </MenuButtonContainer>
           )}
         </HeaderContentUpper>

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const HeaderContainer = styled.header`
   background: ${(props) => props.theme["blue-back"]};
@@ -64,24 +64,44 @@ export const NewProceduresButton = styled.button`
 `;
 
 export const MenuButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  ul {
+    gap: 1rem;
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+  }
+
+  ul li {
+    align-items: center;
+    display: flex;
+  }
 `;
 
-export const MenuButton = styled.button`
-  height: 50px;
-  border: 0;
-  background: transparent;
-  color: ${(props) => props.theme["white"]};
-  padding: 0 1rem;
-  border-radius: 6px;
-  cursor: pointer;
+interface MenuItemProps {
+  active: boolean;
+}
 
-  &:hover {
-    padding: 0 1rem;
-    border-radius: 6px;
-    background: ${(props) => props.theme["blue-bright-700"]};
-    transition: background-color 0.2s;
+export const MenuItem = styled.li<MenuItemProps>`
+  gap: 0.5rem;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 6px;
+
+  ${(props) =>
+    props.active &&
+    css`
+      background: ${(props) => props.theme["blue-bright"]};
+    `}
+
+  a {
+    color: ${(props) => props.theme["white"]};
+    text-decoration: none;
+    padding: 0.9rem 0.9rem;
+
+    &:hover {
+      border-radius: 6px;
+      background: ${(props) => props.theme["blue-bright-700"]};
+      transition: background-color 0.2s;
+    }
   }
 `;
