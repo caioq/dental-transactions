@@ -7,16 +7,20 @@ import {
   NewProceduresButton,
   HeaderContentBottom,
   HeaderContentUpper,
+  MenuButton,
+  MenuButtonContainer,
 } from "./styles";
 import logoImg from "../../assets/logo.svg";
 import { NewProcedureModal } from "../NewProcedureModal";
 import { SelectDateInput } from "./components/SelectDateInput";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ProceduresContext } from "../../contexts/ProceduresContext";
+import { useViewport } from "../../hooks";
 
 export function Header() {
   const { user } = useContext(AuthContext);
   const { fetchProcedures, fetchPayments } = useContext(ProceduresContext);
+  const { isMobile } = useViewport();
 
   const [open, setOpen] = useState(false);
   const [period, setPeriod] = useState<{ startDate: Date; endDate: Date }>(() => {
@@ -50,6 +54,15 @@ export function Header() {
             <h1>{user?.name}</h1>
           </HeaderLogo>
 
+          {!isMobile && (
+            <MenuButtonContainer>
+              <MenuButton>Procedimentos</MenuButton>
+              <MenuButton>Custos</MenuButton>
+            </MenuButtonContainer>
+          )}
+        </HeaderContentUpper>
+        <HeaderContentBottom>
+          <SelectDateInput startDate={user?.createdAt} value={period.startDate} onChange={handleChangeDate} />
           <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger asChild>
               <NewProceduresButton>Adicionar Procedimento</NewProceduresButton>
@@ -57,9 +70,6 @@ export function Header() {
 
             <NewProcedureModal setOpenDialog={setOpen} />
           </Dialog.Root>
-        </HeaderContentUpper>
-        <HeaderContentBottom>
-          <SelectDateInput startDate={user?.createdAt} value={period.startDate} onChange={handleChangeDate} />
         </HeaderContentBottom>
       </HeaderContent>
     </HeaderContainer>

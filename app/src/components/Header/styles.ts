@@ -32,7 +32,7 @@ export const HeaderContentUpper = styled.div`
 
 export const HeaderContentBottom = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   margin: 1.5rem 0 0 0;
 `;
 
@@ -58,6 +58,29 @@ export const NewProceduresButton = styled.button`
   cursor: pointer;
 
   &:hover {
+    background: ${(props) => props.theme["blue-bright-700"]};
+    transition: background-color 0.2s;
+  }
+`;
+
+export const MenuButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+export const MenuButton = styled.button`
+  height: 50px;
+  border: 0;
+  background: transparent;
+  color: ${(props) => props.theme["white"]};
+  padding: 0 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+
+  &:hover {
+    padding: 0 1rem;
+    border-radius: 6px;
     background: ${(props) => props.theme["blue-bright-700"]};
     transition: background-color 0.2s;
   }

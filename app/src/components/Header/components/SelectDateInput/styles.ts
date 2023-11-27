@@ -4,7 +4,6 @@ import { Listbox } from "@headlessui/react";
 export const CustomSelect = styled.div`
   & > div {
     position: relative;
-    margin-top: 4px;
   }
 `;
 
