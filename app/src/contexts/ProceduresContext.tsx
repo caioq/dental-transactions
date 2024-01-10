@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useCallback, useEffect, useState } from "react";
-import { api, calculateTotalPayment } from "../utils";
+import { api, calculateTotalPayment, parseDatetoISODate } from "../utils";
 import { useAuth } from "../hooks";
 
 export interface Procedure {
@@ -93,8 +93,8 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     try {
       const response = await api.get("procedures", {
         params: {
-          ...(startDate && { start_date: startDate.toISOString().substring(0, 10) }),
-          ...(endDate && { end_date: endDate.toISOString().substring(0, 10) }),
+          ...(startDate && { start_date: parseDatetoISODate(startDate) }),
+          ...(endDate && { end_date: parseDatetoISODate(endDate) }),
         },
       });
 
@@ -148,8 +148,8 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     try {
       const response = await api.get("payments", {
         params: {
-          start_date: startDate,
-          end_date: endDate,
+          ...(startDate && { start_date: parseDatetoISODate(startDate) }),
+          ...(endDate && { end_date: parseDatetoISODate(endDate) }),
         },
       });
 

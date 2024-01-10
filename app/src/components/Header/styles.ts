@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const HeaderContainer = styled.header`
   background: ${(props) => props.theme["blue-back"]};
@@ -32,7 +32,7 @@ export const HeaderContentUpper = styled.div`
 
 export const HeaderContentBottom = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   margin: 1.5rem 0 0 0;
 `;
 
@@ -53,12 +53,55 @@ export const NewProceduresButton = styled.button`
   background: ${(props) => props.theme["blue-bright"]};
   color: ${(props) => props.theme["white"]};
   font-weight: bold;
-  padding: 0 1.25rem;
+  padding: 0 1rem;
   border-radius: 6px;
   cursor: pointer;
 
   &:hover {
     background: ${(props) => props.theme["blue-bright-700"]};
     transition: background-color 0.2s;
+  }
+`;
+
+export const MenuButtonContainer = styled.div`
+  ul {
+    gap: 1rem;
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+  }
+
+  ul li {
+    align-items: center;
+    display: flex;
+  }
+`;
+
+interface MenuItemProps {
+  active: boolean;
+}
+
+export const MenuItem = styled.li<MenuItemProps>`
+  gap: 0.5rem;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 6px;
+
+  ${(props) =>
+    props.active &&
+    css`
+      background: ${(props) => props.theme["blue-bright"]};
+    `}
+
+  a {
+    color: ${(props) => props.theme["white"]};
+    text-decoration: none;
+    padding: 0.9rem 0.9rem;
+
+    &:hover {
+      border-radius: 6px;
+      background: ${(props) => props.theme["blue-bright-700"]};
+      transition: background-color 0.2s;
+    }
   }
 `;

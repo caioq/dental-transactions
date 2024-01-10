@@ -17,6 +17,6 @@ export class PaymentController {
   ) {
     const { id } = user
 
-    return this.paymentService.getPaymentsByDoctorId(id, startDate, endDate)
+    return this.paymentService.getPaymentsByDoctorId(id, new Date(startDate), new Date(endDate))
   }
 }
