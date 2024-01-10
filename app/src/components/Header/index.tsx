@@ -75,13 +75,15 @@ export function Header() {
         </HeaderContentUpper>
         <HeaderContentBottom>
           <SelectDateInput startDate={user?.createdAt} value={period.startDate} onChange={handleChangeDate} />
-          <Dialog.Root open={open} onOpenChange={setOpen}>
-            <Dialog.Trigger asChild>
-              <NewProceduresButton>Adicionar Procedimento</NewProceduresButton>
-            </Dialog.Trigger>
+          {isMobile && (
+            <Dialog.Root open={open} onOpenChange={setOpen}>
+              <Dialog.Trigger asChild>
+                <NewProceduresButton>Adicionar Procedimento</NewProceduresButton>
+              </Dialog.Trigger>
 
-            <NewProcedureModal setOpenDialog={setOpen} />
-          </Dialog.Root>
+              <NewProcedureModal setOpenDialog={setOpen} />
+            </Dialog.Root>
+          )}
         </HeaderContentBottom>
       </HeaderContent>
     </HeaderContainer>
