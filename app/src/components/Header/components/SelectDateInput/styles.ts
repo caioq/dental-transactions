@@ -45,7 +45,7 @@ export const ListboxOptions = styled(Listbox.Options)`
   border-radius: 5px;
   background: ${(props) => props.theme["white"]};
   color: ${(props) => props.theme["blue-bright"]};
-  z-index: 10;
+  /* z-index: 10; */
 `;
 
 export const ListboxOption = styled(Listbox.Option)`

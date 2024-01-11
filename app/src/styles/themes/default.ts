@@ -31,4 +31,6 @@ export const defaultTheme = {
   "text-base": "#8788A0",
   "text-title": "#818188",
   "text-placeholder": "#B4B4B0",
+
+  "mobile-width": "1120px",
 } as const;

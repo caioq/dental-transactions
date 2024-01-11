@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { Link, useMatch } from "react-router-dom";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   HeaderContainer,
@@ -10,17 +11,18 @@ import {
   MenuButtonContainer,
   MenuItem,
 } from "./styles";
-import logoImg from "../../assets/logo.svg";
-import { NewProcedureModal } from "../NewProcedureModal";
 import { SelectDateInput } from "./components/SelectDateInput";
+import { BurgerMenu } from "./components/BurgerMenu";
+import { NewProcedureModal } from "../NewProcedureModal";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ProceduresContext } from "../../contexts/ProceduresContext";
 import { useViewport } from "../../hooks";
-import { Link, useMatch } from "react-router-dom";
+import logoImg from "../../assets/logo.svg";
 
 export function Header() {
   const { user } = useContext(AuthContext);
   const { fetchProcedures, fetchPayments } = useContext(ProceduresContext);
+
   const { isMobile } = useViewport();
   const matchRoute = useMatch("/:route");
 
@@ -60,7 +62,9 @@ export function Header() {
             <h1>{user?.name}</h1>
           </HeaderLogo>
 
-          {!isMobile && (
+          {isMobile ? (
+            <BurgerMenu />
+          ) : (
             <MenuButtonContainer>
               <ul>
                 <MenuItem active={isMatchRoute("procedures")}>
