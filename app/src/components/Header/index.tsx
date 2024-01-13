@@ -5,11 +5,11 @@ import {
   HeaderContainer,
   HeaderContent,
   HeaderLogo,
-  NewProceduresButton,
   HeaderContentBottom,
   HeaderContentUpper,
   MenuButtonContainer,
   MenuItem,
+  PrimaryButton,
 } from "./styles";
 import { SelectDateInput } from "./components/SelectDateInput";
 import { BurgerMenu } from "./components/BurgerMenu";
@@ -19,6 +19,10 @@ import { ProceduresContext } from "../../contexts/ProceduresContext";
 import { useViewport } from "../../hooks";
 import logoImg from "../../assets/logo.svg";
 
+function isMatchRoute(compareRoute: string, currentRoute?: string) {
+  return currentRoute === compareRoute;
+}
+
 export function Header() {
   const { user } = useContext(AuthContext);
   const { fetchProcedures, fetchPayments } = useContext(ProceduresContext);
@@ -26,7 +30,6 @@ export function Header() {
   const { isMobile } = useViewport();
   const matchRoute = useMatch("/:route");
 
-  const [open, setOpen] = useState(false);
   const [period, setPeriod] = useState<{ startDate: Date; endDate: Date }>(() => {
     const today = new Date();
     return {
@@ -49,10 +52,6 @@ export function Header() {
     }
   }, [fetchProcedures, fetchPayments, period]);
 
-  function isMatchRoute(route: string) {
-    return matchRoute?.params.route === route;
-  }
-
   return (
     <HeaderContainer>
       <HeaderContent>
@@ -67,10 +66,10 @@ export function Header() {
           ) : (
             <MenuButtonContainer>
               <ul>
-                <MenuItem active={isMatchRoute("procedures")}>
+                <MenuItem active={isMatchRoute("procedures", matchRoute?.params.route)}>
                   <Link to="/procedures">Procedimentos</Link>
                 </MenuItem>
-                <MenuItem active={isMatchRoute("costs")}>
+                <MenuItem active={isMatchRoute("costs", matchRoute?.params.route)}>
                   <Link to="/costs">Custos</Link>
                 </MenuItem>
               </ul>
@@ -79,17 +78,36 @@ export function Header() {
         </HeaderContentUpper>
         <HeaderContentBottom>
           <SelectDateInput startDate={user?.createdAt} value={period.startDate} onChange={handleChangeDate} />
-          {isMobile && (
-            <Dialog.Root open={open} onOpenChange={setOpen}>
-              <Dialog.Trigger asChild>
-                <NewProceduresButton>Adicionar Procedimento</NewProceduresButton>
-              </Dialog.Trigger>
-
-              <NewProcedureModal setOpenDialog={setOpen} />
-            </Dialog.Root>
-          )}
+          {isMobile && <ActionButton route={matchRoute?.params.route} />}
         </HeaderContentBottom>
       </HeaderContent>
     </HeaderContainer>
+  );
+}
+
+function ActionButton({ route }: { route?: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      {isMatchRoute("procedures", route) && (
+        <Dialog.Root open={open} onOpenChange={setOpen}>
+          <Dialog.Trigger asChild>
+            <PrimaryButton>+ Procedimento</PrimaryButton>
+          </Dialog.Trigger>
+
+          <NewProcedureModal setOpenDialog={setOpen} />
+        </Dialog.Root>
+      )}
+      {isMatchRoute("costs", route) && (
+        <Dialog.Root open={open} onOpenChange={setOpen}>
+          <Dialog.Trigger asChild>
+            <PrimaryButton>+ Custo</PrimaryButton>
+          </Dialog.Trigger>
+
+          <NewProcedureModal setOpenDialog={setOpen} />
+        </Dialog.Root>
+      )}
+    </>
   );
 }

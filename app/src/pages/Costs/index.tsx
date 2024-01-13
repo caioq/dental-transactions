@@ -12,11 +12,11 @@ export function Costs() {
       <Summary />
 
       <TransactionsContainer>
-        <SearchForm />
         <TransactionsTitle>
           <ArrowCircleDown size={28} />
-          <span>Últimos custos:</span>
+          <span>Custos:</span>
         </TransactionsTitle>
+        <SearchForm />
       </TransactionsContainer>
     </div>
   );
