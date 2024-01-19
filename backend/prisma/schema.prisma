@@ -17,6 +17,7 @@ model User {
   email             String @unique
   password          String
   procedures        Procedure[]
+  costs             Cost[]
   createdAt         DateTime                @default(now()) @map("created_at")
   updatedAt         DateTime?               @updatedAt @map("updated_at")
   deletedAt         DateTime?               @map("deleted_at")
@@ -64,4 +65,29 @@ model Category {
   procedures      Procedure[]
 
   @@map("categories")
+}
+
+model Cost {
+  id                String                  @id @default(uuid())
+  description       String?
+  doctorId          String                  @map("doctor_id")
+  categoryId        String                  @map("category_id")
+  value             Decimal
+  date              DateTime
+  createdAt         DateTime                @default(now()) @map("created_at")
+  updatedAt         DateTime?               @updatedAt @map("updated_at")
+  deletedAt         DateTime?               @map("deleted_at")
+
+  doctor            User                    @relation(fields: [doctorId], references: [id])
+  category          CostCategory            @relation(fields: [categoryId], references: [id])
+  
+  @@map("costs")
+}
+
+model CostCategory {
+  id              String                    @id @default(uuid())
+  name            String
+  costs           Cost[]
+
+  @@map("cost_categories")
 }

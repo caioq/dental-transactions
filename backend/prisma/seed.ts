@@ -160,6 +160,31 @@ async function main() {
     },
   })
 
+  // COST CATEGORIES
+  const costCategoryUuid1 = 'cd8b949c-571d-4c55-b5ea-75423047e509'
+  await prisma.costCategory.upsert({
+    where: { id: costCategoryUuid1 },
+    update: {
+      name: 'Protético',
+    },
+    create: {
+      id: costCategoryUuid1,
+      name: 'Protético',
+    },
+  })
+
+  const costCategoryUuid2 = '1414f766-0500-4e76-abe9-4a075dd2d704'
+  await prisma.costCategory.upsert({
+    where: { id: costCategoryUuid2 },
+    update: {
+      name: 'Material',
+    },
+    create: {
+      id: costCategoryUuid2,
+      name: 'Material',
+    },
+  })
+
   // ADMIN
   const adminEmail = process.env.ADMIN_EMAIL
   const adminPassword = process.env.ADMIN_PASSWORD
