@@ -1,24 +1,24 @@
 import { useContext, useEffect } from "react";
 import { X } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { Procedure, ProceduresContext } from "../../contexts/ProceduresContext";
-import { CloseButton, Content, Overlay, PrimaryButton, SecondaryButton } from "./styles";
-import { NewPaymentCard } from "./components/NewPaymentCard";
-import { NewProcedureFormInputs } from "./types";
+import { Controller, useForm } from "react-hook-form";
+
+import { Cost, ProceduresContext } from "../../contexts/ProceduresContext";
+import { CloseButton, Content, Overlay, PrimaryButton } from "./styles";
+import { NewCostFormInputs } from "./types";
 import { CategorySelectInput } from "./components/SelectCategoryInput";
 import { dateToInputDate } from "../../utils";
 import { CurrencyInput } from "../core/CurrencyInput";
 import { parseCurrencyToFloat, parseFloatToString } from "../../utils/parser";
 
-interface NewProcedureModalProps {
+interface NewCostModalProps {
   setOpenDialog: (open: boolean) => void;
-  initialValues?: Procedure | null;
+  initialValues?: Cost | null;
 }
 
-export function NewProcedureModal(props: NewProcedureModalProps) {
+export function NewCostModal(props: NewCostModalProps) {
   const { setOpenDialog, initialValues } = props;
-  const { categories, createProcedure, updateProcedure } = useContext(ProceduresContext);
+  const { costCategories, createCost, updateCost } = useContext(ProceduresContext);
 
   const isCreateMode = !initialValues?.id;
 
@@ -28,19 +28,10 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
     reset,
     control,
     formState: { isSubmitting },
-  } = useForm<NewProcedureFormInputs>({
+  } = useForm<NewCostFormInputs>({
     defaultValues: {
       date: dateToInputDate(new Date()),
-      payments: [],
     },
-  });
-  const {
-    fields: paymentFields,
-    prepend,
-    remove,
-  } = useFieldArray({
-    control,
-    name: "payments",
   });
 
   useEffect(() => {
@@ -49,56 +40,39 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
         ...initialValues,
         categoryId: initialValues.category.id,
         date: dateToInputDate(new Date(initialValues.date)),
-        payments: initialValues.payments.map((payment) => ({
-          ...payment,
-          date: dateToInputDate(new Date(payment.date)),
-        })),
       });
     }
   }, [initialValues, isCreateMode, reset]);
 
-  async function handleSubmitProcedure(data: NewProcedureFormInputs) {
+  async function handleSubmitCost(data: NewCostFormInputs) {
     console.log(data);
     if (isCreateMode) {
       try {
-        await createProcedure({
-          invoice: data.invoice,
-          billing: Number(data.billing),
+        await createCost({
+          value: Number(data.value),
           categoryId: data.categoryId,
           date: new Date(data.date),
-          cpf: data.cpf || null,
-          patientName: data.patientName || null,
-          payments: data.payments,
+          description: data.description || null,
         });
       } catch (error) {
-        alert("Erro ao criar procedimento");
+        alert("Erro ao criar custo");
       }
     } else {
       try {
-        await updateProcedure({
+        await updateCost({
           id: initialValues?.id,
-          invoice: data.invoice,
-          billing: Number(data.billing),
+          value: Number(data.value),
           categoryId: data.categoryId,
           date: new Date(data.date),
-          cpf: data.cpf || null,
-          patientName: data.patientName || null,
-          payments: data.payments,
+          description: data.description || null,
         });
       } catch (error) {
-        alert("Erro ao atualizar procedimento");
+        alert("Erro ao atualizar custo");
       }
     }
 
     reset();
     setOpenDialog(false);
-  }
-
-  function handleClickAddPayment() {
-    prepend({
-      date: dateToInputDate(new Date()),
-      value: 0,
-    });
   }
 
   function clearForm() {
@@ -110,22 +84,21 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
       <Overlay />
 
       <Content onOpenAutoFocus={clearForm}>
-        <Dialog.Title>{isCreateMode ? "Novo Procedimento" : "Editar Procedimento"}</Dialog.Title>
+        <Dialog.Title>{isCreateMode ? "Novo Custo" : "Editar Custo"}</Dialog.Title>
 
         <CloseButton>
           <X size={24} />
         </CloseButton>
 
-        <form onSubmit={handleSubmit(handleSubmitProcedure)}>
+        <form onSubmit={handleSubmit(handleSubmitCost)}>
           <input type="date" placeholder="Data" required {...register("date", { valueAsDate: true })} />
-          <input type="text" placeholder="Nome do paciente" {...register("patientName")} />
-          <input type="text" placeholder="CPF" {...register("cpf")} />
+          <input type="text" placeholder="Descrição" {...register("description")} />
           <Controller
             control={control}
             name="categoryId"
             render={({ field }) => (
               <CategorySelectInput
-                categories={categories}
+                categories={costCategories}
                 required
                 onChange={field.onChange}
                 defaultValue={initialValues?.category.id ?? ""}
@@ -135,10 +108,10 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
 
           <Controller
             control={control}
-            name="billing"
+            name="value"
             render={({ field }) => (
               <CurrencyInput
-                placeholder="Orçamento"
+                placeholder="Valor"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                   field.onChange(parseCurrencyToFloat(event.target.value))
                 }
@@ -147,35 +120,6 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
               />
             )}
           />
-          <Controller
-            control={control}
-            name="invoice"
-            render={({ field }) => (
-              <CurrencyInput
-                placeholder="Faturamento"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  field.onChange(parseCurrencyToFloat(event.target.value))
-                }
-                value={parseFloatToString(field.value)}
-                required
-              />
-            )}
-          />
-
-          <SecondaryButton type="button" onClick={handleClickAddPayment}>
-            + Adicionar Pagamento
-          </SecondaryButton>
-
-          {paymentFields.map((item, index) => (
-            <NewPaymentCard
-              key={item.id}
-              index={index}
-              position={paymentFields.length - index}
-              removePayment={remove}
-              register={register}
-              control={control}
-            />
-          ))}
 
           <PrimaryButton type="submit" disabled={isSubmitting}>
             {isCreateMode ? "Cadastrar" : "Salvar"}

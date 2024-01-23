@@ -25,6 +25,14 @@ interface Category {
   name: string;
 }
 
+export interface Cost {
+  id: string;
+  date: Date;
+  description: string;
+  value: number;
+  category: Category;
+}
+
 interface GetProceduresResponse {
   id: string;
   patientName?: string | null;
@@ -61,17 +69,33 @@ interface UpdateProcedureInput extends CreateProcedureInput {
   }[];
 }
 
+interface CreateCostInput {
+  date: Date;
+  description: string | null;
+  categoryId: string;
+  value: number;
+}
+
+interface UpdateCostInput extends CreateCostInput {
+  id: string;
+}
+
 interface ProcedureContextType {
   loading: boolean;
   loadingPayments: boolean;
   procedures: Procedure[];
   categories: Category[];
   payments: Payment[];
+  costCategories: Category[];
+  costs: Cost[];
   fetchProcedures: (startDate?: Date, endDate?: Date) => Promise<void>;
   fetchPayments: (startDate?: Date, endDate?: Date) => Promise<void>;
   fetchCategories: (query?: string) => Promise<void>;
+  fetchCosts: (startDate?: Date, endDate?: Date) => Promise<void>;
   createProcedure: (data: CreateProcedureInput) => Promise<void>;
   updateProcedure: (data: UpdateProcedureInput) => Promise<void>;
+  createCost: (data: CreateCostInput) => Promise<void>;
+  updateCost: (data: UpdateCostInput) => Promise<void>;
 }
 
 interface ProceduresProviderProps {
@@ -85,6 +109,8 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [costCategories, setCostCategories] = useState<Category[]>([]);
+  const [costs, setCosts] = useState<Cost[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingPayments, setLoadingPayments] = useState<boolean>(true);
 
@@ -142,6 +168,12 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     setCategories(response.data);
   }, []);
 
+  const fetchCostCategories = useCallback(async () => {
+    const response = await api.get("cost-categories", {});
+
+    setCostCategories(response.data);
+  }, []);
+
   const fetchPayments = useCallback(async (startDate?: Date, endDate?: Date) => {
     setLoadingPayments(true);
 
@@ -162,12 +194,51 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     setLoadingPayments(false);
   }, []);
 
+  const fetchCosts = useCallback(async (startDate?: Date, endDate?: Date) => {
+    setLoading(true);
+
+    try {
+      const response = await api.get("costs", {
+        params: {
+          ...(startDate && { start_date: parseDatetoISODate(startDate) }),
+          ...(endDate && { end_date: parseDatetoISODate(endDate) }),
+        },
+      });
+
+      setCosts(response.data);
+    } catch (error) {
+      alert("Erro ao buscar custos");
+      setLoading(false);
+    }
+
+    setLoading(false);
+  }, []);
+
+  const createCost = useCallback(async (data: CreateCostInput) => {
+    const response = await api.post("costs", data);
+    const createdCost: Cost = {
+      ...response.data,
+    };
+
+    setCosts((state) => [createdCost, ...state]);
+  }, []);
+
+  const updateCost = useCallback(async (data: UpdateCostInput) => {
+    const response = await api.put("costs", data);
+    const updateCost: Cost = {
+      ...response.data,
+    };
+
+    setCosts((state) => state.map((cost) => (cost.id === updateCost.id ? updateCost : cost)));
+  }, []);
+
   useEffect(() => {
     if (signed) {
       // fetchProcedures();
       fetchCategories();
+      fetchCostCategories();
     }
-  }, [signed, fetchCategories]);
+  }, [signed, fetchCategories, fetchCostCategories]);
 
   return (
     <ProceduresContext.Provider
@@ -177,11 +248,16 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
         procedures,
         payments,
         categories,
+        costCategories,
+        costs,
         fetchProcedures,
         fetchPayments,
         fetchCategories,
+        fetchCosts,
         createProcedure,
         updateProcedure,
+        createCost,
+        updateCost,
       }}
     >
       {children}

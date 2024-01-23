@@ -18,6 +18,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { ProceduresContext } from "../../contexts/ProceduresContext";
 import { useViewport } from "../../hooks";
 import logoImg from "../../assets/logo.svg";
+import { NewCostModal } from "../NewCostModal";
 
 function isMatchRoute(compareRoute: string, currentRoute?: string) {
   return currentRoute === compareRoute;
@@ -25,7 +26,7 @@ function isMatchRoute(compareRoute: string, currentRoute?: string) {
 
 export function Header() {
   const { user } = useContext(AuthContext);
-  const { fetchProcedures, fetchPayments } = useContext(ProceduresContext);
+  const { fetchProcedures, fetchPayments, fetchCosts } = useContext(ProceduresContext);
 
   const { isMobile } = useViewport();
   const matchRoute = useMatch("/:route");
@@ -49,8 +50,9 @@ export function Header() {
     if (period) {
       fetchProcedures(period.startDate, period.endDate);
       fetchPayments(period.startDate, period.endDate);
+      fetchCosts(period.startDate, period.endDate);
     }
-  }, [fetchProcedures, fetchPayments, period]);
+  }, [fetchProcedures, fetchPayments, fetchCosts, period]);
 
   return (
     <HeaderContainer>
@@ -105,7 +107,7 @@ function ActionButton({ route }: { route?: string }) {
             <PrimaryButton>+ Custo</PrimaryButton>
           </Dialog.Trigger>
 
-          <NewProcedureModal setOpenDialog={setOpen} />
+          <NewCostModal setOpenDialog={setOpen} />
         </Dialog.Root>
       )}
     </>
