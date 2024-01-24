@@ -78,7 +78,7 @@ export const MenuButtonContainer = styled.div`
 `;
 
 interface MenuItemProps {
-  active: boolean;
+  $active: boolean;
 }
 
 export const MenuItem = styled.li<MenuItemProps>`
@@ -88,7 +88,7 @@ export const MenuItem = styled.li<MenuItemProps>`
   border-radius: 6px;
 
   ${(props) =>
-    props.active &&
+    props.$active &&
     css`
       background: ${(props) => props.theme["blue-bright"]};
     `}

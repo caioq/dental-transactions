@@ -68,10 +68,10 @@ export function Header() {
           ) : (
             <MenuButtonContainer>
               <ul>
-                <MenuItem active={isMatchRoute("procedures", matchRoute?.params.route)}>
+                <MenuItem $active={isMatchRoute("procedures", matchRoute?.params.route)}>
                   <Link to="/procedures">Procedimentos</Link>
                 </MenuItem>
-                <MenuItem active={isMatchRoute("costs", matchRoute?.params.route)}>
+                <MenuItem $active={isMatchRoute("costs", matchRoute?.params.route)}>
                   <Link to="/costs">Custos</Link>
                 </MenuItem>
               </ul>
