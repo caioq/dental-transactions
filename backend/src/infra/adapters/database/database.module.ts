@@ -8,6 +8,10 @@ import { DoctorRepository } from '../../../domain/procedure/repositories/doctor.
 import { DoctorPrismaRepository } from './prisma/repositories/doctor.prisma.repository'
 import { PaymentRepository } from '../../../domain/procedure/repositories/payment.repository'
 import { PaymentPrismaRepository } from './prisma/repositories/payment.prisma.repository'
+import { CostCategoryRepository } from '../../../domain/procedure/repositories/costCategory.repository'
+import { CostCategoryPrismaRepository } from './prisma/repositories/costCategory.prisma.repository'
+import { CostRepository } from '../../../domain/procedure/repositories/cost.repository'
+import { CostPrismaRepository } from './prisma/repositories/cost.prisma.repository'
 
 @Module({
   imports: [],
@@ -29,11 +33,21 @@ import { PaymentPrismaRepository } from './prisma/repositories/payment.prisma.re
       provide: PaymentRepository,
       useClass: PaymentPrismaRepository,
     },
+    {
+      provide: CostCategoryRepository,
+      useClass: CostCategoryPrismaRepository,
+    },
+    {
+      provide: CostRepository,
+      useClass: CostPrismaRepository,
+    },
   ],
   exports: [
     PrismaService,
     ProcedureRepository,
+    CostRepository,
     CategoryRepository,
+    CostCategoryRepository,
     DoctorRepository,
     PaymentRepository,
   ],

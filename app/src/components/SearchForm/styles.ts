@@ -4,6 +4,8 @@ export const SearchFormContainer = styled.form`
   display: flex;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+
   input {
     flex: 1;
     border-radius: 6px;
@@ -15,6 +17,7 @@ export const SearchFormContainer = styled.form`
       color: ${(props) => props.theme["text-placeholder"]};
     }
   }
+
   button {
     display: flex;
     align-items: center;

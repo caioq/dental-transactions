@@ -4,19 +4,23 @@ import {
   ProcedureService,
   CategoryService,
   AuthenticateService,
+  CostCategoryService,
 } from '../domain/procedure/services'
-import { ProcedureController } from './controllers/procedure.controller'
-import { DatabaseModule } from './adapters/database/database.module'
-import { CategoryController } from './controllers/category.controller'
-import { AuthenticateController } from './controllers/authenticate.controller'
 import { envSchema } from './env/env'
 import { EnvModule } from './env/env.module'
-import { CryptographyModule } from './adapters/cryptography/cryptography.module'
 import { AuthModule } from './auth/auth.module'
-import { PaymentController } from './controllers/payment.controller'
-import { PaymentService } from '../domain/procedure/services/payment.service'
 import { AppController } from '../app.controller'
+import { DatabaseModule } from './adapters/database/database.module'
+import { CryptographyModule } from './adapters/cryptography/cryptography.module'
+import { ProcedureController } from './controllers/procedure.controller'
+import { CategoryController } from './controllers/category.controller'
+import { AuthenticateController } from './controllers/authenticate.controller'
+import { CostCategoryController } from './controllers/costCategory.controller'
+import { PaymentController } from './controllers/payment.controller'
+import { CostController } from './controllers/cost.controller'
 import { AppService } from '../app.service'
+import { PaymentService } from '../domain/procedure/services/payment.service'
+import { CostService } from '../domain/procedure/services/cost.service'
 
 @Module({
   imports: [
@@ -31,11 +35,21 @@ import { AppService } from '../app.service'
   ],
   controllers: [
     ProcedureController,
+    CostController,
     CategoryController,
+    CostCategoryController,
     AuthenticateController,
     PaymentController,
     AppController,
   ],
-  providers: [ProcedureService, CategoryService, AuthenticateService, PaymentService, AppService],
+  providers: [
+    ProcedureService,
+    CostService,
+    CategoryService,
+    CostCategoryService,
+    AuthenticateService,
+    PaymentService,
+    AppService,
+  ],
 })
 export class AppModule {}

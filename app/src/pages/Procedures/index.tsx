@@ -37,11 +37,11 @@ export function Procedures() {
       <Summary />
 
       <TransactionsContainer>
-        <SearchForm />
         <TransactionsTitle>
           <ArrowCircleUp size={28} />
-          <span>Últimos procedimentos:</span>
+          <span>Procedimentos:</span>
         </TransactionsTitle>
+        <SearchForm />
 
         <Dialog.Root open={open} onOpenChange={setOpen}>
           <TransactionsTableContainer>

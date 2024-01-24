@@ -47,7 +47,7 @@ export const HeaderLogo = styled.div`
   }
 `;
 
-export const NewProceduresButton = styled.button`
+export const PrimaryButton = styled.button`
   height: 50px;
   border: 0;
   background: ${(props) => props.theme["blue-bright"]};
