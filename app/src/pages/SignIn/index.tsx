@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ThemeContext } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -6,10 +6,11 @@ import { HeaderLogo, PrimaryButton, SignInContainer, SignInContent } from "./sty
 import { LogoIcon } from "../../assets/icons/Logo";
 import { AuthContext } from "../../contexts/AuthContext";
 import { SignInFormInputs } from "./types";
+import { RoutesPath } from "../../routes/router";
 
 export function SignIn() {
   const theme = useContext(ThemeContext);
-  const { signIn, signed } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -25,17 +26,11 @@ export function SignIn() {
         email,
         password,
       });
-      navigate("/procedures");
+      navigate(RoutesPath.PROCEDURES);
     } catch (error) {
       alert("Erro ao realizar login");
     }
   }
-
-  useEffect(() => {
-    if (signed) {
-      navigate("/procedures");
-    }
-  }, [signed, navigate]);
 
   return (
     <SignInContainer>

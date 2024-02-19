@@ -2,9 +2,7 @@ import { useContext, useState } from "react";
 import { ArrowCircleUp } from "phosphor-react";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { Header } from "../../components/Header";
 import { SearchForm } from "../../components/SearchForm";
-import { Summary } from "../../components/Summary";
 import { ProcedureCard } from "./components/ProcedureCard";
 import {
   TransactionsContainer,
@@ -33,9 +31,6 @@ export function Procedures() {
 
   return (
     <div>
-      <Header />
-      <Summary />
-
       <TransactionsContainer>
         <TransactionsTitle>
           <ArrowCircleUp size={28} />

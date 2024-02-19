@@ -1,7 +1,8 @@
-import { ReactNode, createContext, useCallback, useEffect, useState } from "react";
+import { ReactNode, createContext, useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../utils";
 
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
@@ -9,10 +10,13 @@ interface User {
 }
 
 interface AuthContextType {
-  signed: boolean;
+  signed: boolean | null;
   user: User | null;
   signIn: (data: SignInInput) => Promise<void>;
-  // signOut: () => Promise<void>;
+  signOut: () => Promise<void>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setSigned: React.Dispatch<React.SetStateAction<boolean | null>>;
+  // getUserData: () => void;
 }
 
 interface SignInInput {
@@ -24,11 +28,13 @@ export const AuthContext = createContext({} as AuthContextType);
 
 interface AuthProviderProps {
   children: ReactNode;
+  userData: User;
 }
 
-export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User | null>(null);
-  const [signed, setSigned] = useState<boolean>(false);
+export function AuthProvider({ children, userData }: AuthProviderProps) {
+  const [user, setUser] = useState<User | null>(userData);
+  const [signed, setSigned] = useState<boolean | null>(() => !!userData);
+  const navigate = useNavigate();
 
   const signIn = useCallback(async (data: SignInInput) => {
     const { email, password } = data;
@@ -50,17 +56,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
     localStorage.setItem("@DT:user", JSON.stringify(user));
 
     api.defaults.headers.authorization = `Bearer ${accessToken}`;
+
+    //TODO: navigate to home
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem("@DT:token");
-    const user = localStorage.getItem("@DT:user");
-    if (token && user) {
-      api.defaults.headers.authorization = `Bearer ${token}`;
-      setSigned(true);
-      setUser(JSON.parse(user));
-    }
-  }, []);
+  const signOut = useCallback(async () => {
+    setUser(null);
+    setSigned(false);
+    localStorage.removeItem("@DT:token");
+    localStorage.removeItem("@DT:user");
 
-  return <AuthContext.Provider value={{ user, signed, signIn }}>{children}</AuthContext.Provider>;
+    api.defaults.headers.authorization = "";
+
+    navigate("", { replace: true });
+  }, [navigate]);
+
+  return (
+    <AuthContext.Provider value={{ user, signed, signIn, signOut, setSigned, setUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
