@@ -14,22 +14,22 @@ import {
 import { SelectDateInput } from "./components/SelectDateInput";
 import { BurgerMenu } from "./components/BurgerMenu";
 import { NewProcedureModal } from "../NewProcedureModal";
-import { AuthContext } from "../../contexts/AuthContext";
 import { ProceduresContext } from "../../contexts/ProceduresContext";
-import { useViewport } from "../../hooks";
+import { useAuth, useViewport } from "../../hooks";
 import logoImg from "../../assets/logo.svg";
 import { NewCostModal } from "../NewCostModal";
+import { RoutesPath } from "../../routes/router";
 
 function isMatchRoute(compareRoute: string, currentRoute?: string) {
   return currentRoute === compareRoute;
 }
 
 export function Header() {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const { fetchProcedures, fetchPayments, fetchCosts } = useContext(ProceduresContext);
 
   const { isMobile } = useViewport();
-  const matchRoute = useMatch("/:route");
+  const matchRoute = useMatch("/dashboard/:route");
 
   const [period, setPeriod] = useState<{ startDate: Date; endDate: Date }>(() => {
     const today = new Date();
@@ -69,10 +69,10 @@ export function Header() {
             <MenuButtonContainer>
               <ul>
                 <MenuItem $active={isMatchRoute("procedures", matchRoute?.params.route)}>
-                  <Link to="/procedures">Procedimentos</Link>
+                  <Link to={RoutesPath.PROCEDURES}>Procedimentos</Link>
                 </MenuItem>
                 <MenuItem $active={isMatchRoute("costs", matchRoute?.params.route)}>
-                  <Link to="/costs">Custos</Link>
+                  <Link to={RoutesPath.COSTS}>Custos</Link>
                 </MenuItem>
               </ul>
             </MenuButtonContainer>

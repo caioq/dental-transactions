@@ -1,6 +1,5 @@
-import { ReactNode, createContext, useCallback, useEffect, useState } from "react";
+import { ReactNode, createContext, useCallback, useState } from "react";
 import { api, calculateTotalPayment, parseDatetoISODate } from "../utils";
-import { useAuth } from "../hooks";
 
 export interface Procedure {
   id: string;
@@ -20,7 +19,7 @@ export interface Payment {
   value: number;
 }
 
-interface Category {
+export interface Category {
   id: string;
   name: string;
 }
@@ -90,7 +89,7 @@ interface ProcedureContextType {
   costs: Cost[];
   fetchProcedures: (startDate?: Date, endDate?: Date) => Promise<void>;
   fetchPayments: (startDate?: Date, endDate?: Date) => Promise<void>;
-  fetchCategories: (query?: string) => Promise<void>;
+  // fetchCategories: (query?: string) => Promise<void>;
   fetchCosts: (startDate?: Date, endDate?: Date) => Promise<void>;
   createProcedure: (data: CreateProcedureInput) => Promise<void>;
   updateProcedure: (data: UpdateProcedureInput) => Promise<void>;
@@ -100,16 +99,18 @@ interface ProcedureContextType {
 
 interface ProceduresProviderProps {
   children: ReactNode;
+  categories: Category[];
+  costCategories: Category[];
 }
 
 export const ProceduresContext = createContext({} as ProcedureContextType);
 
-export function ProceduresProvider({ children }: ProceduresProviderProps) {
-  const { signed } = useAuth();
+export function ProceduresProvider({ children, categories, costCategories }: ProceduresProviderProps) {
+  // const { signed } = useAuth();
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [costCategories, setCostCategories] = useState<Category[]>([]);
+  // const [categories, setCategories] = useState<Category[]>(initCategories);
+  // const [costCategories, setCostCategories] = useState<Category[]>(initCostCategories);
   const [costs, setCosts] = useState<Cost[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingPayments, setLoadingPayments] = useState<boolean>(true);
@@ -162,17 +163,17 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     );
   }, []);
 
-  const fetchCategories = useCallback(async () => {
-    const response = await api.get("categories", {});
+  // const fetchCategories = useCallback(async () => {
+  //   const response = await api.get("categories", {});
 
-    setCategories(response.data);
-  }, []);
+  //   setCategories(response.data);
+  // }, []);
 
-  const fetchCostCategories = useCallback(async () => {
-    const response = await api.get("cost-categories", {});
+  // const fetchCostCategories = useCallback(async () => {
+  //   const response = await api.get("cost-categories", {});
 
-    setCostCategories(response.data);
-  }, []);
+  //   setCostCategories(response.data);
+  // }, []);
 
   const fetchPayments = useCallback(async (startDate?: Date, endDate?: Date) => {
     setLoadingPayments(true);
@@ -232,14 +233,6 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
     setCosts((state) => state.map((cost) => (cost.id === updateCost.id ? updateCost : cost)));
   }, []);
 
-  useEffect(() => {
-    if (signed) {
-      // fetchProcedures();
-      fetchCategories();
-      fetchCostCategories();
-    }
-  }, [signed, fetchCategories, fetchCostCategories]);
-
   return (
     <ProceduresContext.Provider
       value={{
@@ -252,7 +245,7 @@ export function ProceduresProvider({ children }: ProceduresProviderProps) {
         costs,
         fetchProcedures,
         fetchPayments,
-        fetchCategories,
+        // fetchCategories,
         fetchCosts,
         createProcedure,
         updateProcedure,

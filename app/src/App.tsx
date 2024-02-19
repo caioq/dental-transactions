@@ -4,7 +4,6 @@ import { defaultTheme } from "./styles/themes/default";
 import { GlobalStyle } from "./styles/global";
 import { router } from "./routes/router";
 import { ProceduresProvider } from "./contexts/ProceduresContext";
-import { AuthProvider } from "./contexts/AuthContext";
 import { ViewportProvider } from "./contexts/ViewportContext";
 
 export function App() {
@@ -13,11 +12,9 @@ export function App() {
       <GlobalStyle />
 
       <ViewportProvider>
-        <AuthProvider>
-          <ProceduresProvider>
-            <RouterProvider router={router} />
-          </ProceduresProvider>
-        </AuthProvider>
+        <ProceduresProvider>
+          <RouterProvider router={router} />
+        </ProceduresProvider>
       </ViewportProvider>
     </ThemeProvider>
   );

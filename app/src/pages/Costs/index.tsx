@@ -32,8 +32,8 @@ export function Costs() {
 
   return (
     <div>
-      <Header />
-      <Summary />
+      {/* <Header />
+      <Summary /> */}
 
       <TransactionsContainer>
         <TransactionsTitle>
