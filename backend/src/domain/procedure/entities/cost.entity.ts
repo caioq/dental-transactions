@@ -5,6 +5,8 @@ export class Cost {
   id!: string
   description?: string | null
   date!: Date
+  endDate!: Date
+  installments: number = 1
   value!: number
   categoryId!: string
   doctorId!: string

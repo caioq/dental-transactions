@@ -7,8 +7,6 @@ Manage dental operations by registering procedures performed (income) and costs 
 
 ## Prerequisites
 
-What things you need to install the software and how to install them.
-
 - [Git](https://git-scm.com/)
 - [NPM](https://www.npmjs.com/)
 - [Node](https://nodejs.org/en/) `>=18.0.0` (We recommend you install it using [NVM](https://github.com/nvm-sh/nvm))

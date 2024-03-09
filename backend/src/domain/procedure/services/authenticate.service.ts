@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { DoctorRepository } from '../repositories/doctor.repository'
 import { HashService, TokenService } from '../ports'
 
@@ -29,13 +29,13 @@ export class AuthenticateService {
     const doctor = await this.doctorRepository.findByEmail(email)
 
     if (!doctor) {
-      throw new Error('Invalid credentials')
+      throw new UnauthorizedException('Invalid credentials')
     }
 
     const isPasswordValid = await this.hashService.compare(password, doctor.password)
 
     if (!isPasswordValid) {
-      throw new Error('Invalid credentials')
+      throw new UnauthorizedException('Invalid credentials')
     }
 
     const accessToken = await this.tokenService.encrypt({
