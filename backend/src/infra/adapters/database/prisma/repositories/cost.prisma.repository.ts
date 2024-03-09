@@ -42,10 +42,27 @@ export class CostPrismaRepository implements CostRepository {
     const { period } = filter
 
     const procedures = await this.prisma.cost.findMany({
-      where: { doctorId, ...(period && { date: { gte: period.start, lte: period.end } }) },
+      where: { doctorId, ...(period && this.costPeriodFilter(period.start, period.end)) },
       include: { category: true },
       orderBy: { date: 'desc' },
     })
     return procedures.map(CostPrismaMapper.toDomain)
+  }
+
+  private costPeriodFilter(start: Date, end: Date) {
+    return {
+      OR: [
+        {
+          date: { gte: start, lte: end },
+        },
+        {
+          endDate: { gte: start, lte: end },
+        },
+        {
+          date: { lte: start },
+          endDate: { gte: end },
+        },
+      ],
+    }
   }
 }

@@ -6,13 +6,29 @@ interface CostPrisma extends PrismaCost {}
 export class CostPrismaMapper {
   static toPrisma(cost: Cost): Prisma.CostUncheckedCreateInput {
     return {
-      ...cost,
+      id: cost.id,
+      description: cost.description,
+      date: cost.date,
+      endDate: cost.endDate,
+      installments: cost.installments,
+      value: cost.value,
+      categoryId: cost.categoryId,
+      doctorId: cost.doctorId,
+      createdAt: cost.createdAt,
     }
   }
 
   static toPrismaUpdate(cost: Cost): Prisma.CostUncheckedUpdateInput {
     return {
-      ...cost,
+      id: cost.id,
+      description: cost.description,
+      date: cost.date,
+      endDate: cost.endDate,
+      installments: cost.installments,
+      value: cost.value,
+      categoryId: cost.categoryId,
+      doctorId: cost.doctorId,
+      createdAt: cost.createdAt,
     }
   }
 

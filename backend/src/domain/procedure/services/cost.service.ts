@@ -4,7 +4,7 @@ import { CostRepository } from '../repositories/cost.repository'
 
 interface CreateCostParams extends Omit<Cost, 'id' | 'endDate' | 'createdAt'> {}
 
-interface UpdateCostParams extends Omit<Cost, 'createdAt'> {}
+interface UpdateCostParams extends Omit<Cost, 'endDate' | 'createdAt'> {}
 
 @Injectable()
 export class CostService {
@@ -19,7 +19,7 @@ export class CostService {
     return this.costRepository.create(cost)
   }
 
-  async updateProcedure(params: UpdateCostParams): Promise<Cost> {
+  async updateCost(params: UpdateCostParams): Promise<Cost> {
     const { installments, date, id } = params
 
     const currentCost = await this.costRepository.findById(id)
@@ -39,6 +39,11 @@ export class CostService {
   }
 
   private calculateEndDate(date: Date, installments: number) {
-    return new Date(date.getTime() + (installments - 1) * 30 * 24 * 60 * 60 * 1000)
+    if (installments === 1) return date
+
+    const endDate = new Date(date)
+    endDate.setUTCMonth(date.getUTCMonth() + installments)
+    endDate.setDate(0)
+    return endDate
   }
 }
