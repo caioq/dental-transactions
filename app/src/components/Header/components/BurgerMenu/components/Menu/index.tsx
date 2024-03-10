@@ -6,9 +6,10 @@ import { RoutesPath } from "../../../../../../routes/router";
 
 interface MenuProps {
   open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-export function Menu({ open }: MenuProps) {
+export function Menu({ open, setOpen }: MenuProps) {
   const { signOut } = useAuth();
   const matchRoute = useMatch("/dashboard/:route");
 
@@ -18,13 +19,13 @@ export function Menu({ open }: MenuProps) {
 
   return (
     <StyledMenu open={open}>
-      <Link to={RoutesPath.PROCEDURES}>
+      <Link to={RoutesPath.PROCEDURES} onClick={() => setOpen(!open)}>
         <MenuItem active={isMatchRoute("procedures")}>
           <ArrowCircleUp size={32} />
           Procedimentos
         </MenuItem>
       </Link>
-      <Link to={RoutesPath.COSTS}>
+      <Link to={RoutesPath.COSTS} onClick={() => setOpen(!open)}>
         <MenuItem active={isMatchRoute("costs")}>
           <ArrowCircleDown size={32} />
           Custos

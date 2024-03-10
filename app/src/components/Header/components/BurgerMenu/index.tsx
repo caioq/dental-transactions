@@ -9,7 +9,7 @@ export function BurgerMenu() {
   return (
     <StyledBurgerMenu>
       <Burger open={openMenu} setOpen={setOpenMenu} />
-      <Menu open={openMenu} />
+      <Menu open={openMenu} setOpen={setOpenMenu} />
     </StyledBurgerMenu>
   );
 }
