@@ -22,7 +22,7 @@ Manage dental operations by registering procedures performed (income) and costs 
 2. Install dependencies
 
 ```bash
-$ nvm use && npm install
+$ nvm use && make install
 ```
 
 ## Running Local:

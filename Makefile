@@ -2,7 +2,8 @@ run-migrations:
 	cd backend && npm run prisma:migrate && npm run prisma:generate && npm run prisma:seed
 
 install:
-	npm install
+	npm install -g pnpm
+	pnpm install
 	cd app && npm install
 	cd backend && npm install
 
