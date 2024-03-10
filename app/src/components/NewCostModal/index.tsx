@@ -53,6 +53,7 @@ export function NewCostModal(props: NewCostModalProps) {
           categoryId: data.categoryId,
           date: new Date(data.date),
           description: data.description || null,
+          installments: Number(data.installments) || 1,
         });
       } catch (error) {
         alert("Erro ao criar custo");
@@ -65,6 +66,7 @@ export function NewCostModal(props: NewCostModalProps) {
           categoryId: data.categoryId,
           date: new Date(data.date),
           description: data.description || null,
+          installments: Number(data.installments) || 1,
         });
       } catch (error) {
         alert("Erro ao atualizar custo");
@@ -120,6 +122,7 @@ export function NewCostModal(props: NewCostModalProps) {
               />
             )}
           />
+          <input type="number" placeholder="Parcelas" {...register("installments")} />
 
           <PrimaryButton type="submit" disabled={isSubmitting}>
             {isCreateMode ? "Cadastrar" : "Salvar"}

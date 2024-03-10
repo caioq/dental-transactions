@@ -5,6 +5,7 @@ const newCostFormSchema = z.object({
   description: z.string().nullable(),
   categoryId: z.string().min(1),
   value: z.number().positive(),
+  installments: z.number().int().positive().nullable(),
 });
 
 export type NewCostFormInputs = z.infer<typeof newCostFormSchema>;

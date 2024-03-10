@@ -21,11 +21,26 @@ export const CostValuesContent = styled.div`
 
   strong {
     font-size: 1.5rem;
-    color: ${(props) => props.theme["green-alt"]};
+    color: ${(props) => props.theme["red-300"]};
   }
 
   span {
     font-size: 1.1rem;
+  }
+`;
+
+export const CostValuesLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* margin-top: 1rem; */
+
+  label {
+    font-size: 0.8rem;
+    color: ${(props) => props.theme["text-placeholder"]};
+  }
+
+  span {
+    font-size: 1rem;
   }
 `;
 

@@ -30,6 +30,8 @@ export interface Cost {
   description: string;
   value: number;
   category: Category;
+  installmentValue: number;
+  installments: number;
 }
 
 interface GetProceduresResponse {
@@ -73,6 +75,7 @@ interface CreateCostInput {
   description: string | null;
   categoryId: string;
   value: number;
+  installments: number;
 }
 
 interface UpdateCostInput extends CreateCostInput {
