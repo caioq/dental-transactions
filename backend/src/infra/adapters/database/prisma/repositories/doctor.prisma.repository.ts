@@ -14,4 +14,11 @@ export class DoctorPrismaRepository implements DoctorRepository {
 
     return DoctorPrismaMapper.toDomain(doctor)
   }
+
+  async create(user: Doctor): Promise<Doctor> {
+    const data = DoctorPrismaMapper.toPrisma(user)
+    const doctor = await this.prisma.user.create({ data })
+
+    return DoctorPrismaMapper.toDomain(doctor)
+  }
 }

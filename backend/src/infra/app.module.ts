@@ -5,6 +5,7 @@ import {
   CategoryService,
   AuthenticateService,
   CostCategoryService,
+  UserService,
 } from '../domain/procedure/services'
 import { envSchema } from './env/env'
 import { EnvModule } from './env/env.module'
@@ -18,6 +19,7 @@ import { AuthenticateController } from './controllers/authenticate.controller'
 import { CostCategoryController } from './controllers/costCategory.controller'
 import { PaymentController } from './controllers/payment.controller'
 import { CostController } from './controllers/cost.controller'
+import { UserController } from './controllers/user.controller'
 import { AppService } from '../app.service'
 import { PaymentService } from '../domain/procedure/services/payment.service'
 import { CostService } from '../domain/procedure/services/cost.service'
@@ -34,6 +36,7 @@ import { CostService } from '../domain/procedure/services/cost.service'
     CryptographyModule,
   ],
   controllers: [
+    UserController,
     ProcedureController,
     CostController,
     CategoryController,
@@ -43,6 +46,7 @@ import { CostService } from '../domain/procedure/services/cost.service'
     AppController,
   ],
   providers: [
+    UserService,
     ProcedureService,
     CostService,
     CategoryService,
