@@ -5,5 +5,5 @@
 
 */
 -- AlterTable
-ALTER TABLE "costs" ADD COLUMN     "end_date" TIMESTAMP(3) NOT NULL,
+ALTER TABLE "costs" ADD COLUMN     "end_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_DATE,
 ADD COLUMN     "installments" INTEGER NOT NULL DEFAULT 1;
