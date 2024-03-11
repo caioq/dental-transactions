@@ -12,10 +12,11 @@ export class Doctor {
     Object.assign(this, props)
   }
 
-  static create(props: Optional<Doctor, 'id'>) {
+  static create(props: Optional<Doctor, 'id' | 'createdAt'>) {
     const doctor = new Doctor({
       ...props,
       id: props.id ?? new UniqueEntityID().toString(),
+      createdAt: props.createdAt ?? new Date(),
     })
 
     return doctor
