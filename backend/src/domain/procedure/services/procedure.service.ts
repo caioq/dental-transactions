@@ -59,4 +59,8 @@ export class ProcedureService {
     })
     return procedures
   }
+
+  async getProceduresWithPendingPayments(doctorId: string) {
+    return this.procedureRepository.findProceduresWithPendingPayments(doctorId)
+  }
 }

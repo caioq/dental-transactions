@@ -63,4 +63,14 @@ export class ProcedureController {
 
     return this.procedureService.getProceduresByDoctorId(id, new Date(startDate), new Date(endDate))
   }
+
+  @Get('pending-payments')
+  @UseGuards(JwtAuthGuard)
+  getProceduresWithPendingPayments(@CurrentUser() user: UserPayload) {
+    const { id } = user
+
+    this.logger.log(`Getting procedures with pending payments for doctor ${id}`)
+
+    return this.procedureService.getProceduresWithPendingPayments(id)
+  }
 }

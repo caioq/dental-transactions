@@ -48,4 +48,24 @@ export class ProcedurePrismaRepository implements ProcedureRepository {
     })
     return procedures.map(ProcedurePrismaMapper.toDomain)
   }
+
+  async findProceduresWithPendingPayments(doctorId: string) {
+    const procedures: any = await this.prisma.$queryRaw`
+    SELECT p.*, p.total_payment
+    FROM (
+      SELECT SUM(payment.value) total_payment, procedure.*
+      FROM procedures procedure
+      INNER JOIN payments payment ON payment.procedure_id = procedure.id
+      WHERE procedure.doctor_id = ${doctorId}
+      GROUP BY procedure.id
+    ) p
+    WHERE p.invoice > p.total_payment AND p.doctor_id = ${doctorId}`
+
+    console.log(procedures)
+
+    return procedures.map((procedure) => ({
+      ...ProcedurePrismaMapper.toDomain(procedure),
+      totalPayment: procedure.total_payment,
+    }))
+  }
 }
