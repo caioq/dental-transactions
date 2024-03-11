@@ -3,7 +3,6 @@ import { ThemeProvider } from "styled-components";
 import { defaultTheme } from "./styles/themes/default";
 import { GlobalStyle } from "./styles/global";
 import { router } from "./routes/router";
-import { ProceduresProvider } from "./contexts/ProceduresContext";
 import { ViewportProvider } from "./contexts/ViewportContext";
 
 export function App() {
@@ -12,9 +11,7 @@ export function App() {
       <GlobalStyle />
 
       <ViewportProvider>
-        <ProceduresProvider>
-          <RouterProvider router={router} />
-        </ProceduresProvider>
+        <RouterProvider router={router} />
       </ViewportProvider>
     </ThemeProvider>
   );
