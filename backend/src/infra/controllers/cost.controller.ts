@@ -1,13 +1,18 @@
 import { Body, Controller, Get, Post, Put, Query, UseGuards, Logger } from '@nestjs/common'
 import { CostService } from '../../domain/procedure/services/cost.service'
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
-import { CreateCostBodySchema, createCostBodySchema } from '../schemas'
+import {
+  CreateCostBodySchema,
+  UpdateCostBodySchema,
+  createCostBodySchema,
+  updateCostBodySchema,
+} from '../schemas'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { CurrentUser } from '../auth/current-user.decorator'
 import { UserPayload } from '../auth/jwt.strategy'
 
 const createCostBodyValidationPipe = new ZodValidationPipe(createCostBodySchema)
-// const updateProcedureBodyValidationPipe = new ZodValidationPipe(updateProcedureBodySchema)
+const updateCostBodyValidationPipe = new ZodValidationPipe(updateCostBodySchema)
 
 @Controller('costs')
 export class CostController {
@@ -29,19 +34,19 @@ export class CostController {
     })
   }
 
-  // @Put()
-  // @UseGuards(JwtAuthGuard)
-  // updateProcedure(
-  //   @Body(updateProcedureBodyValidationPipe) body: UpdateProcedureBodySchema,
-  //   @CurrentUser() user: UserPayload,
-  // ) {
-  //   const { id } = user
+  @Put()
+  @UseGuards(JwtAuthGuard)
+  updateCost(
+    @Body(updateCostBodyValidationPipe) body: UpdateCostBodySchema,
+    @CurrentUser() user: UserPayload,
+  ) {
+    const { id } = user
 
-  //   return this.procedureService.updateProcedure({
-  //     ...body,
-  //     doctorId: id,
-  //   })
-  // }
+    return this.costService.updateCost({
+      ...body,
+      doctorId: id,
+    })
+  }
 
   @Get()
   @UseGuards(JwtAuthGuard)

@@ -32,7 +32,7 @@ model Procedure {
   patientName       String?                 @map("patient_name")
   cpf               String?
   billing           Decimal
-  invoice           Decimal                     
+  invoice           Decimal
   date              DateTime
   createdAt         DateTime                @default(now()) @map("created_at")
   updatedAt         DateTime?               @updatedAt @map("updated_at")
@@ -41,7 +41,7 @@ model Procedure {
 
   doctor            User                    @relation(fields: [doctorId], references: [id])
   category          Category                @relation(fields: [categoryId], references: [id])
-  
+
   @@map("procedures")
 }
 
@@ -68,19 +68,21 @@ model Category {
 }
 
 model Cost {
-  id                String                  @id @default(uuid())
-  description       String?
-  doctorId          String                  @map("doctor_id")
-  categoryId        String                  @map("category_id")
-  value             Decimal
-  date              DateTime
-  createdAt         DateTime                @default(now()) @map("created_at")
-  updatedAt         DateTime?               @updatedAt @map("updated_at")
-  deletedAt         DateTime?               @map("deleted_at")
+  id                    String                  @id @default(uuid())
+  description           String?
+  doctorId              String                  @map("doctor_id")
+  categoryId            String                  @map("category_id")
+  value                 Decimal
+  installments          Int                     @default(1)
+  date                  DateTime
+  endDate               DateTime                @map("end_date")
+  createdAt             DateTime                @default(now()) @map("created_at")
+  updatedAt             DateTime?               @updatedAt @map("updated_at")
+  deletedAt             DateTime?               @map("deleted_at")
 
   doctor            User                    @relation(fields: [doctorId], references: [id])
   category          CostCategory            @relation(fields: [categoryId], references: [id])
-  
+
   @@map("costs")
 }
 

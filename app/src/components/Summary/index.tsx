@@ -13,7 +13,7 @@ export function Summary() {
   }
 
   function calculateOutcome(costs: Cost[]): number {
-    return costs.reduce((acc, cost) => (acc += cost.value), 0);
+    return costs.reduce((acc, cost) => (acc += cost.installmentValue), 0);
   }
 
   const income = useMemo(() => calculateIncome(payments), [payments]);

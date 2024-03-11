@@ -1,19 +1,29 @@
 import { CalendarBlank, TagSimple } from "phosphor-react";
-import { CostCardContainer, CostCardFooter, CostValuesContent } from "./styles";
+import { CostCardContainer, CostCardFooter, CostValuesContent, CostValuesLeft } from "./styles";
 
 interface CostCardProps {
   description: string;
   category: string;
   date: string;
   value: string;
+  installments: number;
+  installmentValue: string;
 }
 
-export function CostCard({ description, date, value, category }: CostCardProps) {
+export function CostCard({ description, date, value, installmentValue, installments, category }: CostCardProps) {
   return (
     <CostCardContainer>
-      <CostValuesContent>
+      <header>
         <span>{description}</span>
-        <strong>{value}</strong>
+      </header>
+      <CostValuesContent>
+        <CostValuesLeft>
+          <label>Total</label>
+          <span>{value}</span>
+          <label>Parcelas</label>
+          <span>{installments}</span>
+        </CostValuesLeft>
+        <strong>{installmentValue}</strong>
       </CostValuesContent>
       <CostCardFooter>
         <div>

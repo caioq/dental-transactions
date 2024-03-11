@@ -11,9 +11,7 @@ import {
   TransactionsCardsContainer,
 } from "./styles";
 import { Cost, ProceduresContext } from "../../contexts/ProceduresContext";
-import { Header } from "../../components/Header";
 import { SearchForm } from "../../components/SearchForm";
-import { Summary } from "../../components/Summary";
 import { Skeleton } from "../../components/core/Skeleton";
 import { EmptyState } from "./components/EmptyState";
 import { CostCard } from "./components/CostCard";
@@ -32,9 +30,6 @@ export function Costs() {
 
   return (
     <div>
-      {/* <Header />
-      <Summary /> */}
-
       <TransactionsContainer>
         <TransactionsTitle>
           <ArrowCircleDown size={28} />
@@ -55,7 +50,7 @@ export function Costs() {
                     <DialogTrigger asChild key={index} onClick={() => handleSelectCost(cost)}>
                       <tr key={index}>
                         <td>{cost.description || "Não informado"}</td>
-                        <td>{currencyFormatter.format(cost.value)}</td>
+                        <td>{currencyFormatter.format(cost.installmentValue)}</td>
                         <td>
                           {/* <PriceHighlight variant="income">{currencyFormatter.format(cost.totalPaid)}</PriceHighlight> */}
                         </td>
@@ -82,6 +77,8 @@ export function Costs() {
                     description={cost.description || "Não informado"}
                     value={currencyFormatter.format(cost.value)}
                     category={cost.category.name}
+                    installments={cost.installments}
+                    installmentValue={currencyFormatter.format(cost.installmentValue)}
                   />
                 </DialogTrigger>
               ))
