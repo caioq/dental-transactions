@@ -21,13 +21,13 @@ export function Menu({ open, setOpen }: MenuProps) {
     <StyledMenu open={open}>
       <Link to={RoutesPath.PROCEDURES} onClick={() => setOpen(!open)}>
         <MenuItem active={isMatchRoute("procedures")}>
-          <ArrowCircleUp size={32} />
+          <ArrowCircleDown size={32} />
           Procedimentos
         </MenuItem>
       </Link>
       <Link to={RoutesPath.COSTS} onClick={() => setOpen(!open)}>
         <MenuItem active={isMatchRoute("costs")}>
-          <ArrowCircleDown size={32} />
+          <ArrowCircleUp size={32} />
           Custos
         </MenuItem>
       </Link>
