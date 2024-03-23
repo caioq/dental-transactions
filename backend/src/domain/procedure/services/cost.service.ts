@@ -31,6 +31,13 @@ export class CostService {
     return this.costRepository.update(cost)
   }
 
+  async deleteCost(costId: string, userId: string): Promise<void> {
+    const currentCost = await this.costRepository.findByIdAndDoctorId(costId, userId)
+    if (!currentCost) throw new NotFoundException('Cost not found')
+
+    await this.costRepository.delete(costId, userId)
+  }
+
   async getCostByDoctorId(doctorId: string, startDate: Date, endDate: Date): Promise<Cost[]> {
     const costs = await this.costRepository.findByDoctorId(doctorId, {
       period: { start: startDate, end: endDate },

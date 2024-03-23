@@ -3,7 +3,7 @@ import { X } from "phosphor-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { Procedure, ProceduresContext } from "../../contexts/ProceduresContext";
-import { CloseButton, Content, Overlay, PrimaryButton, SecondaryButton } from "./styles";
+import { CloseButton, Content, Overlay, PrimaryButton, SecondaryButton, DeleteButton } from "./styles";
 import { NewPaymentCard } from "./components/NewPaymentCard";
 import { NewProcedureFormInputs } from "./types";
 import { CategorySelectInput } from "./components/SelectCategoryInput";
@@ -18,7 +18,7 @@ interface NewProcedureModalProps {
 
 export function NewProcedureModal(props: NewProcedureModalProps) {
   const { setOpenDialog, initialValues } = props;
-  const { categories, createProcedure, updateProcedure } = useContext(ProceduresContext);
+  const { categories, createProcedure, updateProcedure, deleteProcedure } = useContext(ProceduresContext);
 
   const isCreateMode = !initialValues?.id;
 
@@ -101,6 +101,15 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
     });
   }
 
+  async function handleClickDeleteProcedure(procedureId: string) {
+    try {
+      await deleteProcedure(procedureId);
+      setOpenDialog(false);
+    } catch (error) {
+      alert("Erro ao excluir procedimento");
+    }
+  }
+
   function clearForm() {
     reset();
   }
@@ -180,6 +189,11 @@ export function NewProcedureModal(props: NewProcedureModalProps) {
           <PrimaryButton type="submit" disabled={isSubmitting}>
             {isCreateMode ? "Cadastrar" : "Salvar"}
           </PrimaryButton>
+          {!isCreateMode && (
+            <DeleteButton type="button" onClick={() => handleClickDeleteProcedure(initialValues.id)}>
+              Excluir
+            </DeleteButton>
+          )}
         </form>
       </Content>
     </Dialog.Portal>

@@ -89,6 +89,23 @@ export const PrimaryButton = styled.button`
   }
 `;
 
+export const DeleteButton = styled.button`
+  height: 50px;
+  border: 0;
+  background: ${(props) => props.theme["red-dark"]};
+  color: ${(props) => props.theme.white};
+  font-weight: bold;
+  padding: 0 1.25rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background: ${(props) => props.theme["red-500"]};
+    transition: background-color 0.2s;
+  }
+`;
+
 export const CloseButton = styled(Dialog.Close)`
   position: absolute;
   background: transparent;

@@ -8,8 +8,10 @@ export interface CostsFilter {
 }
 
 export abstract class CostRepository {
-  abstract create(procedure: Cost): Promise<Cost>
-  abstract update(procedure: Cost): Promise<Cost>
+  abstract create(cost: Cost): Promise<Cost>
+  abstract update(cost: Cost): Promise<Cost>
+  abstract delete(costId: string, doctorId: string): Promise<void>
   abstract findById(id: string): Promise<Cost | null>
+  abstract findByIdAndDoctorId(id: string, doctorId: string): Promise<Cost | null>
   abstract findByDoctorId(doctorId: string, filter?: CostsFilter): Promise<Cost[]>
 }

@@ -30,9 +30,24 @@ export class CostPrismaRepository implements CostRepository {
     return CostPrismaMapper.toDomain(updatedCost)
   }
 
+  async delete(costId: string, doctorId: string) {
+    await this.prisma.cost.update({
+      data: { deletedAt: new Date() },
+      where: { id: costId, doctorId },
+    })
+  }
+
   async findById(id: string) {
     const cost = await this.prisma.cost.findUnique({
-      where: { id },
+      where: { id, deletedAt: null },
+      include: { category: true },
+    })
+    return cost ? CostPrismaMapper.toDomain(cost) : null
+  }
+
+  async findByIdAndDoctorId(costId: string, doctorId: string) {
+    const cost = await this.prisma.cost.findUnique({
+      where: { id: costId, doctorId, deletedAt: null },
       include: { category: true },
     })
     return cost ? CostPrismaMapper.toDomain(cost) : null
@@ -42,7 +57,11 @@ export class CostPrismaRepository implements CostRepository {
     const { period } = filter
 
     const procedures = await this.prisma.cost.findMany({
-      where: { doctorId, ...(period && this.costPeriodFilter(period.start, period.end)) },
+      where: {
+        doctorId,
+        ...(period && this.costPeriodFilter(period.start, period.end)),
+        deletedAt: null,
+      },
       include: { category: true },
       orderBy: { date: 'desc' },
     })

@@ -59,4 +59,11 @@ export class ProcedureService {
     })
     return procedures
   }
+
+  async deleteProcedure(procedureId: string, userId: string): Promise<void> {
+    const currentProcedure = await this.procedureRepository.findByIdAndDoctorId(procedureId, userId)
+    if (!currentProcedure) throw new NotFoundException('Procedure not found')
+
+    await this.procedureRepository.delete(procedureId)
+  }
 }

@@ -20,6 +20,7 @@ export class PaymentPrismaRepository implements PaymentRepository {
           doctorId,
         },
         ...(period && { date: { gte: period.start, lte: period.end } }),
+        deletedAt: null,
       },
       include: { procedure: true },
       orderBy: { createdAt: 'desc' },

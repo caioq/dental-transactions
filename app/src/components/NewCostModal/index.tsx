@@ -4,7 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Controller, useForm } from "react-hook-form";
 
 import { Cost, ProceduresContext } from "../../contexts/ProceduresContext";
-import { CloseButton, Content, Overlay, PrimaryButton } from "./styles";
+import { CloseButton, Content, DeleteButton, Overlay, PrimaryButton } from "./styles";
 import { NewCostFormInputs } from "./types";
 import { CategorySelectInput } from "./components/SelectCategoryInput";
 import { dateToInputDate } from "../../utils";
@@ -18,7 +18,7 @@ interface NewCostModalProps {
 
 export function NewCostModal(props: NewCostModalProps) {
   const { setOpenDialog, initialValues } = props;
-  const { costCategories, createCost, updateCost } = useContext(ProceduresContext);
+  const { costCategories, createCost, updateCost, deleteCost } = useContext(ProceduresContext);
 
   const isCreateMode = !initialValues?.id;
 
@@ -77,6 +77,15 @@ export function NewCostModal(props: NewCostModalProps) {
     setOpenDialog(false);
   }
 
+  async function handleClickDeleteCost(costId: string) {
+    try {
+      await deleteCost(costId);
+      setOpenDialog(false);
+    } catch (error) {
+      alert("Erro ao excluir custo");
+    }
+  }
+
   function clearForm() {
     reset();
   }
@@ -127,6 +136,11 @@ export function NewCostModal(props: NewCostModalProps) {
           <PrimaryButton type="submit" disabled={isSubmitting}>
             {isCreateMode ? "Cadastrar" : "Salvar"}
           </PrimaryButton>
+          {!isCreateMode && (
+            <DeleteButton type="button" onClick={() => handleClickDeleteCost(initialValues.id)}>
+              Excluir
+            </DeleteButton>
+          )}
         </form>
       </Content>
     </Dialog.Portal>

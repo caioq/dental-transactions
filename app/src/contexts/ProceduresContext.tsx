@@ -17,6 +17,7 @@ export interface Payment {
   id: string;
   date: Date;
   value: number;
+  procedureId: string;
 }
 
 export interface Category {
@@ -92,12 +93,13 @@ interface ProcedureContextType {
   costs: Cost[];
   fetchProcedures: (startDate?: Date, endDate?: Date) => Promise<void>;
   fetchPayments: (startDate?: Date, endDate?: Date) => Promise<void>;
-  // fetchCategories: (query?: string) => Promise<void>;
   fetchCosts: (startDate?: Date, endDate?: Date) => Promise<void>;
   createProcedure: (data: CreateProcedureInput) => Promise<void>;
   updateProcedure: (data: UpdateProcedureInput) => Promise<void>;
+  deleteProcedure: (procedureId: string) => Promise<void>;
   createCost: (data: CreateCostInput) => Promise<void>;
   updateCost: (data: UpdateCostInput) => Promise<void>;
+  deleteCost: (costId: string) => Promise<void>;
 }
 
 interface ProceduresProviderProps {
@@ -109,11 +111,8 @@ interface ProceduresProviderProps {
 export const ProceduresContext = createContext({} as ProcedureContextType);
 
 export function ProceduresProvider({ children, categories, costCategories }: ProceduresProviderProps) {
-  // const { signed } = useAuth();
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
-  // const [categories, setCategories] = useState<Category[]>(initCategories);
-  // const [costCategories, setCostCategories] = useState<Category[]>(initCostCategories);
   const [costs, setCosts] = useState<Cost[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingPayments, setLoadingPayments] = useState<boolean>(true);
@@ -151,6 +150,7 @@ export function ProceduresProvider({ children, categories, costCategories }: Pro
     };
 
     setProcedures((state) => [createdProcedure, ...state]);
+    setPayments((state) => [...state, ...response.data.payments]);
   }, []);
 
   const updateProcedure = useCallback(async (data: UpdateProcedureInput) => {
@@ -164,19 +164,18 @@ export function ProceduresProvider({ children, categories, costCategories }: Pro
     setProcedures((state) =>
       state.map((procedure) => (procedure.id === updatedProcedure.id ? updatedProcedure : procedure))
     );
+    setPayments((state) => [
+      ...state.filter((payment) => payment.procedureId !== updatedProcedure.id),
+      ...updatedProcedure.payments,
+    ]);
   }, []);
 
-  // const fetchCategories = useCallback(async () => {
-  //   const response = await api.get("categories", {});
+  const deleteProcedure = useCallback(async (procedureId: string) => {
+    await api.delete(`procedures/${procedureId}`);
 
-  //   setCategories(response.data);
-  // }, []);
-
-  // const fetchCostCategories = useCallback(async () => {
-  //   const response = await api.get("cost-categories", {});
-
-  //   setCostCategories(response.data);
-  // }, []);
+    setProcedures((state) => state.filter((procedure) => procedure.id !== procedureId));
+    setPayments((state) => state.filter((payment) => payment.procedureId !== procedureId));
+  }, []);
 
   const fetchPayments = useCallback(async (startDate?: Date, endDate?: Date) => {
     setLoadingPayments(true);
@@ -236,6 +235,12 @@ export function ProceduresProvider({ children, categories, costCategories }: Pro
     setCosts((state) => state.map((cost) => (cost.id === updateCost.id ? updateCost : cost)));
   }, []);
 
+  const deleteCost = useCallback(async (costId: string) => {
+    await api.delete(`costs/${costId}`);
+
+    setCosts((state) => state.filter((cost) => cost.id !== costId));
+  }, []);
+
   return (
     <ProceduresContext.Provider
       value={{
@@ -248,10 +253,11 @@ export function ProceduresProvider({ children, categories, costCategories }: Pro
         costs,
         fetchProcedures,
         fetchPayments,
-        // fetchCategories,
         fetchCosts,
         createProcedure,
         updateProcedure,
+        deleteProcedure,
+        deleteCost,
         createCost,
         updateCost,
       }}

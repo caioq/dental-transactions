@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Post, Put, Query, UseGuards, Logger } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+  Logger,
+  Delete,
+  Param,
+} from '@nestjs/common'
 import { ProcedureService } from '../../domain/procedure/services/procedure.service'
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
 import {
@@ -62,5 +73,13 @@ export class ProcedureController {
     )
 
     return this.procedureService.getProceduresByDoctorId(id, new Date(startDate), new Date(endDate))
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  deleteProcedure(@Param('id') procedureId: string, @CurrentUser() user: UserPayload) {
+    const { id } = user
+
+    return this.procedureService.deleteProcedure(procedureId, id)
   }
 }
