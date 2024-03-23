@@ -11,7 +11,7 @@ import {
   TransactionsCardsContainer,
 } from "./styles";
 import { Cost, ProceduresContext } from "../../contexts/ProceduresContext";
-import { SearchForm } from "../../components/SearchForm";
+// import { SearchForm } from "../../components/SearchForm";
 import { Skeleton } from "../../components/core/Skeleton";
 import { EmptyState } from "./components/EmptyState";
 import { CostCard } from "./components/CostCard";
@@ -35,7 +35,7 @@ export function Costs() {
           <ArrowCircleDown size={28} />
           <span>Custos:</span>
         </TransactionsTitle>
-        <SearchForm />
+        {/* <SearchForm /> */}
 
         <Dialog.Root open={open} onOpenChange={setOpen}>
           <TransactionsTableContainer>

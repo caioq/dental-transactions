@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { ArrowCircleUp } from "phosphor-react";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { SearchForm } from "../../components/SearchForm";
+// import { SearchForm } from "../../components/SearchForm";
 import { ProcedureCard } from "./components/ProcedureCard";
 import {
   TransactionsContainer,
@@ -36,7 +36,7 @@ export function Procedures() {
           <ArrowCircleUp size={28} />
           <span>Procedimentos:</span>
         </TransactionsTitle>
-        <SearchForm />
+        {/* <SearchForm /> */}
 
         <Dialog.Root open={open} onOpenChange={setOpen}>
           <TransactionsTableContainer>
