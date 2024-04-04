@@ -1,15 +1,17 @@
 import { Route, createBrowserRouter, createRoutesFromElements, defer } from "react-router-dom";
-import { SignIn } from "../pages/SignIn";
-import { Procedures } from "../pages/Procedures";
-import { Costs } from "../pages/Costs";
 import { AuthLayout } from "./AuthLayout";
 import { HomeLayout } from "./HomeLayout";
 import { ProtectedLayout } from "./ProtectedLayout";
 import { api, getUserData } from "../utils";
+import { SignIn } from "../pages/SignIn";
+import { Procedures } from "../pages/Procedures";
+import { Costs } from "../pages/Costs";
+import { Dashboard } from "../pages/Dashboard";
 
 export enum RoutesPath {
   PROCEDURES = "/dashboard/procedures",
   COSTS = "/dashboard/costs",
+  DASHBOARD = "/dashboard/analytics",
 }
 
 export const router = createBrowserRouter(
@@ -42,6 +44,7 @@ export const router = createBrowserRouter(
       >
         <Route path="procedures" element={<Procedures />} />
         <Route path="costs" element={<Costs />} />
+        <Route path="analytics" element={<Dashboard />} />
       </Route>
     </Route>
   )
