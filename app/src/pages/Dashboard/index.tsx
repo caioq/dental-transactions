@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
 import { ChartLine } from "phosphor-react";
+import { useAsync } from "react-use";
 import {
   AverageContent,
   ChartContent,
@@ -20,6 +21,9 @@ import {
   DashboardContent,
   DashboardTitle,
 } from "./styles";
+import { api, currencyFormatter } from "../../utils";
+import { useMemo } from "react";
+import { indexMonthConverter } from "../../utils/indexMonthConverter";
 
 ChartJS.register(
   LinearScale,
@@ -54,35 +58,58 @@ const options = {
   },
 };
 
-const labels = ["January", "February", "March"];
-
-const data = {
-  labels,
-  datasets: [
-    {
-      type: "line" as const,
-      label: "Saldo",
-      backgroundColor: "blue",
-      data: [-2000, 2000, 3000],
-      borderColor: "blue",
-      fill: false,
-    },
-    {
-      type: "bar" as const,
-      label: "Entradas",
-      data: [2000, 7000, 11000],
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      type: "bar" as const,
-      label: "Saídas",
-      data: [-4000, -5000, -8000],
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-  ],
-};
+interface AnalyticsRevenueResponse {
+  revenuePerMonth: Array<{
+    month: number;
+    income: number;
+    outcome: number;
+    balance: number;
+  }>;
+  average: {
+    income: number;
+    outcome: number;
+    balance: number;
+  };
+}
 
 export function Dashboard() {
+  const { value } = useAsync(async () => {
+    const currentYear = new Date().getFullYear().toString();
+    return api.get<AnalyticsRevenueResponse>(`analytics/revenue?year=${currentYear}`);
+  });
+
+  const chartData = useMemo(() => {
+    const labels = value?.data.revenuePerMonth.map((item) => indexMonthConverter(item.month)) || [];
+    const balanceData = value?.data.revenuePerMonth.map((item) => item.balance) || [];
+    const incomeData = value?.data.revenuePerMonth.map((item) => item.income) || [];
+    const outcomeData = value?.data.revenuePerMonth.map((item) => item.outcome * -1) || [];
+    return {
+      labels,
+      datasets: [
+        {
+          type: "line" as const,
+          label: "Saldo",
+          backgroundColor: "#87C0D4",
+          data: balanceData,
+          borderColor: "#87C0D4",
+          fill: false,
+        },
+        {
+          type: "bar" as const,
+          label: "Entradas",
+          data: incomeData,
+          backgroundColor: "#C3E9B1",
+        },
+        {
+          type: "bar" as const,
+          label: "Saídas",
+          data: outcomeData,
+          backgroundColor: "rgba(255, 99, 132, 0.5)",
+        },
+      ],
+    };
+  }, [value]);
+
   return (
     <DashboardContainer>
       <DashboardTitle>
@@ -92,17 +119,20 @@ export function Dashboard() {
       <DashboardContent>
         <ChartContent>
           <ChartTitle>Receita Líquida (2024)</ChartTitle>
-          <Chart type="bar" data={data} options={options} />
+          <Chart type="bar" data={chartData} options={options} />
         </ChartContent>
         <AverageContent>
           <span>
-            <b>Média de Entradas:</b> R$ 5.000,00
+            <b>Média de Entradas:</b>{" "}
+            {value?.data.average.income && currencyFormatter.format(value?.data.average.income)}
           </span>
           <span>
-            <b>Média de Saídas:</b> R$ 5.000,00
+            <b>Média de Saídas:</b>{" "}
+            {value?.data.average.outcome && currencyFormatter.format(value?.data.average.outcome)}
           </span>
           <span>
-            <b>Média do Saldo:</b> R$ 5.000,00
+            <b>Média do Saldo:</b>{" "}
+            {value?.data.average.balance && currencyFormatter.format(value?.data.average.balance)}
           </span>
         </AverageContent>
       </DashboardContent>

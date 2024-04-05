@@ -26,6 +26,7 @@
     "react-loading-skeleton": "^3.3.1",
     "react-router-dom": "^6.17.0",
     "react-text-mask": "^5.5.0",
+    "react-use": "^17.5.0",
     "styled-components": "^6.0.8",
     "text-mask-addons": "^3.8.0",
     "zod": "^3.22.4"
