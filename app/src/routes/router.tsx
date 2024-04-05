@@ -7,11 +7,13 @@ import { SignIn } from "../pages/SignIn";
 import { Procedures } from "../pages/Procedures";
 import { Costs } from "../pages/Costs";
 import { Dashboard } from "../pages/Dashboard";
+import { MyAccount } from "../pages/MyAccount";
 
 export enum RoutesPath {
   PROCEDURES = "/dashboard/procedures",
   COSTS = "/dashboard/costs",
   DASHBOARD = "/dashboard/analytics",
+  MY_ACCOUNT = "/dashboard/account",
 }
 
 export const router = createBrowserRouter(
@@ -45,6 +47,7 @@ export const router = createBrowserRouter(
         <Route path="procedures" element={<Procedures />} />
         <Route path="costs" element={<Costs />} />
         <Route path="analytics" element={<Dashboard />} />
+        <Route path="account" element={<MyAccount />} />
       </Route>
     </Route>
   )

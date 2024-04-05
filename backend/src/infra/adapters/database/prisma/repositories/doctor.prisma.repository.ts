@@ -15,9 +15,26 @@ export class DoctorPrismaRepository implements DoctorRepository {
     return DoctorPrismaMapper.toDomain(doctor)
   }
 
+  async findById(id: string): Promise<Doctor | null> {
+    const doctor = await this.prisma.user.findUnique({ where: { id } })
+    if (!doctor) return null
+
+    return DoctorPrismaMapper.toDomain(doctor)
+  }
+
   async create(user: Doctor): Promise<Doctor> {
     const data = DoctorPrismaMapper.toPrisma(user)
     const doctor = await this.prisma.user.create({ data })
+
+    return DoctorPrismaMapper.toDomain(doctor)
+  }
+
+  async update(user: Doctor): Promise<Doctor> {
+    const data = DoctorPrismaMapper.toPrisma(user)
+    const doctor = await this.prisma.user.update({
+      data,
+      where: { id: user.id },
+    })
 
     return DoctorPrismaMapper.toDomain(doctor)
   }

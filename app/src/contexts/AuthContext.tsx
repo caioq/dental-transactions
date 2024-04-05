@@ -16,12 +16,17 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   setSigned: React.Dispatch<React.SetStateAction<boolean | null>>;
-  // getUserData: () => void;
+  changePassword: (data: ChangePasswordInput) => Promise<void>;
 }
 
 interface SignInInput {
   email: string;
   password: string;
+}
+
+interface ChangePasswordInput {
+  currentPassword: string;
+  newPassword: string;
 }
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -71,8 +76,16 @@ export function AuthProvider({ children, userData }: AuthProviderProps) {
     navigate("", { replace: true });
   }, [navigate]);
 
+  const changePassword = useCallback(async (data: ChangePasswordInput) => {
+    const { currentPassword, newPassword } = data;
+    await api.put("users/change-password", {
+      currentPassword,
+      newPassword,
+    });
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, signed, signIn, signOut, setSigned, setUser }}>
+    <AuthContext.Provider value={{ user, signed, signIn, signOut, setSigned, setUser, changePassword }}>
       {children}
     </AuthContext.Provider>
   );
