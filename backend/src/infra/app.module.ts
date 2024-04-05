@@ -6,6 +6,9 @@ import {
   AuthenticateService,
   CostCategoryService,
   UserService,
+  AnalyticsService,
+  CostService,
+  PaymentService,
 } from '../domain/procedure/services'
 import { envSchema } from './env/env'
 import { EnvModule } from './env/env.module'
@@ -20,9 +23,8 @@ import { CostCategoryController } from './controllers/costCategory.controller'
 import { PaymentController } from './controllers/payment.controller'
 import { CostController } from './controllers/cost.controller'
 import { UserController } from './controllers/user.controller'
+import { AnalyticsController } from './controllers/analytics.controller'
 import { AppService } from '../app.service'
-import { PaymentService } from '../domain/procedure/services/payment.service'
-import { CostService } from '../domain/procedure/services/cost.service'
 
 @Module({
   imports: [
@@ -44,6 +46,7 @@ import { CostService } from '../domain/procedure/services/cost.service'
     AuthenticateController,
     PaymentController,
     AppController,
+    AnalyticsController,
   ],
   providers: [
     UserService,
@@ -54,6 +57,7 @@ import { CostService } from '../domain/procedure/services/cost.service'
     AuthenticateService,
     PaymentService,
     AppService,
+    AnalyticsService,
   ],
 })
 export class AppModule {}

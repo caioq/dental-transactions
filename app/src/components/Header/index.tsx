@@ -74,6 +74,9 @@ export function Header() {
                 <MenuItem $active={isMatchRoute("costs", matchRoute?.params.route)}>
                   <Link to={RoutesPath.COSTS}>Custos</Link>
                 </MenuItem>
+                <MenuItem $active={isMatchRoute("analytics", matchRoute?.params.route)}>
+                  <Link to={RoutesPath.DASHBOARD}>Dashboard</Link>
+                </MenuItem>
               </ul>
             </MenuButtonContainer>
           )}

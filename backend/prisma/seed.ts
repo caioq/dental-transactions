@@ -160,6 +160,42 @@ async function main() {
     },
   })
 
+  const categoryUuid14 = '2f16904c-9f53-4d8b-8ea1-99d0e1b80b98'
+  await prisma.category.upsert({
+    where: { id: categoryUuid14 },
+    update: {
+      name: 'Tratamento de canal anterior',
+    },
+    create: {
+      id: categoryUuid14,
+      name: 'Tratamento de canal anterior',
+    },
+  })
+
+  const categoryUuid15 = 'd1c145f8-0902-478f-a79b-6184fa089891'
+  await prisma.category.upsert({
+    where: { id: categoryUuid15 },
+    update: {
+      name: 'Tratamento de canal posterior',
+    },
+    create: {
+      id: categoryUuid15,
+      name: 'Tratamento de canal posterior',
+    },
+  })
+
+  const categoryUuid16 = '955800de-f3b5-4a56-a36d-42ce8c6f277f'
+  await prisma.category.upsert({
+    where: { id: categoryUuid16 },
+    update: {
+      name: 'Abertura de emergência',
+    },
+    create: {
+      id: categoryUuid16,
+      name: 'Abertura de emergência',
+    },
+  })
+
   // COST CATEGORIES
   const costCategoryUuid1 = 'cd8b949c-571d-4c55-b5ea-75423047e509'
   await prisma.costCategory.upsert({

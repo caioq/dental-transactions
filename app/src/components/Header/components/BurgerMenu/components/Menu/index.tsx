@@ -31,6 +31,12 @@ export function Menu({ open, setOpen }: MenuProps) {
           Custos
         </MenuItem>
       </Link>
+      <Link to={RoutesPath.DASHBOARD} onClick={() => setOpen(!open)}>
+        <MenuItem active={isMatchRoute("analytics")}>
+          <ArrowCircleUp size={32} />
+          Dashboard
+        </MenuItem>
+      </Link>
       <Link to="/" className="signout" onClick={signOut}>
         Sair
       </Link>
