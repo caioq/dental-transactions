@@ -1,5 +1,5 @@
 import { Link, useMatch } from "react-router-dom";
-import { ArrowCircleDown, ArrowCircleUp } from "phosphor-react";
+import { ArrowCircleDown, ArrowCircleUp, ChartLine, UserCircle } from "phosphor-react";
 import { StyledMenu, MenuItem } from "./styles";
 import { useAuth } from "../../../../../../hooks";
 import { RoutesPath } from "../../../../../../routes/router";
@@ -33,8 +33,14 @@ export function Menu({ open, setOpen }: MenuProps) {
       </Link>
       <Link to={RoutesPath.DASHBOARD} onClick={() => setOpen(!open)}>
         <MenuItem active={isMatchRoute("analytics")}>
-          <ArrowCircleUp size={32} />
+          <ChartLine size={32} />
           Dashboard
+        </MenuItem>
+      </Link>
+      <Link to={RoutesPath.MY_ACCOUNT} onClick={() => setOpen(!open)}>
+        <MenuItem active={isMatchRoute("account")}>
+          <UserCircle size={32} />
+          Minha Conta
         </MenuItem>
       </Link>
       <Link to="/" className="signout" onClick={signOut}>

@@ -9,6 +9,12 @@ interface CreateUserParams {
   name: string
 }
 
+interface ChangePasswordParams {
+  id: string
+  currentPassword: string
+  newPassword: string
+}
+
 @Injectable()
 export class UserService {
   constructor(
@@ -27,5 +33,20 @@ export class UserService {
     const newDoctor = await this.doctorRepository.create(doctor)
 
     return newDoctor
+  }
+
+  async changePassword({ id, currentPassword, newPassword }: ChangePasswordParams): Promise<void> {
+    const user = await this.doctorRepository.findById(id)
+    if (!user) {
+      throw new UnauthorizedException('User does not exists')
+    }
+
+    const isCurrentPasswordCorrect = await this.hashService.compare(currentPassword, user.password)
+    if (!isCurrentPasswordCorrect) {
+      throw new UnauthorizedException('Current password is incorrect')
+    }
+
+    const hashedPassword = await this.hashService.hash(newPassword)
+    await this.doctorRepository.update({ ...user, password: hashedPassword })
   }
 }
